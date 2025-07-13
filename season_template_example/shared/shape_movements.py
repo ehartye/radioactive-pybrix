@@ -228,28 +228,3 @@ class ShapeMovements:
         
         self.drivebase.stop()
         print("Spiral drive complete")
-    
-    def return_to_start(self):
-        """
-        Attempt to return robot to starting position using measurements
-        Note: This is an approximation and may not be perfectly accurate
-        """
-        if not self.robot.is_initialized:
-            raise RuntimeError("Robot not initialized")
-        
-        measurements = self.robot.get_measurements()
-        
-        if measurements:
-            # Turn to face starting direction
-            angle_to_turn = -measurements['drive_angle']
-            if abs(angle_to_turn) > 5:  # Only turn if significant angle
-                self.drivebase.turn(angle_to_turn)
-            
-            # Drive back to start
-            distance_to_return = -measurements['drive_distance']
-            if abs(distance_to_return) > 10:  # Only move if significant distance
-                self.drivebase.straight(distance_to_return)
-            
-            print("Returned to approximate starting position")
-        else:
-            print("No measurements available for return to start")

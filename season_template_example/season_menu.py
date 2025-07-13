@@ -61,7 +61,7 @@ class SeasonMenu:
         """Display available missions"""
         print("\nAvailable Missions:")
         print("-" * 30)
-        for key, mission in self.missions.items():
+        for key, mission in sorted(self.missions.items()):
             print(f"{key}. {mission['name']}")
             print(f"   {mission['description']}")
         print("Q. Quit")

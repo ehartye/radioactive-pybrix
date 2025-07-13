@@ -141,7 +141,6 @@ from shared.shape_movements import ShapeMovements
 movements = ShapeMovements(robot)
 movements.drive_square(side_length=300)
 movements.drive_circle(radius=200)
-movements.return_to_start()
 ```
 
 ## Mission Examples

@@ -52,11 +52,3 @@ class SeasonInfo:
     NAME = "Shape Demonstration Season"
     VERSION = "1.0"
     DESCRIPTION = "Example season showcasing robot driving in shapes and displaying patterns"
-    
-    # Mission metadata
-    MISSIONS = {
-        "1": {"name": "Square Drive", "description": "Drive robot in square pattern"},
-        "2": {"name": "Circle Drive", "description": "Drive robot in circle pattern"},
-        "3": {"name": "Square Display", "description": "Display square pattern on screen"},
-        "4": {"name": "Triangle Combo", "description": "Drive triangle while displaying pattern"}
-    }

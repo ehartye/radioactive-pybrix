@@ -11,10 +11,9 @@ from season_config import SeasonDefaults
 # Mission-specific configuration overrides
 MISSION_CONFIG = {
     "drive_speed": 120,        # Slower speed for smooth circle
-    "circle_radius": 200,      # Circle radius in mm
+    "circle_radius": 400,      # Circle radius in mm
     "clockwise": True,         # Direction of circle
     "show_progress": True,     # Show progress on display
-    "return_to_start": True,   # Return to starting position after circle
 }
 
 def run():
@@ -54,11 +53,6 @@ def run():
             radius=MISSION_CONFIG["circle_radius"],
             clockwise=MISSION_CONFIG["clockwise"]
         )
-        
-        # Return to start if configured
-        if MISSION_CONFIG["return_to_start"]:
-            print("Returning to starting position...")
-            movements.return_to_start()
         
         # Show completion
         if MISSION_CONFIG["show_progress"]:
@@ -115,10 +109,6 @@ def run_with_custom_radius(radius_mm, clockwise=True):
             radius=radius_mm,
             clockwise=clockwise
         )
-        
-        if custom_config["return_to_start"]:
-            print("Returning to starting position...")
-            movements.return_to_start()
         
         if custom_config["show_progress"]:
             display.show_completion_checkmark()

@@ -298,8 +298,6 @@ def run_triangle_with_return():
         ]
         display.hub.display.icon(return_pattern)
         
-        movements.return_to_start()
-        
         if MISSION_CONFIG["show_progress"]:
             display.show_completion_checkmark()
         
