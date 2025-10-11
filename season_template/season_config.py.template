@@ -1,0 +1,57 @@
+"""
+Season Configuration
+Base configuration for all missions in the season with robot specifications and defaults
+"""
+
+from pybricks.parameters import Direction, Port, Color
+
+# Robot Hardware Configuration
+class Ports:
+    """Robot port assignments - IMPORTANT: Match these to your actual robot!"""
+    LEFT_WHEEL = Port.{LEFT_WHEEL_PORT}
+    RIGHT_WHEEL = Port.{RIGHT_WHEEL_PORT}
+
+    # Optional - only needed if you have attachments
+    LEFT_ATTACHMENT = Port.{LEFT_ATTACHMENT_PORT}
+    RIGHT_ATTACHMENT = Port.{RIGHT_ATTACHMENT_PORT}
+    LEFT_COLOR_SENSOR = Port.{LEFT_SENSOR_PORT}
+    RIGHT_COLOR_SENSOR = Port.{RIGHT_SENSOR_PORT}
+
+class Directions:
+    """Motor direction settings"""
+    LEFT_WHEEL = Direction.{LEFT_WHEEL_DIR}
+    RIGHT_WHEEL = Direction.{RIGHT_WHEEL_DIR}
+    LEFT_ATTACHMENT = Direction.CLOCKWISE
+    RIGHT_ATTACHMENT = Direction.CLOCKWISE
+
+class Specifications:
+    """Robot physical specifications (in mm)"""
+    WHEEL_DIAMETER = {WHEEL_DIAMETER}  # mm
+    AXLE_TRACK = {AXLE_TRACK}          # mm
+
+# Season-wide Default Settings
+class SeasonDefaults:
+    """Default settings that can be overridden by individual missions"""
+    DRIVE_SPEED = 200           # mm/s - Conservative speed for accuracy
+    TURN_RATE = 60             # degrees/s
+    DRIVE_ACCELERATION = 800    # mm/s²
+    TURN_ACCELERATION = 120     # degrees/s²
+
+    # Display settings
+    DISPLAY_DELAY = 500         # ms between display updates
+    COMPLETION_BEEP_FREQ = 800  # Hz
+    COMPLETION_BEEP_TIME = 200  # ms
+
+    # Mission feedback colors
+    MISSION_START_COLOR = Color.BLUE
+    MISSION_SUCCESS_COLOR = Color.GREEN
+    MISSION_ERROR_COLOR = Color.RED
+    MISSION_RUNNING_COLOR = Color.YELLOW
+
+# Season Information
+class SeasonInfo:
+    """Season metadata"""
+    NAME = "{SEASON_NAME}"
+    TEAM = "{TEAM_NAME}"
+    VERSION = "1.0"
+    DESCRIPTION = "{SEASON_DESCRIPTION}"
