@@ -26,6 +26,29 @@ When helping students:
 
 ## Project Structure
 
+This repository provides a complete season management system for students:
+
+### Season Management Tools (Root Level)
+- **`new_season.py`**: Interactive script to create a new season folder with robot-specific configuration
+- **`new_mission.py`**: Interactive script to add missions to a season (auto-updates menu)
+- **`STUDENT_GUIDE.md`**: Complete walkthrough for students to create seasons and missions
+
+### Season Template (`season_template/`)
+Template files used by the scripts (students don't edit these directly):
+- **`_template_mission.py`**: Mission template with helpful code examples in comments
+- **`season_config.py.template`**: Robot configuration template with placeholders
+- **`season_menu.py.template`**: Menu system template with placeholders
+- **Shared utilities**: `robot_controller.py`, `display_patterns.py`, `shape_movements.py`
+
+### Working Example (`season_example/`)
+Complete working example with 4 missions students can learn from:
+- **`mission_01_square_drive.py`**: Drive robot in square pattern
+- **`mission_02_circle_drive.py`**: Drive robot in circle pattern
+- **`mission_03_square_display.py`**: Display patterns (no motors needed - good for testing!)
+- **`mission_04_triangle_combo.py`**: Combined driving and display
+- **`season_menu.py`**: Mission selector menu
+- **`season_config.py`**: Robot-specific configuration
+
 ### Reference Documentation (`reference_docs/`)
 Contains excerpts from official PyBricks documentation covering:
 - **prime_hub.txt**: Hub features (display, buttons, IMU/tilt sensor, lights, speaker, battery)
@@ -241,9 +264,108 @@ print("Speed:", motor.speed())
 4. **Simplify**: Break complex code into smaller testable pieces
 5. **Compare to Examples**: Look at reference code for patterns
 
+## Season Management Workflow
+
+### IMPORTANT: PyBricks Import Limitation
+**PyBricks MicroPython does NOT support subdirectories or package imports.** All Python files must be in a flat structure in the same directory. This is a known limitation (GitHub Issue #1602).
+
+All imports must be simple module imports:
+```python
+# CORRECT - flat imports
+import mission_01_square_drive
+from robot_controller import RobotController
+from season_config import SeasonDefaults
+
+# INCORRECT - will not work on hub
+from missions import mission_01_square_drive
+from .shared import RobotController
+```
+
+### Creating a New Season
+
+**For Students - Use the automated scripts!**
+
+1. **Create Season** - Run `python new_season.py`:
+   - Asks about season name, team name
+   - Asks where motors are plugged in (ports)
+   - Asks for robot measurements (wheel diameter, axle track)
+   - Generates folder with `season_config.py` customized for their robot
+   - Creates empty `season_menu.py` ready for missions
+   - Copies shared utility files
+
+2. **Add Missions** - From season folder, run `python ../new_mission.py`:
+   - Asks for mission name and description
+   - Asks for speed settings
+   - Creates mission file from template with helpful code examples
+   - **Automatically updates `season_menu.py`** (imports, dict, hub_menu options)
+   - Students just need to fill in the mission logic!
+
+3. **Code Mission** - Edit the generated mission file:
+   - Template includes helpful examples in comments
+   - Shows how to drive, turn, display, wait, use attachments
+   - Students uncomment and modify examples they need
+
+4. **Upload and Test**:
+   - Upload ALL `.py` files to SPIKE Prime hub (must be together!)
+   - Run `season_menu.py`
+   - Use hub buttons to select and run missions
+
+### For AI Assistants Helping Students
+
+**If a student asks about creating a season or mission:**
+1. Direct them to use `new_season.py` or `new_mission.py` scripts
+2. Explain they answer simple questions and everything is generated
+3. Show them `STUDENT_GUIDE.md` for complete walkthrough
+4. Do NOT tell them to manually copy/edit template files
+
+**If a student asks about mission code:**
+1. The mission template (`_template_mission.py`) has tons of helpful examples
+2. Guide them to uncomment and modify existing examples
+3. Remind them about flat imports (no subdirectories)
+4. All files must be uploaded together to hub
+
+**If helping debug:**
+1. Check they uploaded ALL `.py` files (common mistake)
+2. Check imports are flat (no `from missions.` or `from shared.`)
+3. Check ports in `season_config.py` match physical robot
+4. Check wheel measurements in `season_config.py` are accurate
+
+### Example Mission Template Structure
+
+Every generated mission includes helpful guidance:
+```python
+# TODO: ADD YOUR MISSION LOGIC HERE
+
+# --- DRIVING EXAMPLES ---
+# Drive straight forward 300mm:
+#   movements.drivebase.straight(300)
+#
+# Turn right 90 degrees:
+#   movements.drivebase.turn(90)
+#
+# Drive in a square:
+#   movements.drive_square(side_length=300)
+
+# --- DISPLAY EXAMPLES ---
+# Show a number:
+#   robot.hub.display.number(5)
+#
+# Show countdown:
+#   display.show_countdown(3)
+
+# --- ATTACHMENTS (if you have them) ---
+# Run attachment motor:
+#   if robot.left_attachment:
+#       robot.left_attachment.run(500)
+```
+
+Students just uncomment what they need and modify values!
+
 ## Available Resources in This Project
 
 Students can explore these files for learning:
+- `season_example/` - Complete working example with 4 missions
+- `STUDENT_GUIDE.md` - Complete guide for creating seasons and missions
 - `reference_code/misc_examples/motor_example.py` - Basic motor control
 - `reference_code/misc_examples/drive_base_example.py` - Robot driving
 - `reference_code/misc_examples/tilt_sensor_example.py` - Using the IMU sensor
@@ -304,6 +426,30 @@ Point students to:
 - [PyBricks examples on GitHub](https://github.com/pybricks/pybricks-micropython)
 - Python basics tutorials (for general Python concepts)
 
+## Benefits of the Season Management System
+
+### For Students
+- ✅ **No configuration errors** - Scripts generate everything correctly
+- ✅ **Focus on learning** - Write robot logic, not boilerplate setup
+- ✅ **Can't break the menu** - Auto-updated when adding missions
+- ✅ **Helpful examples** - Mission template has code they can uncomment/modify
+- ✅ **Robot-specific** - Config matched to their exact robot
+- ✅ **Team collaboration** - Multiple students can easily add missions
+
+### For Educators/Mentors
+- ✅ **Dramatically lower barrier to entry** - 2 minutes vs 15+ minutes of error-prone setup
+- ✅ **Consistent structure** - All teams use same organization
+- ✅ **Easy to help debug** - Know exactly where to look
+- ✅ **Progressive learning** - Template guides without prescribing
+- ✅ **Version control friendly** - Clean separation of missions
+
+### What Problems This Solves
+**Old way (error-prone):**
+- Copy folder → Edit config (miss fields) → Delete examples → Edit menu imports → Edit menu dict → Update hub_menu() → Fix syntax errors → Hope it works
+
+**New way (foolproof):**
+- `python new_season.py` (answer 6 questions) → `python ../new_mission.py` (answer 4 questions) → Edit mission → Upload → Works!
+
 ## Encouragement Philosophy
 
 When students struggle:
@@ -313,5 +459,6 @@ When students struggle:
 - Show how even experienced programmers debug and iterate
 - Encourage peer learning and collaboration
 - Make it fun and connect to their interests
+- **Direct them to the automated scripts** - Don't make them fight with setup!
 
 Remember: The goal is to build confidence and curiosity, not just working code!
