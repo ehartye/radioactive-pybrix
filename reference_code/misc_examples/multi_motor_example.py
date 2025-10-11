@@ -29,9 +29,9 @@ while not motor_e.done() or not motor_f.done():
 print("Both motors reached their targets!")
 wait(1000)
 
-# --- Example 2: Run motors at constant speed for a duration ---
+# --- Example 2: Run motors at a set speed for a duration ---
 
-print("Example 2: Running motors at constant speed")
+print("Example 2: Running motors at a set speed")
 
 # Start both motors running at different speeds
 motor_e.run(200)   # 200 degrees per second
