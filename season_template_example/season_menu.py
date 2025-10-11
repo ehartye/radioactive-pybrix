@@ -8,11 +8,11 @@ from pybricks.hubs import PrimeHub
 from pybricks.parameters import Color
 from pybricks.tools import wait
 
-# import missions  # Import all missions package
-from missions import mission_01_square_drive
-from missions import mission_02_circle_drive
-from missions import mission_03_square_display
-from missions import mission_04_triangle_combo
+# Import all mission modules (flat structure for PyBricks compatibility)
+import mission_01_square_drive
+import mission_02_circle_drive
+import mission_03_square_display
+import mission_04_triangle_combo
 from season_config import SeasonInfo, SeasonDefaults
 
 class SeasonMenu:
@@ -86,8 +86,8 @@ class SeasonMenu:
             
             try:
                 # Execute the mission
-                mission["run_function"]()
-                
+                mission["run_function"].run()
+
                 # Success feedback
                 print(f"Mission {mission_key} completed successfully!")
                 self.hub.light.on(SeasonDefaults.MISSION_SUCCESS_COLOR)

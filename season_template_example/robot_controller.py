@@ -109,31 +109,25 @@ class RobotController:
                     original_error=e
                 )
             
-            # Initialize left attachment motor
-            print("Initializing left attachment motor...")
+            # Initialize left attachment motor (OPTIONAL - won't fail if not connected)
+            print("Initializing left attachment motor (optional)...")
             try:
                 self.left_attachment = Motor(Ports.LEFT_ATTACHMENT, Directions.LEFT_ATTACHMENT)
                 print("✓ Left attachment motor initialized successfully")
             except Exception as e:
-                raise RobotInitializationError(
-                    "Failed to initialize left attachment motor",
-                    component="left_attachment",
-                    port=Ports.LEFT_ATTACHMENT,
-                    original_error=e
-                )
-            
-            # Initialize right attachment motor
-            print("Initializing right attachment motor...")
+                self.left_attachment = None
+                print("⚠ Left attachment not connected (this is okay!)")
+                print(f"  If you need it later, check Port {Ports.LEFT_ATTACHMENT}")
+
+            # Initialize right attachment motor (OPTIONAL - won't fail if not connected)
+            print("Initializing right attachment motor (optional)...")
             try:
                 self.right_attachment = Motor(Ports.RIGHT_ATTACHMENT, Directions.RIGHT_ATTACHMENT)
                 print("✓ Right attachment motor initialized successfully")
             except Exception as e:
-                raise RobotInitializationError(
-                    "Failed to initialize right attachment motor",
-                    component="right_attachment",
-                    port=Ports.RIGHT_ATTACHMENT,
-                    original_error=e
-                )
+                self.right_attachment = None
+                print("⚠ Right attachment not connected (this is okay!)")
+                print(f"  If you need it later, check Port {Ports.RIGHT_ATTACHMENT}")
             
             # Create drivebase
             print("Creating drivebase...")
@@ -231,13 +225,19 @@ class RobotController:
         """Get current robot measurements"""
         if not self.is_initialized:
             return None
-        
-        return {
+
+        measurements = {
             'drive_distance': self.drivebase.distance(),
             'drive_angle': self.drivebase.angle(),
-            'left_attachment_angle': self.left_attachment.angle(),
-            'right_attachment_angle': self.right_attachment.angle()
         }
+
+        # Only include attachment measurements if they exist
+        if self.left_attachment:
+            measurements['left_attachment_angle'] = self.left_attachment.angle()
+        if self.right_attachment:
+            measurements['right_attachment_angle'] = self.right_attachment.angle()
+
+        return measurements
     
     def mission_start_signal(self):
         """Signal start of mission execution"""

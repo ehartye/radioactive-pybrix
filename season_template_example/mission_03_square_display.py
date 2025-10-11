@@ -3,8 +3,8 @@ Mission 03: Square Display
 Display animated square patterns on the robot's screen without driving
 """
 
-from shared import RobotController
-from shared import DisplayPatterns
+from robot_controller import RobotController
+from display_patterns import DisplayPatterns
 from season_config import SeasonDefaults
 from pybricks.tools import wait
 

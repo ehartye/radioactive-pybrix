@@ -3,9 +3,9 @@ Mission 04: Triangle Combo
 Combine triangle driving with triangle display patterns on screen
 """
 
-from shared import RobotController
-from shared import ShapeMovements
-from shared import DisplayPatterns
+from robot_controller import RobotController
+from shape_movements import ShapeMovements
+from display_patterns import DisplayPatterns
 from season_config import SeasonDefaults
 from pybricks.tools import wait
 

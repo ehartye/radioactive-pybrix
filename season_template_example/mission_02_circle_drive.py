@@ -3,9 +3,9 @@ Mission 02: Circle Drive
 Drive robot in a circle pattern with configurable radius and direction
 """
 
-from shared import RobotController
-from shared import ShapeMovements
-from shared import DisplayPatterns
+from robot_controller import RobotController
+from shape_movements import ShapeMovements
+from display_patterns import DisplayPatterns
 from season_config import SeasonDefaults
 
 # Mission-specific configuration overrides

@@ -14,39 +14,44 @@ This template demonstrates a well-organized approach to creating robot seasons w
 
 ## Project Structure
 
+**Important:** PyBricks MicroPython does not support subdirectories for imports. All files must be in a flat structure in the same directory.
+
 ```
 season_template_example/
-├── season_config.py              # Base season configuration
-├── shared/                       # Shared logic between missions
-│   ├── __init__.py
-│   ├── robot_controller.py       # Common robot control functions
-│   ├── display_patterns.py       # Shared display pattern utilities
-│   └── shape_movements.py        # Common shape driving logic
-├── missions/                     # Individual mission modules
-│   ├── __init__.py
-│   ├── mission_01_square_drive.py    # Drive in square pattern
-│   ├── mission_02_circle_drive.py    # Drive in circle pattern
-│   ├── mission_03_square_display.py # Display square on screen
-│   └── mission_04_triangle_combo.py # Drive triangle + display
-├── season_menu.py               # Main menu system for mission selection
-└── README.md                    # This documentation
+├── season_menu.py                    # ⭐ Main menu - START HERE!
+├── season_config.py                  # Base configuration (ports, speeds, etc.)
+├── robot_controller.py               # Common robot control functions
+├── display_patterns.py               # Shared display pattern utilities
+├── shape_movements.py                # Common shape driving logic
+├── mission_01_square_drive.py        # Mission 1: Drive in square pattern
+├── mission_02_circle_drive.py        # Mission 2: Drive in circle pattern
+├── mission_03_square_display.py      # Mission 3: Display square on screen
+├── mission_04_triangle_combo.py      # Mission 4: Drive triangle + display
+├── QUICKSTART.md                     # 5-minute getting started guide
+├── INSTRUCTIONS.md                   # How to add new missions
+└── README.md                         # This documentation
 ```
+
+**⚠️ All files must be uploaded together to your SPIKE Prime hub.**
 
 ## Quick Start
 
+**New to this template?** Read [QUICKSTART.md](QUICKSTART.md) for a 5-minute walkthrough!
+
 ### Running the Season Menu
 
-```python
-from season_template_example.season_menu import main
-
-# Start the interactive menu
-main()
-```
+1. Upload ALL `.py` files to your SPIKE Prime hub
+2. Run `season_menu.py` on your hub
+3. Use LEFT/RIGHT buttons to select a mission
+4. Press CENTER button to run it
 
 ### Running Individual Missions
 
+You can also test missions individually during development:
+
 ```python
-from season_template_example.missions import mission_01_square_drive
+# In season_menu.py or directly on hub
+import mission_01_square_drive
 
 # Run a specific mission
 mission_01_square_drive.run()
@@ -100,7 +105,7 @@ The `RobotController` class provides:
 - Automatic cleanup and error handling
 
 ```python
-from shared.robot_controller import RobotController
+from robot_controller import RobotController
 from season_config import SeasonDefaults
 
 robot = RobotController(SeasonDefaults, MISSION_CONFIG)
@@ -119,7 +124,7 @@ The `DisplayPatterns` class offers:
 - Custom pattern support
 
 ```python
-from shared.display_patterns import DisplayPatterns
+from display_patterns import DisplayPatterns
 
 display = DisplayPatterns(robot.hub)
 display.animate_square(cycles=3)
@@ -136,7 +141,7 @@ The `ShapeMovements` class provides:
 - Return-to-start functionality
 
 ```python
-from shared.shape_movements import ShapeMovements
+from shape_movements import ShapeMovements
 
 movements = ShapeMovements(robot)
 movements.drive_square(side_length=300)
@@ -158,10 +163,10 @@ Drives the robot in a square pattern with configurable size and speed.
 
 **Usage:**
 ```python
-from missions.mission_01_square_drive import run, run_with_custom_size
+import mission_01_square_drive
 
-run()  # Default 300mm square
-run_with_custom_size(500)  # Custom 500mm square
+mission_01_square_drive.run()  # Default 300mm square
+mission_01_square_drive.run_with_custom_size(500)  # Custom 500mm square
 ```
 
 ### Mission 02: Circle Drive
@@ -177,11 +182,11 @@ Drives the robot in a circle pattern with configurable radius and direction.
 
 **Usage:**
 ```python
-from missions.mission_02_circle_drive import run, run_with_custom_radius, run_figure_eight
+import mission_02_circle_drive
 
-run()  # Default 200mm radius clockwise
-run_with_custom_radius(150, clockwise=False)  # Custom counter-clockwise
-run_figure_eight()  # Figure-eight pattern
+mission_02_circle_drive.run()  # Default 200mm radius clockwise
+mission_02_circle_drive.run_with_custom_radius(150, clockwise=False)  # Custom counter-clockwise
+mission_02_circle_drive.run_figure_eight()  # Figure-eight pattern
 ```
 
 ### Mission 03: Square Display
@@ -197,11 +202,11 @@ Displays animated square patterns on the robot's screen without driving.
 
 **Usage:**
 ```python
-from missions.mission_03_square_display import run, run_with_custom_timing, run_interactive_display
+import mission_03_square_display
 
-run()  # Default animation
-run_with_custom_timing(200, 10)  # 200ms delay, 10 cycles
-run_interactive_display()  # Interactive mode
+mission_03_square_display.run()  # Default animation
+mission_03_square_display.run_with_custom_timing(200, 10)  # 200ms delay, 10 cycles
+mission_03_square_display.run_interactive_display()  # Interactive mode
 ```
 
 ### Mission 04: Triangle Combo
@@ -217,11 +222,11 @@ Combines triangle driving with triangle display patterns for synchronized operat
 
 **Usage:**
 ```python
-from missions.mission_04_triangle_combo import run, run_with_custom_size, run_multi_triangle_combo
+import mission_04_triangle_combo
 
-run()  # Default synchronized combo
-run_with_custom_size(400)  # Custom 400mm triangle
-run_multi_triangle_combo()  # Multiple triangles
+mission_04_triangle_combo.run()  # Default synchronized combo
+mission_04_triangle_combo.run_with_custom_size(400)  # Custom 400mm triangle
+mission_04_triangle_combo.run_multi_triangle_combo()  # Multiple triangles
 ```
 
 ## Menu System

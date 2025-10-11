@@ -3,9 +3,9 @@ Mission 01: Square Drive
 Drive robot in a square pattern with configurable size and speed
 """
 
-from shared import RobotController
-from shared import ShapeMovements
-from shared import DisplayPatterns
+from robot_controller import RobotController
+from shape_movements import ShapeMovements
+from display_patterns import DisplayPatterns
 from season_config import SeasonDefaults
 
 # Mission-specific configuration overrides
