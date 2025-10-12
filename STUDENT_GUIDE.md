@@ -53,13 +53,13 @@ You'll be asked:
 Example:
 ```python
 # Drive forward 500mm
-movements.drivebase.straight(500)
+robot.drivebase.straight(500)
 
 # Turn right 90 degrees
-movements.drivebase.turn(90)
+robot.drivebase.turn(90)
 
 # Drive forward another 300mm
-movements.drivebase.straight(300)
+robot.drivebase.straight(300)
 ```
 
 ### Step 4: Test on Your Robot (2 minutes)
@@ -231,23 +231,27 @@ Creating mission...
 
 Your mission files come with lots of helpful examples in the comments. Here are some common things you'll want to do:
 
-### Basic Driving
+### Basic Driving (Most Common)
 ```python
 # Drive forward 300mm
-movements.drivebase.straight(300)
+robot.drivebase.straight(300)
 
-# Drive backward 200mm
-movements.drivebase.straight(-200)
+# Drive backward 200mm (use negative)
+robot.drivebase.straight(-200)
 
 # Turn right 90 degrees
-movements.drivebase.turn(90)
+robot.drivebase.turn(90)
 
-# Turn left 90 degrees
-movements.drivebase.turn(-90)
+# Turn left 90 degrees (use negative)
+robot.drivebase.turn(-90)
 ```
 
-### Shapes
+### Shapes (Advanced - Optional)
+If you want to drive in predefined shapes, you can use the ShapeMovements helper:
 ```python
+from shape_movements import ShapeMovements
+movements = ShapeMovements(robot)
+
 # Drive in a square (300mm sides)
 movements.drive_square(side_length=300)
 

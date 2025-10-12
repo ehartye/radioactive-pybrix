@@ -157,6 +157,84 @@ from pybricks.tools import wait
 wait(1000)  # Wait 1000 milliseconds (1 second)
 ```
 
+## Understanding the RobotController Pattern
+
+**CRITICAL for AI Assistants:** When students ask about hub features (gyro/IMU, buttons, display, speaker, light, battery), remember the inheritance chain:
+
+### The Pattern
+```python
+# In RobotController class (robot_controller.py)
+class RobotController:
+    def __init__(self):
+        self.hub = PrimeHub()  # ← Hub is wrapped here
+        # ...
+
+# In mission files
+def run(robot: RobotController, display):
+    # Students access hub features through robot.hub:
+    robot.hub.imu.tilt()           # ✅ Correct
+    robot.hub.buttons.pressed()    # ✅ Correct
+    robot.hub.display.icon(...)    # ✅ Correct
+    robot.hub.speaker.beep()       # ✅ Correct
+    robot.hub.light.on(Color.RED)  # ✅ Correct
+```
+
+### What Students Have Access To
+
+Through the `robot` parameter in mission functions:
+- **`robot.drivebase`** - Drive the robot (straight, turn, drive, stop)
+- **`robot.hub`** - **ALL hub features**:
+  - `robot.hub.imu` - Gyro/tilt sensor, heading, acceleration
+  - `robot.hub.buttons` - Button presses
+  - `robot.hub.display` - Display control (though `display` param is easier)
+  - `robot.hub.speaker` - Sounds and beeps
+  - `robot.hub.light` - Hub status light
+  - `robot.hub.battery` - Battery info
+  - `robot.hub.system` - System functions
+- **`robot.left_attachment`** / **`robot.right_attachment`** - Attachment motors (if configured)
+
+### When Students Ask "How do I use [hub feature]?"
+
+**ALWAYS consider:** They likely have a `robot: RobotController` parameter, so the answer is `robot.hub.<feature>`
+
+**Examples:**
+- "How do I use the gyro?" → `robot.hub.imu.tilt()` or `robot.hub.imu.heading()`
+- "How do I check buttons?" → `robot.hub.buttons.pressed()`
+- "How do I make a beep?" → `robot.hub.speaker.beep()`
+- "How do I change the hub light?" → `robot.hub.light.on(Color.GREEN)`
+- "How do I check battery?" → `robot.hub.battery.voltage()`
+
+### Why This Pattern?
+
+The RobotController wraps initialization and configuration so students don't have to:
+- ✅ Hub already initialized
+- ✅ Motors already configured with correct ports and directions
+- ✅ DriveBase already created with correct wheel/axle measurements
+- ✅ Attachments already set up (if configured)
+- ✅ **Gyro automatically enabled** for accurate driving and turns
+
+Students just use `robot.*` - everything is ready to go!
+
+### IMPORTANT: Check the Actual Implementation First!
+
+**Before answering questions about robot features, ALWAYS check the actual `robot_controller.py` implementation in the student's season folder.**
+
+Common questions where you MUST check the implementation:
+- **"Does drive straight use gyro?"** → Check if `drivebase.use_gyro(True)` is called in `initialize()`
+- **"What speed does the robot drive at?"** → Check the `drivebase.settings()` configuration
+- **"How do I access [feature]?"** → Check what's exposed through `robot.*` attributes
+- **"Is [feature] already set up?"** → Check the `initialize()` method
+
+**Example: Gyro Question**
+❌ **Wrong approach:** Give generic PyBricks answer about `heading_control` parameter
+✅ **Right approach:** Check `robot_controller.py` line ~179 and say "Yes! Gyro is already enabled by default in the `initialize()` method with `self.drivebase.use_gyro(True)`"
+
+**Why this matters:**
+- This project has custom abstractions that differ from vanilla PyBricks
+- Students are using **this specific codebase**, not generic PyBricks
+- The `robot_controller.py` already handles most setup automatically
+- Giving generic answers can confuse students about what's already done for them
+
 ## Common Student Challenges
 
 ### Challenge 1: "My robot drives backwards!"
@@ -320,9 +398,16 @@ from .shared import RobotController
 
 **If a student asks about mission code:**
 1. The mission template (`_template_mission.py`) has tons of helpful examples
-2. Guide them to uncomment and modify existing examples
-3. Remind them about flat imports (no subdirectories)
-4. All files must be uploaded together to hub
+2. Guide them to use `robot.drivebase` directly (not ShapeMovements)
+3. Guide them to uncomment and modify existing examples
+4. Remind them about flat imports (no subdirectories)
+5. All files must be uploaded together to hub
+
+**About ShapeMovements:**
+- Only needed for predefined shapes (square, circle, triangle)
+- 90% of missions just use `robot.drivebase.straight()` and `robot.drivebase.turn()`
+- Shape examples are in `season_example/` for reference
+- Students can import it if needed, but don't default to it
 
 **If helping debug:**
 1. Check they uploaded ALL `.py` files (common mistake)
@@ -336,30 +421,40 @@ Every generated mission includes helpful guidance:
 ```python
 # TODO: ADD YOUR MISSION LOGIC HERE
 
-# --- DRIVING EXAMPLES ---
+# --- BASIC DRIVING ---
+# Most missions just need these simple movements:
+
 # Drive straight forward 300mm:
-#   movements.drivebase.straight(300)
+#   robot.drivebase.straight(300)
 #
 # Turn right 90 degrees:
-#   movements.drivebase.turn(90)
+#   robot.drivebase.turn(90)
 #
-# Drive in a square:
-#   movements.drive_square(side_length=300)
-
-# --- DISPLAY EXAMPLES ---
-# Show a number:
-#   robot.hub.display.number(5)
-#
-# Show countdown:
-#   display.show_countdown(3)
+# Example mission - drive to target and back:
+#   robot.drivebase.straight(500)    # Drive forward 500mm
+#   robot.drivebase.turn(180)        # Turn around
+#   robot.drivebase.straight(500)    # Drive back 500mm
 
 # --- ATTACHMENTS (if you have them) ---
 # Run attachment motor:
 #   if robot.left_attachment:
 #       robot.left_attachment.run(500)
+#       from pybricks.tools import wait
+#       wait(1000)
+#       robot.left_attachment.stop()
+
+# --- DISPLAY (optional) ---
+# Show countdown:
+#   display.show_countdown(3)
+
+# --- ADVANCED: PREDEFINED SHAPES (optional) ---
+# If you want to drive in shapes:
+#   from shape_movements import ShapeMovements
+#   movements = ShapeMovements(robot)
+#   movements.drive_square(side_length=300)
 ```
 
-Students just uncomment what they need and modify values!
+Students use direct `robot.drivebase` API - simple and clear!
 
 ## Available Resources in This Project
 

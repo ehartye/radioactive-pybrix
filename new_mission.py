@@ -37,12 +37,19 @@ def get_input(prompt, default=None):
             print("  ❌ This field is required")
 
 
-def get_number(prompt, default):
-    """Get numeric input"""
+def get_number(prompt, default, min_val=None, max_val=None):
+    """Get numeric input with optional range validation"""
     while True:
         value = get_input(prompt, str(default))
         try:
-            return int(value)
+            num = int(value)
+            if min_val is not None and num < min_val:
+                print(f"  ❌ Value must be at least {min_val}")
+                continue
+            if max_val is not None and num > max_val:
+                print(f"  ❌ Value must be at most {max_val}")
+                continue
+            return num
         except ValueError:
             print("  ❌ Please enter a valid number")
 
@@ -157,12 +164,15 @@ def update_season_menu(folder, mission_num, mission_name, mission_desc, mission_
     mission_range = f"1-{max(existing_missions)}" if existing_missions else "none"
     mission_options = ', '.join([f'"{m}"' for m in existing_missions] + ['"Q"'])
 
+    # Update the mission range in the print statement
+    # Match either literal \n or actual newline in the f-string
     content = re.sub(
-        r'print\(f"\\nSelect mission \([^)]+\)',
-        f'print(f"\\nSelect mission ({mission_range})',
+        r'Select mission \([^)]+\) or Q to quit',
+        f'Select mission ({mission_range}) or Q to quit',
         content
     )
 
+    # Update the hub_menu options
     content = re.sub(
         r'selected = hub_menu\([^)]+\)',
         f'selected = hub_menu({mission_options})',
@@ -205,8 +215,19 @@ def main():
 
     # Get configuration
     print("\n⚙️  MISSION CONFIGURATION")
-    drive_speed = get_number("Drive speed (mm/s)", 200)
-    turn_rate = get_number("Turn rate (degrees/s)", 60)
+    print("\n  Robot Drive Speed (how fast the robot moves):")
+    print("    • Slow & Careful:  100-150 mm/s")
+    print("    • Medium Speed:    200-300 mm/s")
+    print("    • Fast:            400-500 mm/s")
+    print("    • Racing Speed:    600-800 mm/s")
+    drive_speed = get_number("  Choose drive speed (mm/s)", 200, min_val=50, max_val=1000)
+
+    print("\n  Turn Rate (how fast the robot rotates):")
+    print("    • Slow & Careful:  30-45 degrees/s")
+    print("    • Medium Speed:    60-90 degrees/s")
+    print("    • Fast:            120-150 degrees/s")
+    print("    • Quick Spin:      200-300 degrees/s")
+    turn_rate = get_number("  Choose turn rate (degrees/s)", 60, min_val=10, max_val=500)
 
     # Generate filenames
     sanitized_name = sanitize_function_name(mission_name)

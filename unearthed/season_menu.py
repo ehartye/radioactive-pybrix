@@ -9,7 +9,8 @@ from pybricks.parameters import Color
 from pybricks.tools import wait
 
 # Import all mission modules (flat structure for PyBricks compatibility)
-{MISSION_IMPORTS}
+import mission_01_test_mission
+import mission_02_mission2test
 from season_config import SeasonInfo, SeasonDefaults
 
 class SeasonMenu:
@@ -17,16 +18,25 @@ class SeasonMenu:
 
     def __init__(self):
         self.hub = PrimeHub()
-        self.missions = {{
-{MISSION_DICT}
-        }}
+        self.missions = {
+            "1": {
+                "name": "test_mission",
+                "description": "a mission to test stuff",
+                "run_function": mission_01_test_mission
+            },
+            "2": {
+                "name": "mission2Test",
+                "description": "mission2Test",
+                "run_function": mission_02_mission2test
+            }
+        }
 
     def show_welcome(self):
         """Display welcome message and season info"""
         print("=" * 50)
-        print(f"Welcome to {{SeasonInfo.NAME}}")
-        print(f"Team: {{SeasonInfo.TEAM}}")
-        print(f"Description: {{SeasonInfo.DESCRIPTION}}")
+        print(f"Welcome to {SeasonInfo.NAME}")
+        print(f"Team: {SeasonInfo.TEAM}")
+        print(f"Description: {SeasonInfo.DESCRIPTION}")
         print("=" * 50)
 
         # Show welcome on display
@@ -40,8 +50,8 @@ class SeasonMenu:
         print("\nAvailable Missions:")
         print("-" * 30)
         for key, mission in sorted(self.missions.items()):
-            print(f"{{key}}. {{mission['name']}}")
-            print(f"   {{mission['description']}}")
+            print(f"{key}. {mission['name']}")
+            print(f"   {mission['description']}")
         print("Q. Quit")
         print("-" * 30)
 
@@ -55,8 +65,8 @@ class SeasonMenu:
         if mission_key in self.missions:
             mission = self.missions[mission_key]
 
-            print(f"\n=== Starting Mission {{mission_key}}: {{mission['name']}} ===")
-            print(f"Description: {{mission['description']}}")
+            print(f"\n=== Starting Mission {mission_key}: {mission['name']} ===")
+            print(f"Description: {mission['description']}")
 
             # Show mission number on display
             self.hub.display.number(int(mission_key))
@@ -67,13 +77,13 @@ class SeasonMenu:
                 mission["run_function"].run()
 
                 # Success feedback
-                print(f"Mission {{mission_key}} completed successfully!")
+                print(f"Mission {mission_key} completed successfully!")
                 self.hub.light.on(SeasonDefaults.MISSION_SUCCESS_COLOR)
                 self.hub.speaker.beep(800, 200)
 
             except Exception as e:
                 # Error feedback
-                print(f"Mission {{mission_key}} failed: {{e}}")
+                print(f"Mission {mission_key} failed: {e}")
                 self.hub.light.on(SeasonDefaults.MISSION_ERROR_COLOR)
                 self.hub.speaker.beep(200, 500)
 
@@ -87,7 +97,7 @@ class SeasonMenu:
                 self.hub.light.off()
                 self.hub.display.off()
         else:
-            print(f"Invalid mission: {{mission_key}}")
+            print(f"Invalid mission: {mission_key}")
             self.hub.speaker.beep(300, 100)
 
     def main_loop(self):
@@ -101,8 +111,8 @@ class SeasonMenu:
             self.hub.display.text("MENU")
 
             # Get user selection
-            print(f"\nSelect mission ({MISSION_RANGE}) or Q to quit:")
-            selected = hub_menu({MISSION_OPTIONS})
+            print(f"\nSelect mission (1-2) or Q to quit:")
+            selected = hub_menu("1", "2", "Q")
 
             if selected == "Q":
                 print("\nExiting season menu...")
@@ -120,7 +130,7 @@ def main():
         menu = SeasonMenu()
         menu.main_loop()
     except Exception as e:
-        print(f"Season menu error: {{e}}")
+        print(f"Season menu error: {e}")
         # Emergency cleanup
         hub = PrimeHub()
         hub.light.on(Color.RED)

@@ -1,6 +1,6 @@
 """
-Mission {MISSION_NUM}: {MISSION_NAME}
-{MISSION_DESCRIPTION}
+Mission 1: test_mission
+a mission to test stuff
 """
 
 from robot_controller import RobotController
@@ -9,17 +9,17 @@ from season_config import SeasonDefaults
 
 # Mission-specific configuration
 # You can override any settings from SeasonDefaults here
-MISSION_CONFIG = {{
-    "drive_speed": {DRIVE_SPEED},      # Speed in mm/s
-    "turn_rate": {TURN_RATE},          # Turn speed in degrees/s
+MISSION_CONFIG = {
+    "drive_speed": 250,      # Speed in mm/s
+    "turn_rate": 60,          # Turn speed in degrees/s
     # Add more custom settings as needed, like:
     # "target_distance": 500,
     # "pause_time": 1000,
-}}
+}
 
 def run():
     """Main mission execution function"""
-    print("=== Mission {MISSION_NUM}: {MISSION_NAME} ===")
+    print("=== Mission 1: test_mission ===")
 
     robot = RobotController(SeasonDefaults, MISSION_CONFIG)
 
@@ -43,10 +43,10 @@ def run():
         # Most missions just need these simple movements:
 
         # Drive straight forward 300mm:
-        #   robot.drivebase.straight(300)
+        robot.drivebase.straight(300)
         #
         # Drive backward 200mm (use negative number):
-        #   robot.drivebase.straight(-200)
+        robot.drivebase.straight(-300)
         #
         # Turn right 90 degrees:
         #   robot.drivebase.turn(90)
@@ -92,11 +92,11 @@ def run():
         # --- SENSORS (if you have them) ---
         # Check which side is facing up:
         #   up_side = robot.hub.imu.up()
-        #   print(f"Up side: {{up_side}}")
+        #   print(f"Up side: {up_side}")
         #
         # Get tilt angles:
         #   pitch, roll = robot.hub.imu.tilt()
-        #   print(f"Pitch: {{pitch}}, Roll: {{roll}}")
+        #   print(f"Pitch: {pitch}, Roll: {roll}")
 
         # --- COMPLETE MISSION EXAMPLE ---
         # Here's a complete mission - drive forward, turn, and come back:
@@ -120,9 +120,7 @@ def run():
         #   movements.drive_circle(radius=200)
         #   movements.drive_triangle(side_length=300)
 
-        # DELETE THIS when you add your code:
-        print("Mission logic not implemented yet!")
-        print("Edit this file and add your robot movements above.")
+
 
         # ============================================================
         # END OF MISSION LOGIC
@@ -130,11 +128,11 @@ def run():
 
         # Step 4: Signal success (beep + green light)
         robot.mission_success_signal()
-        print("Mission {MISSION_NUM} completed successfully!")
+        print("Mission 1 completed successfully!")
 
     except Exception as e:
         # If something goes wrong, show error
-        print(f"Mission {{MISSION_NUM}} failed: {{e}}")
+        print(f"Mission {MISSION_NUM} failed: {e}")
         robot.mission_error_signal()
         raise e
 
