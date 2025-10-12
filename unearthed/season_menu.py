@@ -41,7 +41,7 @@ class SeasonMenu:
 
         # Show welcome on display
         self.hub.light.on(Color.BLUE)
-        self.hub.display.text("READY")
+        self.hub.display.text("Hi!")
         wait(2000)
         self.hub.display.off()
 
@@ -106,9 +106,6 @@ class SeasonMenu:
 
         while True:
             self.show_mission_list()
-
-            # Show menu on display
-            self.hub.display.text("MENU")
 
             # Get user selection
             print(f"\nSelect mission (1-2) or Q to quit:")

@@ -120,6 +120,22 @@ def run():
         #   movements.drive_circle(radius=200)
         #   movements.drive_triangle(side_length=300)
 
+        # --- ADVANCED: LINE FOLLOWING (if you have color sensors) ---
+        # Drive forward until both sensors detect a black line:
+        #   from line_movements import LineMovements
+        #
+        #   # Create line movements helper
+        #   line_moves = LineMovements(robot)
+        #
+        #   # Drive until both sensors see black line (uses robot's sensors automatically!)
+        #   line_moves.square_on_line()
+        #
+        #   # With custom speed (slower for precision)
+        #   line_moves.square_on_line(drive_speed=80)
+        #
+        #   # With custom threshold (more sensitive to black)
+        #   line_moves.square_on_line(black_threshold=25)
+
         # DELETE THIS when you add your code:
         print("Mission logic not implemented yet!")
         print("Edit this file and add your robot movements above.")
@@ -134,7 +150,7 @@ def run():
 
     except Exception as e:
         # If something goes wrong, show error
-        print(f"Mission {{MISSION_NUM}} failed: {{e}}")
+        print("Mission {MISSION_NUM} failed:", e)
         robot.mission_error_signal()
         raise e
 

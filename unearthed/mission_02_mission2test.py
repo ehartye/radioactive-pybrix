@@ -6,6 +6,7 @@ mission2Test
 from robot_controller import RobotController
 from display_patterns import DisplayPatterns
 from season_config import SeasonDefaults
+from line_movements import LineMovements
 
 # Mission-specific configuration
 # You can override any settings from SeasonDefaults here
@@ -34,95 +35,41 @@ def run():
         robot.mission_start_signal()
 
         # ============================================================
-        # TODO: ADD YOUR MISSION LOGIC HERE
+        # MISSION LOGIC: Square on Line Test
         # ============================================================
 
-        # HELPFUL EXAMPLES - Delete these comments when you're ready!
+        # This mission demonstrates the square_on_line function
+        # It drives forward until both color sensors detect a black line, then stops
 
-        # --- BASIC DRIVING ---
-        # Most missions just need these simple movements:
+        print("Starting square on line test...")
 
-        # Drive straight forward 300mm:
-        #   robot.drivebase.straight(300)
-        #
-        # Drive backward 200mm (use negative number):
-        #   robot.drivebase.straight(-200)
-        #
-        # Turn right 90 degrees:
-        #   robot.drivebase.turn(90)
-        #
-        # Turn left 90 degrees (use negative number):
-        #   robot.drivebase.turn(-90)
-        #
-        # Example mission - drive to target and back:
-        #   robot.drivebase.straight(500)    # Drive forward 500mm
-        #   robot.drivebase.turn(180)        # Turn around
-        #   robot.drivebase.straight(500)    # Drive back 500mm
+        # Show countdown so you have time to get ready
+        display.show_countdown(3)
 
-        # --- WAITING ---
-        # Wait 2 seconds (2000 milliseconds):
-        #   from pybricks.tools import wait
-        #   wait(2000)
+        # Create line movements helper
+        line_moves = LineMovements(robot)
 
-        # --- ATTACHMENTS (if you have them) ---
-        # Run attachment motor at 500 deg/s:
-        #   if robot.left_attachment:
-        #       robot.left_attachment.run(500)
-        #       from pybricks.tools import wait
-        #       wait(1000)  # Run for 1 second
-        #       robot.left_attachment.stop()
-        #
-        # Move attachment to specific angle:
-        #   if robot.right_attachment:
-        #       robot.right_attachment.run_angle(500, 90)  # Turn 90 degrees
+        # Drive forward until both sensors see the black line
+        # This uses the robot's built-in color sensors automatically!
+        print("Driving to line...")
+        line_moves.square_on_line(drive_speed=100, black_threshold=9)
 
-        # --- DISPLAY (optional) ---
-        # Show a number on the display:
-        #   robot.hub.display.number(5)
-        #
-        # Show scrolling text:
-        #   robot.hub.display.text("GO!")
-        #
-        # Show countdown before starting:
-        #   display.show_countdown(3)
-        #
-        # Show checkmark when done:
-        #   display.show_completion_checkmark()
+        # Success! Show checkmark
+        display.show_completion_checkmark()
 
-        # --- SENSORS (if you have them) ---
-        # Check which side is facing up:
-        #   up_side = robot.hub.imu.up()
-        #   print(f"Up side: {up_side}")
-        #
-        # Get tilt angles:
-        #   pitch, roll = robot.hub.imu.tilt()
-        #   print(f"Pitch: {pitch}, Roll: {roll}")
+        print("✓ Successfully stopped on line!")
 
-        # --- COMPLETE MISSION EXAMPLE ---
-        # Here's a complete mission - drive forward, turn, and come back:
-        #   from pybricks.tools import wait
-        #   display.show_countdown(3)               # Count down 3-2-1
-        #   robot.drivebase.straight(500)           # Drive forward 500mm
-        #   robot.drivebase.turn(90)                # Turn right 90 degrees
-        #   robot.drivebase.straight(300)           # Drive forward 300mm
-        #   wait(1000)                               # Pause 1 second
-        #   robot.drivebase.turn(180)               # Turn around
-        #   robot.drivebase.straight(300)           # Drive back 300mm
-        #   robot.drivebase.turn(90)                # Turn left 90 degrees
-        #   robot.drivebase.straight(500)           # Return to start
-        #   display.show_completion_checkmark()     # Show success!
+        # Optional: You can also customize the behavior
+        # Examples you can try:
 
-        # --- ADVANCED: PREDEFINED SHAPES (optional) ---
-        # If you want to drive in shapes, you can use ShapeMovements:
-        #   from shape_movements import ShapeMovements
-        #   movements = ShapeMovements(robot)
-        #   movements.drive_square(side_length=300)
-        #   movements.drive_circle(radius=200)
-        #   movements.drive_triangle(side_length=300)
+        # Slower approach for more precision:
+        # line_moves.square_on_line(drive_speed=80)
 
-        # DELETE THIS when you add your code:
-        print("Mission logic not implemented yet!")
-        print("Edit this file and add your robot movements above.")
+        # More sensitive to black (useful if line is faded):
+        # line_moves.square_on_line(black_threshold=25)
+
+        # Both custom settings:
+        # line_moves.square_on_line(drive_speed=100, black_threshold=30)
 
         # ============================================================
         # END OF MISSION LOGIC
@@ -134,7 +81,7 @@ def run():
 
     except Exception as e:
         # If something goes wrong, show error
-        print(f"Mission {MISSION_NUM} failed: {e}")
+        print("Mission 2 failed:", e)
         robot.mission_error_signal()
         raise e
 

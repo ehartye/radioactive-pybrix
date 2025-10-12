@@ -132,7 +132,7 @@ def run():
 
     except Exception as e:
         # If something goes wrong, show error
-        print(f"Mission {MISSION_NUM} failed: {e}")
+        print("Mission 1 failed:", e)
         robot.mission_error_signal()
         raise e
 

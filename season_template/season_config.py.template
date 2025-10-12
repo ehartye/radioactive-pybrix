@@ -37,6 +37,9 @@ class SeasonDefaults:
     DRIVE_ACCELERATION = 800    # mm/s²
     TURN_ACCELERATION = 120     # degrees/s²
 
+    # Line following settings
+    BLACK_THRESHOLD = 20        # Reflection % below which is considered black (0-100)
+
     # Display settings
     DISPLAY_DELAY = 500         # ms between display updates
     COMPLETION_BEEP_FREQ = 800  # Hz

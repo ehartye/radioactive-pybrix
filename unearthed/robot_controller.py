@@ -46,6 +46,8 @@ class RobotController:
         self.right_wheel = None
         self.left_attachment = None
         self.right_attachment = None
+        self.left_color_sensor = None
+        self.right_color_sensor = None
         self.drivebase = None
         
         # Merge configuration
@@ -128,7 +130,29 @@ class RobotController:
                 self.right_attachment = None
                 print("⚠ Right attachment not connected (this is okay!)")
                 print(f"  If you need it later, check Port {Ports.RIGHT_ATTACHMENT}")
-            
+
+            # Initialize left color sensor (OPTIONAL - won't fail if not connected)
+            print("Initializing left color sensor (optional)...")
+            try:
+                from pybricks.pupdevices import ColorSensor
+                self.left_color_sensor = ColorSensor(Ports.LEFT_COLOR_SENSOR)
+                print("✓ Left color sensor initialized successfully")
+            except Exception as e:
+                self.left_color_sensor = None
+                print("⚠ Left color sensor not connected (this is okay!)")
+                print(f"  If you need it later, check Port {Ports.LEFT_COLOR_SENSOR}")
+
+            # Initialize right color sensor (OPTIONAL - won't fail if not connected)
+            print("Initializing right color sensor (optional)...")
+            try:
+                from pybricks.pupdevices import ColorSensor
+                self.right_color_sensor = ColorSensor(Ports.RIGHT_COLOR_SENSOR)
+                print("✓ Right color sensor initialized successfully")
+            except Exception as e:
+                self.right_color_sensor = None
+                print("⚠ Right color sensor not connected (this is okay!)")
+                print(f"  If you need it later, check Port {Ports.RIGHT_COLOR_SENSOR}")
+
             # Create drivebase
             print("Creating drivebase...")
             try:
@@ -285,12 +309,17 @@ class RobotController:
             self.drivebase = None
             print("✓ Drivebase reference cleared")
         
-        # Close each motor properly to release hardware resources
+        # Close each motor and sensor properly to release hardware resources
         motors_to_close = [
             ("left_wheel", self.left_wheel),
             ("right_wheel", self.right_wheel),
             ("left_attachment", self.left_attachment),
             ("right_attachment", self.right_attachment)
+        ]
+
+        sensors_to_close = [
+            ("left_color_sensor", self.left_color_sensor),
+            ("right_color_sensor", self.right_color_sensor)
         ]
         
         for motor_name, motor in motors_to_close:
@@ -311,7 +340,16 @@ class RobotController:
                 # Clear the reference
                 setattr(self, motor_name, None)
                 print(f"✓ {motor_name} reference cleared")
-        
+
+        # Clear sensor references (ColorSensor objects don't have a close() method)
+        for sensor_name, sensor in sensors_to_close:
+            if sensor:
+                print(f"Clearing {sensor_name}...")
+                # ColorSensor objects in PyBricks don't need explicit closing
+                # Just clear the reference to release them
+                setattr(self, sensor_name, None)
+                print(f"✓ {sensor_name} reference cleared")
+
         # Turn off display and light
         try:
             self.hub.display.off()
@@ -344,6 +382,8 @@ class RobotController:
             print(f"Right wheel connected: {self.right_wheel is not None}")
             print(f"Left attachment connected: {self.left_attachment is not None}")
             print(f"Right attachment connected: {self.right_attachment is not None}")
+            print(f"Left color sensor connected: {self.left_color_sensor is not None}")
+            print(f"Right color sensor connected: {self.right_color_sensor is not None}")
             print(f"Drivebase created: {self.drivebase is not None}")
             
             # Current measurements if available

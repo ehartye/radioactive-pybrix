@@ -141,7 +141,7 @@ def main():
 
     # Copy shared utility files
     template_dir = "season_template"
-    for util_file in ["robot_controller.py", "display_patterns.py", "shape_movements.py"]:
+    for util_file in ["robot_controller.py", "display_patterns.py", "shape_movements.py", "line_movements.py"]:
         shutil.copy(
             os.path.join(template_dir, util_file),
             os.path.join(folder_name, util_file)
