@@ -17,7 +17,7 @@ MISSION_CONFIG = {
     "final_approach": 100,        # Distance after squaring on line
 }
 
-def run(robot, display):
+def run(robot):
     """
     Navigate to line, square on it, continue mission
 
@@ -29,7 +29,6 @@ def run(robot, display):
 
     Args:
         robot: RobotController object (already initialized)
-        display: DisplayPatterns object for hub display
     """
     print("=== Mission 04: Line Following ===")
 
@@ -42,11 +41,11 @@ def run(robot, display):
         wait(2000)
 
         # Fallback: just drive without line following
-        run_without_sensors(robot, display)
+        run_without_sensors(robot)
         return
 
     # We have sensors - use line following
-    display.show_countdown(3)
+    robot.display.show_countdown(3)
 
     # Create line movements helper
     line_moves = LineMovements(robot)
@@ -81,36 +80,34 @@ def run(robot, display):
     robot.drivebase.straight(-(MISSION_CONFIG['final_approach'] + MISSION_CONFIG['navigation_distance']))
 
     # Show completion
-    display.show_completion_checkmark()
+    robot.display.show_completion_checkmark()
     print("Mission 04 completed successfully!")
 
-def run_without_sensors(robot, display):
+def run_without_sensors(robot):
     """
     Fallback mission when sensors aren't available
 
     Args:
         robot: RobotController object (already initialized)
-        display: DisplayPatterns object for hub display
     """
     print("=== Running without sensors (fallback mode) ===")
 
-    display.show_countdown(3)
+    robot.display.show_countdown(3)
 
     # Just drive forward and back
     robot.drivebase.straight(MISSION_CONFIG['navigation_distance'] + MISSION_CONFIG['final_approach'])
     wait(1000)
     robot.drivebase.straight(-(MISSION_CONFIG['navigation_distance'] + MISSION_CONFIG['final_approach']))
 
-    display.show_completion_checkmark()
+    robot.display.show_completion_checkmark()
     print("Fallback mission completed!")
 
-def run_follow_line_demo(robot, display):
+def run_follow_line_demo(robot):
     """
     Demonstrate following a line edge
 
     Args:
         robot: RobotController object (already initialized)
-        display: DisplayPatterns object for hub display
     """
     print("=== Follow Line Edge Demo ===")
 
@@ -118,7 +115,7 @@ def run_follow_line_demo(robot, display):
         print("No left sensor - cannot demo line following")
         return
 
-    display.show_countdown(3)
+    robot.display.show_countdown(3)
 
     # Create line movements helper
     line_moves = LineMovements(robot)
@@ -135,15 +132,14 @@ def run_follow_line_demo(robot, display):
     )
 
     print("Line following complete!")
-    display.show_completion_checkmark()
+    robot.display.show_completion_checkmark()
 
-def run_find_line_demo(robot, display):
+def run_find_line_demo(robot):
     """
     Demonstrate finding a line
 
     Args:
         robot: RobotController object (already initialized)
-        display: DisplayPatterns object for hub display
     """
     print("=== Find Line Demo ===")
 
@@ -151,7 +147,7 @@ def run_find_line_demo(robot, display):
         print("Need both sensors for this demo")
         return
 
-    display.show_countdown(3)
+    robot.display.show_countdown(3)
 
     # Create line movements helper
     line_moves = LineMovements(robot)
@@ -186,16 +182,15 @@ def run_find_line_demo(robot, display):
     wait(500)
     robot.hub.speaker.beep(1000, 200)
 
-    display.show_completion_checkmark()
+    robot.display.show_completion_checkmark()
     print("Find line demo completed!")
 
-def run_sensor_calibration(robot, display):
+def run_sensor_calibration(robot):
     """
     Help calibrate sensor thresholds
 
     Args:
         robot: RobotController object (already initialized)
-        display: DisplayPatterns object for hub display
     """
     print("=== Sensor Calibration Demo ===")
 
@@ -242,23 +237,21 @@ def run_sensor_calibration(robot, display):
     robot.hub.display.number(int(threshold))
     wait(3000)
 
-    display.show_completion_checkmark()
+    robot.display.show_completion_checkmark()
     print("Calibration complete!")
 
 # Standalone testing support
 if __name__ == "__main__":
     from robot_controller import RobotController
-    from display_patterns import DisplayPatterns
     from season_config import SeasonDefaults
 
     robot = RobotController(SeasonDefaults, MISSION_CONFIG)
 
     try:
         robot.initialize()
-        display = DisplayPatterns(robot.hub)
         robot.mission_start_signal()
 
-        run(robot, display)
+        run(robot)
 
         robot.mission_success_signal()
         print("Mission completed successfully!")

@@ -15,99 +15,31 @@ You are helping a middle school student plan and create a new robot mission for 
 - Teach robotics concepts through the mission planning process
 - Make them feel confident and creative
 
-## CRITICAL: Directory Validation
+## CRITICAL: Season Folder Discovery
 
-**Before starting, you MUST verify the student is in the correct directory:**
+**The updated `new_mission.py` script is now directory-independent!** It can:
+- Find all season folders automatically
+- Be called with `--season path/to/season` argument
+- Work from any directory
 
-1. **Check current directory** using `pwd` or by reading the working directory from environment
-2. **Verify you're in a season folder** - Check for these files:
-   - `season_config.py` (MUST exist)
-   - `season_menu.py` (MUST exist)
-   - `robot_controller.py` (MUST exist)
-3. **Verify `new_mission.py` exists in parent directory**: `ls ../new_mission.py`
+**Your task: Find available season folders and guide the student**
 
-**If any checks fail:**
+### Phase 0: Find Season Folders (DO THIS FIRST!)
 
-### Not in a season folder:
-```
-Current directory: /Users/ehartye/local-docs/repos/spike-python-explore/
-
-Problem: You're in the main project folder, not inside a season folder.
-
-Ask: "Which season do you want to add a mission to?"
-List available seasons: `ls -d season*/` or `ls -d */season_config.py`
-Guide: "Let's move into your season folder: cd [season_name]"
-```
-
-### No seasons exist yet:
-```
-Problem: No season folders found.
-
-Explain: "It looks like you haven't created a season yet! You need to create
-a season first before adding missions."
-
-Suggest: "Let's create a season first using `/new-season` or `python new_season.py`"
-```
-
-### In wrong directory entirely:
-```
-Problem: Not in the project folder at all.
-
-Look for the project: `find ~ -name "new_mission.py" -type f 2>/dev/null | head -5`
-Guide to correct location: `cd [path to project]/[season_folder]`
-```
-
-**Expected location:** `/Users/ehartye/local-docs/repos/spike-python-explore/season_[name]/`
-
-**Common mistakes:**
-- Student is in project root (need to `cd season_[name]/`)
-- Student hasn't created a season yet (need `/new-season` first)
-- Student is in wrong project entirely
-
-## Mission Planning Process
-
-### Phase 0: Directory Validation (DO THIS FIRST!)
-
-Before engaging with the student, silently run these validation checks using the Bash tool:
+Before engaging with the student, discover available seasons:
 
 ```bash
-# Check current directory
-pwd
-
-# Verify we're in a season folder (these files MUST exist)
-ls season_config.py season_menu.py robot_controller.py 2>/dev/null | wc -l
-
-# Verify new_mission.py exists in parent
-ls ../new_mission.py 2>/dev/null && echo "✓ Found ../new_mission.py" || echo "✗ ../new_mission.py not found"
-
-# List existing missions to show what's already there
-ls mission_*.py 2>/dev/null | head -5
+# Find all directories containing season_menu.py
+find . -maxdepth 2 -name "season_menu.py" -exec dirname {} \; 2>/dev/null
 ```
 
 **Interpret results:**
 
-1. **If 3 files found in current directory** → ✓ We're in a season folder
-2. **If < 3 files found** → ✗ Not in a season folder (see below)
-3. **If `../new_mission.py` not found** → ✗ Wrong location entirely
+1. **If 1 season found** → Great! Use that one with `--season path/to/season`
+2. **If multiple seasons found** → Ask student which one to use
+3. **If 0 seasons found** → Guide student to create one first with `/new-season`
 
-**If NOT in a season folder:**
-
-```bash
-# Check if we're in project root
-ls new_season.py 2>/dev/null && echo "In project root" || echo "Unknown location"
-
-# List available season folders
-ls -d season*/ 2>/dev/null || ls -d */season_config.py 2>/dev/null | sed 's|/season_config.py||'
-```
-
-**Then guide the student:**
-- If in project root: "You're in the main project folder. Which season do you want to add a mission to?"
-  - Show them available seasons
-  - Guide: `cd season_[name]`
-- If no seasons exist: "You need to create a season first! Let's use `/new-season`"
-- If in unknown location: "Let me help you find your project..." (use find command)
-
-**Only proceed with student interaction once validation passes!**
+**No directory change needed!** The script handles everything.
 
 ### Phase 1: Understanding the Mission Objective
 
@@ -270,10 +202,28 @@ This is great for testing without moving the robot around!"
    - Mission name and description
    - Template choice and speed settings
 
-2. **Create the mission** using the Bash tool:
-   - Change to the season directory they're working in
-   - Run: `python ../new_mission.py`
-   - Provide the answers via stdin
+2. **Create the mission** using the new headless interface:
+
+```bash
+# Example headless call
+python new_mission.py \
+  --season path/to/season_folder \
+  --name "Drive to Target" \
+  --description "Navigate to target and return" \
+  --speed 200 \
+  --turn-rate 60 \
+  --template guided
+```
+
+**Parameters:**
+- `--season`: Path to season folder (from Phase 0 discovery)
+- `--name`: Mission name from conversation
+- `--description`: Mission description from conversation
+- `--speed`: Drive speed (suggest based on precision needs: 150 careful, 200 medium, 300+ fast)
+- `--turn-rate`: Turn rate (suggest based on mission: 45 careful, 60 medium, 90+ fast)
+- `--template`: `simple` or `guided` (recommend `guided` for beginners)
+
+**No stdin interaction needed!** Just build the command with the gathered info.
 
 3. **Explain what was created**:
    - New mission file: `mission_XX_[name].py`

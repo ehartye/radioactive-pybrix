@@ -36,7 +36,7 @@ class RobotController:
     def __init__(self, base_config=None, mission_overrides=None):
         """
         Initialize robot controller
-        
+
         Args:
             base_config: Base season configuration (typically SeasonDefaults)
             mission_overrides: Dictionary of mission-specific setting overrides
@@ -49,27 +49,43 @@ class RobotController:
         self.left_color_sensor = None
         self.right_color_sensor = None
         self.drivebase = None
-        
+
+        # Display helper (lazily initialized)
+        self._display = None
+
         # Merge configuration
         self.config = self._merge_config(base_config or SeasonDefaults, mission_overrides or {})
-        
+
         self.is_initialized = False
     
     def _merge_config(self, base_config, overrides):
         """Merge base configuration with mission-specific overrides"""
         config = {}
-        
+
         # Get all attributes from base config
         for attr in dir(base_config):
             if not attr.startswith('_'):
                 config[attr.lower()] = getattr(base_config, attr)
-        
+
         # Apply overrides
         for key, value in overrides.items():
             config[key.lower()] = value
-        
+
         return config
-    
+
+    @property
+    def display(self):
+        """
+        Get display helper (lazily initialized)
+
+        Returns:
+            DisplayPatterns object for display operations
+        """
+        if self._display is None:
+            from display_patterns import DisplayPatterns
+            self._display = DisplayPatterns(self.hub, delay=self.config.get('display_delay'))
+        return self._display
+
     def initialize(self):
         """Initialize all robot components with detailed debugging"""
         if self.is_initialized:

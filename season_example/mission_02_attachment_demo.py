@@ -16,7 +16,7 @@ MISSION_CONFIG = {
     "task_pause": 1000,           # Pause time at task (ms)
 }
 
-def run(robot, display):
+def run(robot):
     """
     Navigate to task, deploy attachment, complete task, return
 
@@ -28,7 +28,6 @@ def run(robot, display):
 
     Args:
         robot: RobotController object (already initialized)
-        display: DisplayPatterns object for hub display
     """
     print("=== Mission 02: Attachment Demo ===")
 
@@ -40,7 +39,7 @@ def run(robot, display):
         robot.hub.display.text("NO ATTACH")
         wait(2000)
 
-    display.show_countdown(3)
+    robot.display.show_countdown(3)
 
     # STEP 1: Drive to task area
     print(f"Step 1: Driving to task area ({MISSION_CONFIG['navigation_distance']}mm)")
@@ -83,16 +82,15 @@ def run(robot, display):
     robot.drivebase.straight(-MISSION_CONFIG['navigation_distance'])
 
     # Show completion
-    display.show_completion_checkmark()
+    robot.display.show_completion_checkmark()
     print("Mission 02 completed successfully!")
 
-def run_dual_attachment_demo(robot, display):
+def run_dual_attachment_demo(robot):
     """
     Demonstrate using both left and right attachments
 
     Args:
         robot: RobotController object (already initialized)
-        display: DisplayPatterns object for hub display
     """
     print("=== Dual Attachment Demo ===")
 
@@ -107,7 +105,7 @@ def run_dual_attachment_demo(robot, display):
         print("No attachments detected - cannot run demo")
         return
 
-    display.show_countdown(3)
+    robot.display.show_countdown(3)
 
     # Drive to position
     robot.drivebase.straight(300)
@@ -143,16 +141,15 @@ def run_dual_attachment_demo(robot, display):
 
     # Return
     robot.drivebase.straight(-300)
-    display.show_completion_checkmark()
+    robot.display.show_completion_checkmark()
     print("Dual attachment demo completed!")
 
-def run_until_stalled_demo(robot, display):
+def run_until_stalled_demo(robot):
     """
     Demonstrate run_until_stalled for pushing/gripping
 
     Args:
         robot: RobotController object (already initialized)
-        display: DisplayPatterns object for hub display
     """
     print("=== Run Until Stalled Demo ===")
 
@@ -160,7 +157,7 @@ def run_until_stalled_demo(robot, display):
         print("No left attachment - cannot demo")
         return
 
-    display.show_countdown(3)
+    robot.display.show_countdown(3)
 
     # Drive to position
     robot.drivebase.straight(300)
@@ -181,23 +178,21 @@ def run_until_stalled_demo(robot, display):
 
     # Return
     robot.drivebase.straight(-300)
-    display.show_completion_checkmark()
+    robot.display.show_completion_checkmark()
     print("Stall demo completed!")
 
 # Standalone testing support
 if __name__ == "__main__":
     from robot_controller import RobotController
-    from display_patterns import DisplayPatterns
     from season_config import SeasonDefaults
 
     robot = RobotController(SeasonDefaults, MISSION_CONFIG)
 
     try:
         robot.initialize()
-        display = DisplayPatterns(robot.hub)
         robot.mission_start_signal()
 
-        run(robot, display)
+        run(robot)
 
         robot.mission_success_signal()
         print("Mission completed successfully!")

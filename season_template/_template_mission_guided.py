@@ -14,16 +14,17 @@ MISSION_CONFIG = {{
     # "pause_time": 1000,
 }}
 
-def run(robot, display):
+def run(robot):
     """
     Main mission execution function
 
     Args:
         robot: RobotController object (already initialized and ready to use!)
-        display: DisplayPatterns object for showing patterns on hub display
 
     The robot is already initialized with your MISSION_CONFIG settings above.
     Just write your robot movements and logic below!
+
+    Access display helper through robot.display for visual feedback.
     """
     print("=== Mission {MISSION_NUM}: {MISSION_NAME} ===")
 
@@ -86,10 +87,10 @@ def run(robot, display):
         #   robot.hub.display.text("GO!")
         #
         # Show countdown before starting:
-        #   display.show_countdown(3)
+        #   robot.display.show_countdown(3)
         #
         # Show checkmark when done:
-        #   display.show_completion_checkmark()
+        #   robot.display.show_completion_checkmark()
 
         # --- SENSORS (if you have them) ---
         # Check which side is facing up:
@@ -103,7 +104,7 @@ def run(robot, display):
         # --- COMPLETE MISSION EXAMPLE ---
         # Here's a complete mission - drive forward, turn, and come back:
         #   from pybricks.tools import wait
-        #   display.show_countdown(3)               # Count down 3-2-1
+        #   robot.display.show_countdown(3)         # Count down 3-2-1
         #   robot.drivebase.straight(500)           # Drive forward 500mm
         #   robot.drivebase.turn(90)                # Turn right 90 degrees
         #   robot.drivebase.straight(300)           # Drive forward 300mm
@@ -112,7 +113,7 @@ def run(robot, display):
         #   robot.drivebase.straight(300)           # Drive back 300mm
         #   robot.drivebase.turn(90)                # Turn left 90 degrees
         #   robot.drivebase.straight(500)           # Return to start
-        #   display.show_completion_checkmark()     # Show success!
+        #   robot.display.show_completion_checkmark()    # Show success!
 
         # --- ADVANCED: LINE FOLLOWING (if you have color sensors) ---
         # Drive forward until both sensors detect a black line:
@@ -142,18 +143,16 @@ def run(robot, display):
 if __name__ == "__main__":
     # For standalone testing, we need to set up the robot ourselves
     from robot_controller import RobotController
-    from display_patterns import DisplayPatterns
     from season_config import SeasonDefaults
 
     robot = RobotController(SeasonDefaults, MISSION_CONFIG)
 
     try:
         robot.initialize()
-        display = DisplayPatterns(robot.hub)
         robot.mission_start_signal()
 
-        # Run the mission
-        run(robot, display)
+        # Run the mission (display is accessible via robot.display)
+        run(robot)
 
         robot.mission_success_signal()
         print("Mission {MISSION_NUM} completed successfully!")

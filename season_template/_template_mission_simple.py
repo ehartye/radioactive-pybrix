@@ -13,16 +13,17 @@ MISSION_CONFIG = {{
     # "pause_time": 1000,
 }}
 
-def run(robot, display):
+def run(robot):
     """
     Main mission execution function
 
     Args:
         robot: RobotController object (already initialized and ready to use!)
-        display: DisplayPatterns object for showing patterns on hub display
 
     The robot is already initialized with your MISSION_CONFIG settings above.
     Just write your robot movements and logic below!
+
+    Access display helper through robot.display for visual feedback.
     """
     print("=== Mission {MISSION_NUM}: {MISSION_NAME} ===")
 
@@ -34,8 +35,8 @@ def run(robot, display):
     #   robot.drivebase.turn(90)         # Turn right 90 degrees
     #   robot.drivebase.turn(-90)        # Turn left 90 degrees
     #
-    #   display.show_countdown(3)        # Show 3-2-1 countdown
-    #   display.show_completion_checkmark()  # Show success checkmark
+    #   robot.display.show_countdown(3)              # Show 3-2-1 countdown
+    #   robot.display.show_completion_checkmark()    # Show success checkmark
     #
     # 💡 TIP: Check the season_example/ folder for complete working missions!
     # ========================================
@@ -48,18 +49,16 @@ def run(robot, display):
 if __name__ == "__main__":
     # Import required classes for standalone testing
     from robot_controller import RobotController
-    from display_patterns import DisplayPatterns
     from season_config import SeasonDefaults
 
     robot = RobotController(SeasonDefaults, MISSION_CONFIG)
 
     try:
         robot.initialize()
-        display = DisplayPatterns(robot.hub)
         robot.mission_start_signal()
 
-        # Run the mission
-        run(robot, display)
+        # Run the mission (display is accessible via robot.display)
+        run(robot)
 
         robot.mission_success_signal()
         print("Mission {MISSION_NUM} completed successfully!")

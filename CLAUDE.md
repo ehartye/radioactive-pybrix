@@ -81,21 +81,21 @@ Working code examples demonstrating key concepts:
 ### 1. The Mission Function - Your Starting Point
 
 ```python
-def run(robot: RobotController, display):
+def run(robot: RobotController):
     """Every mission follows this pattern"""
     # The robot is already initialized for you!
     # You have access to:
     #   robot.drivebase          - Drive the robot
     #   robot.hub                - Hub features (display, buttons, sensors, speaker, light)
+    #   robot.display            - Display helper (countdown, checkmarks, animations)
     #   robot.left_attachment    - Left attachment motor (if configured)
     #   robot.right_attachment   - Right attachment motor (if configured)
     #   robot.left_color_sensor  - Left color sensor (if configured)
     #   robot.right_color_sensor - Right color sensor (if configured)
-    #   display                  - Display helper (countdown, checkmarks)
 ```
 
 **Key Teaching Points:**
-- Every mission has a `run()` function that receives `robot` and `display` parameters
+- Every mission has a `run()` function that receives a `robot` parameter
 - **No initialization needed** - just start driving!
 - Robot configuration (ports, wheel size, speeds) lives in `season_config.py`
 - Students focus on **what the robot should do**, not **how to set it up**
@@ -161,16 +161,16 @@ robot.hub.display.pixel(2, 2)
 robot.hub.display.off()
 
 # Display helper shortcuts
-display.show_countdown(3)               # Count down 3-2-1
-display.show_completion_checkmark()     # Show success checkmark
+robot.display.show_countdown(3)               # Count down 3-2-1
+robot.display.show_completion_checkmark()     # Show success checkmark
 ```
 
 **Key Teaching Points:**
 
 - Display is 5×5 grid of LEDs
 - Can show numbers, text (scrolls if long), icons, or custom patterns
-- `display` parameter has helpful shortcuts for common patterns
-- Access display directly via `robot.hub.display` or use `display` helper
+- `robot.display` provides helpful shortcuts for common patterns (countdown, checkmarks, animations, progress bars)
+- For direct display control, use `robot.hub.display` (for numbers, text, icons, pixels)
 
 ### 4. Hub Buttons
 ```python
@@ -388,39 +388,52 @@ class RobotController:
         # ...
 
 # In mission files
-def run(robot: RobotController, display):
+def run(robot: RobotController):
     # Students access hub features through robot.hub:
     robot.hub.imu.tilt()           # ✅ Correct
     robot.hub.buttons.pressed()    # ✅ Correct
-    robot.hub.display.icon(...)    # ✅ Correct
+    robot.hub.display.icon(...)    # ✅ Correct (direct display control)
     robot.hub.speaker.beep()       # ✅ Correct
     robot.hub.light.on(Color.RED)  # ✅ Correct
+
+    # Or use the display helper for common patterns:
+    robot.display.show_countdown(3)              # ✅ Correct (helper methods)
+    robot.display.show_completion_checkmark()    # ✅ Correct
 ```
 
 ### What Students Have Access To
 
 Through the `robot` parameter in mission functions:
 - **`robot.drivebase`** - Drive the robot (straight, turn, drive, stop)
+- **`robot.display`** - Display helper for common patterns (countdown, checkmarks, animations, progress bars)
 - **`robot.hub`** - **ALL hub features**:
   - `robot.hub.imu` - Gyro/tilt sensor, heading, acceleration
   - `robot.hub.buttons` - Button presses
-  - `robot.hub.display` - Display control (though `display` param is easier)
+  - `robot.hub.display` - Direct display control (numbers, text, icons, pixels)
   - `robot.hub.speaker` - Sounds and beeps
   - `robot.hub.light` - Hub status light
   - `robot.hub.battery` - Battery info
   - `robot.hub.system` - System functions
 - **`robot.left_attachment`** / **`robot.right_attachment`** - Attachment motors (if configured)
+- **`robot.left_color_sensor`** / **`robot.right_color_sensor`** - Color sensors (if configured)
 
-### When Students Ask "How do I use [hub feature]?"
+### When Students Ask "How do I use [feature]?"
 
-**ALWAYS consider:** They likely have a `robot: RobotController` parameter, so the answer is `robot.hub.<feature>`
+**ALWAYS consider:** They have a `robot: RobotController` parameter with everything built-in
 
 **Examples:**
+- "How do I show a countdown?" → `robot.display.show_countdown(3)`
+- "How do I show a checkmark?" → `robot.display.show_completion_checkmark()`
+- "How do I show a number?" → `robot.hub.display.number(5)` (direct display control)
 - "How do I use the gyro?" → `robot.hub.imu.tilt()` or `robot.hub.imu.heading()`
 - "How do I check buttons?" → `robot.hub.buttons.pressed()`
 - "How do I make a beep?" → `robot.hub.speaker.beep()`
 - "How do I change the hub light?" → `robot.hub.light.on(Color.GREEN)`
 - "How do I check battery?" → `robot.hub.battery.voltage()`
+
+**Key distinction:**
+- `robot.display.*` - Helper methods for common patterns (countdown, checkmarks, animations, progress bars)
+- `robot.hub.display.*` - Direct display control (numbers, text, icons, pixels, off)
 
 ### Why This Pattern?
 
@@ -741,7 +754,7 @@ Every generated mission includes helpful guidance:
 
 # --- DISPLAY (optional) ---
 # Show countdown:
-#   display.show_countdown(3)
+#   robot.display.show_countdown(3)
 
 # --- ADVANCED: LINE FOLLOWING (if you have color sensors) ---
 # Square on a black line for precise positioning:

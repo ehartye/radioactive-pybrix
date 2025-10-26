@@ -15,7 +15,7 @@ MISSION_CONFIG = {
     "show_icons": True,         # Show status icons
 }
 
-def run(robot, display):
+def run(robot):
     """
     Simulate a mission using only display feedback
 
@@ -28,13 +28,12 @@ def run(robot, display):
 
     Args:
         robot: RobotController object (already initialized)
-        display: DisplayPatterns object for hub display
     """
     print("=== Mission 03: Display Feedback ===")
     print("This mission uses only display/sound - no robot movement needed!")
 
     # Show countdown
-    display.show_countdown(3)
+    robot.display.show_countdown(3)
 
     # Simulate mission steps with visual feedback
     steps = [
@@ -66,7 +65,7 @@ def run(robot, display):
         # Show progress bar if enabled
         if MISSION_CONFIG["show_progress_bar"]:
             progress_percent = int(((i + 1) / len(steps)) * 100)
-            display.show_progress_bar(progress_percent)
+            robot.display.show_progress_bar(progress_percent)
             wait(MISSION_CONFIG['display_delay'])
 
         # Simulate step execution time
@@ -74,17 +73,16 @@ def run(robot, display):
 
     # Show completion
     robot.hub.light.on(Color.GREEN)
-    display.show_completion_checkmark()
+    robot.display.show_completion_checkmark()
 
     print("\nMission 03 completed successfully!")
 
-def run_status_display_demo(robot, display):
+def run_status_display_demo(robot):
     """
     Demonstrate different status displays
 
     Args:
         robot: RobotController object (already initialized)
-        display: DisplayPatterns object for hub display
     """
     print("=== Status Display Demo ===")
 
@@ -102,16 +100,15 @@ def run_status_display_demo(robot, display):
         robot.hub.speaker.beep()
         wait(1500)
 
-    display.show_completion_checkmark()
+    robot.display.show_completion_checkmark()
     print("Status display demo completed!")
 
-def run_debug_display_demo(robot, display):
+def run_debug_display_demo(robot):
     """
     Demonstrate using display for debugging
 
     Args:
         robot: RobotController object (already initialized)
-        display: DisplayPatterns object for hub display
     """
     print("=== Debug Display Demo ===")
 
@@ -131,7 +128,7 @@ def run_debug_display_demo(robot, display):
         robot.hub.light.on(Color.GREEN)
     else:
         print("✗ DriveBase ERROR")
-        display.show_error_x()
+        robot.display.show_error_x()
         robot.hub.light.on(Color.RED)
     wait(1000)
 
@@ -180,15 +177,14 @@ def run_debug_display_demo(robot, display):
     print("\nDiagnostics complete - robot ready!")
     wait(1000)
 
-    display.show_completion_checkmark()
+    robot.display.show_completion_checkmark()
 
-def run_animated_feedback(robot, display):
+def run_animated_feedback(robot):
     """
     Demonstrate animated display patterns
 
     Args:
         robot: RobotController object (already initialized)
-        display: DisplayPatterns object for hub display
     """
     print("=== Animated Feedback Demo ===")
 
@@ -196,46 +192,31 @@ def run_animated_feedback(robot, display):
 
     # Circle animation (like a progress spinner)
     robot.hub.display.text("LOAD")
-    display.animate_circle(cycles=2)
+    robot.display.animate_circle(cycles=2)
 
     # Square animation
     robot.hub.display.text("PROC")
-    display.animate_square(cycles=2)
+    robot.display.animate_square(cycles=2)
 
-    # Arrows showing direction
-    robot.hub.display.text("FWD")
-    display.show_arrow("up")
-    wait(1000)
+    # Triangle animation
+    robot.hub.display.text("TRI")
+    robot.display.animate_triangle(cycles=2)
 
-    robot.hub.display.text("BACK")
-    display.show_arrow("down")
-    wait(1000)
-
-    robot.hub.display.text("LEFT")
-    display.show_arrow("left")
-    wait(1000)
-
-    robot.hub.display.text("RIGHT")
-    display.show_arrow("right")
-    wait(1000)
-
-    display.show_completion_checkmark()
+    robot.display.show_completion_checkmark()
     print("Animation demo completed!")
 
 # Standalone testing support
 if __name__ == "__main__":
     from robot_controller import RobotController
-    from display_patterns import DisplayPatterns
     from season_config import SeasonDefaults
 
     robot = RobotController(SeasonDefaults, MISSION_CONFIG)
 
     try:
         robot.initialize()
-        display = DisplayPatterns(robot.hub)
         robot.mission_start_signal()
 
-        run(robot, display)
+        run(robot)
 
         robot.mission_success_signal()
         print("Mission completed successfully!")

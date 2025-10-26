@@ -15,7 +15,7 @@ MISSION_CONFIG = {
     "approach_distance": 120,  # Final approach distance
 }
 
-def run(robot, display):
+def run(robot):
     """
     Navigate to target position and return home
 
@@ -27,12 +27,11 @@ def run(robot, display):
 
     Args:
         robot: RobotController object (already initialized)
-        display: DisplayPatterns object for hub display
     """
     print("=== Mission 01: Drive to Target ===")
 
     # Show countdown
-    display.show_countdown(3)
+    robot.display.show_countdown(3)
 
     # STEP 1: Drive to navigation point
     print(f"Step 1: Driving {MISSION_CONFIG['target_distance']}mm to navigation point")
@@ -70,23 +69,22 @@ def run(robot, display):
     robot.drivebase.straight(-MISSION_CONFIG['target_distance'])
 
     # Show completion
-    display.show_completion_checkmark()
+    robot.display.show_completion_checkmark()
     print("Mission 01 completed successfully!")
 
-def run_custom_navigation(robot, display, distance, angle, approach):
+def run_custom_navigation(robot, distance, angle, approach):
     """
     Navigate to target with custom parameters
 
     Args:
         robot: RobotController object (already initialized)
-        display: DisplayPatterns object for hub display
         distance: Distance to navigation point (mm)
         angle: Alignment angle (degrees)
         approach: Approach distance (mm)
     """
     print(f"=== Custom Navigation: {distance}mm, {angle}°, {approach}mm approach ===")
 
-    display.show_countdown(3)
+    robot.display.show_countdown(3)
 
     # Navigate
     robot.drivebase.straight(distance)
@@ -103,23 +101,21 @@ def run_custom_navigation(robot, display, distance, angle, approach):
     wait(500)
     robot.drivebase.straight(-distance)
 
-    display.show_completion_checkmark()
+    robot.display.show_completion_checkmark()
     print("Custom navigation completed!")
 
 # Standalone testing support
 if __name__ == "__main__":
     from robot_controller import RobotController
-    from display_patterns import DisplayPatterns
     from season_config import SeasonDefaults
 
     robot = RobotController(SeasonDefaults, MISSION_CONFIG)
 
     try:
         robot.initialize()
-        display = DisplayPatterns(robot.hub)
         robot.mission_start_signal()
 
-        run(robot, display)
+        run(robot)
 
         robot.mission_success_signal()
         print("Mission completed successfully!")
