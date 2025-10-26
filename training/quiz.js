@@ -51,6 +51,37 @@ for(int i=0;i<5;i++){
         `
     },
     {
+        title: "Python vs Block Programming",
+        icon: "⚔️",
+        content: `
+            <div class="slide-content">
+                <h3>Why Python instead of LEGO's block programming?</h3>
+                <div style="text-align: left; max-width: 600px; margin: 30px auto;">
+                    <div class="highlight-box" style="margin: 15px 0; background: #e8f5e9; border-left: 5px solid #4caf50;">
+                        <strong>📝 Source Control (Git)</strong>
+                        <p style="margin-top: 10px;">Track changes, work as a team, never lose code! Just like professional developers.</p>
+                    </div>
+                    <div class="highlight-box" style="margin: 15px 0; background: #e3f2fd; border-left: 5px solid #2196f3;">
+                        <strong>🔍 Easy to Read & Review</strong>
+                        <p style="margin-top: 10px;">See all your code at once. No scrolling through blocks!</p>
+                    </div>
+                    <div class="highlight-box" style="margin: 15px 0; background: #f3e5f5; border-left: 5px solid #9c27b0;">
+                        <strong>💾 Save & Share</strong>
+                        <p style="margin-top: 10px;">Copy, paste, backup easily. Text files work everywhere!</p>
+                    </div>
+                    <div class="highlight-box" style="margin: 15px 0; background: #fff3e0; border-left: 5px solid #ff9800;">
+                        <strong>🚀 Professional Skills</strong>
+                        <p style="margin-top: 10px;">Learn real programming used in jobs & college!</p>
+                    </div>
+                    <div class="highlight-box" style="margin: 15px 0; background: #fce4ec; border-left: 5px solid #e91e63;">
+                        <strong>⚡ More Powerful</strong>
+                        <p style="margin-top: 10px;">Do complex logic, math, and algorithms easily!</p>
+                    </div>
+                </div>
+            </div>
+        `
+    },
+    {
         title: "What Can Python Do?",
         icon: "🎯",
         content: `

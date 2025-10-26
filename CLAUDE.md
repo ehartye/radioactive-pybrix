@@ -33,8 +33,9 @@ Before students start building, they should take the interactive training quiz:
 - **`launch_training.py`**: Launcher script to open training in browser
 - **`quiz.html/js/css`**: Interactive presentation and quiz system
 - **`README.md`**: Training documentation for educators
-- **Topics covered**: Python basics, PyBricks overview, libraries, project workflow
-- **Format**: 14 presentation slides + 12 quiz questions with immediate feedback
+- **Topics covered**: Python basics, Python vs block programming, PyBricks overview, libraries, project workflow
+- **Format**: 15 presentation slides + 12 quiz questions with immediate feedback
+- **Key benefits explained**: Source control (Git), professional skills, easier collaboration, more powerful logic
 
 ### Season Management Tools (Root Level)
 - **`new_season.py`**: Interactive script to create a new season folder with robot-specific configuration

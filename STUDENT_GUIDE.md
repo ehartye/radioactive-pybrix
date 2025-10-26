@@ -103,6 +103,51 @@ robot.drivebase.straight(300)
 4. Use LEFT/RIGHT buttons to select your mission
 5. Press CENTER button to run it!
 
+## Alternative: AI-Assisted Setup (with Claude Code)
+
+**If you have Claude Code installed**, you can use AI-guided setup instead of the Python scripts. This provides an interactive, conversational experience with helpful explanations and mission planning assistance.
+
+### AI-Guided Season Creation
+
+Instead of `python new_season.py`, use:
+```
+/new-season
+```
+
+The AI assistant will:
+- Ask the same questions in a conversational way
+- Explain WHY each piece of information is needed
+- Help if you're unsure about measurements or ports
+- Provide visual descriptions of the hub layout
+- Guide you through the entire process
+
+### AI-Guided Mission Creation
+
+Instead of `python ../new_mission.py`, use:
+```
+/new-mission
+```
+
+The AI assistant will:
+- **Ask about your mission objectives** - "What do you want your robot to do?"
+- **Help you plan the mission structure** - Break complex tasks into steps
+- **Suggest appropriate approaches** - Line following, attachments, sensors, etc.
+- **Create the mission file** - With guidance based on your goals
+- **Offer continued help** - Can help you write the actual code too!
+
+**Benefits of AI assistance:**
+- More conversational and encouraging
+- Helps you think through mission planning
+- Teaches robotics concepts as you go
+- Great for brainstorming and learning
+- Can continue helping with code implementation
+
+**When to use Python scripts vs AI commands:**
+- **Python scripts**: Fast, works anywhere, no internet needed
+- **AI commands**: More guidance, better for learning, helps with planning
+
+Choose whichever works better for your learning style!
+
 ## The Easy Workflow
 
 ```

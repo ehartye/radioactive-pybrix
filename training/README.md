@@ -13,7 +13,7 @@ This is an interactive learning experience designed for middle school students (
 
 ## Features
 
-✨ **Visual Presentation** - 8 engaging slides with icons, code examples, and comparisons
+✨ **Visual Presentation** - 15 engaging slides with icons, code examples, and comparisons
 ✅ **Interactive Quiz** - 12 questions with immediate feedback
 📊 **Score Tracking** - See how you're doing in real-time
 🔍 **Answer Review** - Learn from mistakes with detailed explanations
@@ -48,15 +48,22 @@ start quiz.html
 The training follows this flow:
 
 1. **Welcome Screen** - Introduction to what you'll learn
-2. **Presentation** - 8 visual slides covering key concepts:
+2. **Presentation** - 15 visual slides covering key concepts:
    - What is Python?
    - Why use Python?
+   - Python vs Block Programming (LEGO blocks)
    - What can Python do?
    - What is PyBricks?
    - What's a library?
    - Why use libraries?
    - How to use PyBricks
    - How we use it in our projects
+   - Our project setup system
+   - Step 1: Create your season
+   - Step 2: What's in your season folder
+   - Step 3: Add missions
+   - Step 4: Write your mission code
+   - Step 5: Upload and test
 3. **Interactive Quiz** - 12 questions testing your knowledge
 4. **Results** - See your score and performance feedback
 5. **Review** - Go through all questions with explanations
