@@ -229,6 +229,13 @@ def main():
     print("    • Quick Spin:      200-300 degrees/s")
     turn_rate = get_number("  Choose turn rate (degrees/s)", 60, min_val=10, max_val=500)
 
+    # Template style choice
+    print("\n📋 TEMPLATE STYLE")
+    print("  Choose how much help you want:")
+    print("    1. Simple  - Minimal template with quick start examples")
+    print("    2. Guided  - Full examples with detailed comments (recommended for beginners)")
+    template_choice = get_input("  Template style (1/2)", "2", ["1", "2"])
+
     # Generate filenames
     sanitized_name = sanitize_function_name(mission_name)
     mission_filename = f"mission_{mission_num:02d}_{sanitized_name}.py"
@@ -237,8 +244,13 @@ def main():
     print("Creating mission...")
     print("=" * 50)
 
-    # Load template
-    template_file = os.path.join("..", "season_template", "_template_mission.py")
+    # Load appropriate template
+    if template_choice == "1":
+        template_name = "_template_mission_simple.py"
+    else:
+        template_name = "_template_mission_guided.py"
+
+    template_file = os.path.join("..", "season_template", template_name)
     if not os.path.exists(template_file):
         print(f"\n❌ Error: Template not found at {template_file}")
         return

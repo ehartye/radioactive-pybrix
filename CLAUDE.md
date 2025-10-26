@@ -35,17 +35,18 @@ This repository provides a complete season management system for students:
 
 ### Season Template (`season_template/`)
 Template files used by the scripts (students don't edit these directly):
-- **`_template_mission.py`**: Mission template with helpful code examples in comments
+- **`_template_mission_simple.py`**: Minimal mission template with quick-start examples
+- **`_template_mission_guided.py`**: Full mission template with detailed comments (default)
 - **`season_config.py.template`**: Robot configuration template with placeholders
 - **`season_menu.py.template`**: Menu system template with placeholders
-- **Shared utilities**: `robot_controller.py`, `display_patterns.py`, `shape_movements.py`
+- **Shared utilities**: `robot_controller.py`, `display_patterns.py`, `line_movements.py`
 
 ### Working Example (`season_example/`)
-Complete working example with 4 missions students can learn from:
-- **`mission_01_square_drive.py`**: Drive robot in square pattern
-- **`mission_02_circle_drive.py`**: Drive robot in circle pattern
-- **`mission_03_square_display.py`**: Display patterns (no motors needed - good for testing!)
-- **`mission_04_triangle_combo.py`**: Combined driving and display
+Complete working example with 4 FLL-realistic missions students can learn from:
+- **`mission_01_drive_to_target.py`**: Navigate to precise position (basic FLL pattern)
+- **`mission_02_attachment_demo.py`**: Using attachment motors for mechanisms
+- **`mission_03_display_feedback.py`**: Display/sound feedback (no motors - good for testing!)
+- **`mission_04_line_following.py`**: Using color sensors for precision positioning
 - **`season_menu.py`**: Mission selector menu
 - **`season_config.py`**: Robot-specific configuration
 
@@ -682,17 +683,18 @@ from .shared import RobotController
 4. Do NOT tell them to manually copy/edit template files
 
 **If a student asks about mission code:**
-1. The mission template (`_template_mission.py`) has tons of helpful examples
-2. Guide them to use `robot.drivebase` directly (not ShapeMovements)
-3. Guide them to uncomment and modify existing examples
-4. Remind them about flat imports (no subdirectories)
-5. All files must be uploaded together to hub
+1. Ask if they want Simple or Guided template (new_mission.py prompts for this)
+2. **Simple template** = minimal with quick-start examples (for experienced students)
+3. **Guided template** = full examples with detailed comments (recommended for beginners)
+4. Guide them to use `robot.drivebase` directly - this is the primary FLL pattern
+5. Remind them about flat imports (no subdirectories)
+6. All files must be uploaded together to hub
 
-**About ShapeMovements:**
-- Only needed for predefined shapes (square, circle, triangle)
-- 90% of missions just use `robot.drivebase.straight()` and `robot.drivebase.turn()`
-- Shape examples are in `season_example/` for reference
-- Students can import it if needed, but don't default to it
+**Important: Use Direct DriveBase Commands**
+- Real FLL missions use `robot.drivebase.straight()` and `robot.drivebase.turn()`
+- This is more precise and easier to understand than helper libraries
+- Example: `robot.drivebase.straight(427)` to drive exact distance to target
+- Students should write straightforward navigation code, not use abstraction layers
 
 **If helping debug:**
 1. Check they uploaded ALL `.py` files (common mistake)
@@ -732,14 +734,19 @@ Every generated mission includes helpful guidance:
 # Show countdown:
 #   display.show_countdown(3)
 
-# --- ADVANCED: PREDEFINED SHAPES (optional) ---
-# If you want to drive in shapes:
-#   from shape_movements import ShapeMovements
-#   movements = ShapeMovements(robot)
-#   movements.drive_square(side_length=300)
+# --- ADVANCED: LINE FOLLOWING (if you have color sensors) ---
+# Square on a black line for precise positioning:
+#   from line_movements import LineMovements
+#   line_moves = LineMovements(robot)
+#   line_moves.square_on_line()
 ```
 
-Students use direct `robot.drivebase` API - simple and clear!
+**Template Styles:**
+- **Simple**: Quick-start section + minimal examples (good for experienced students)
+- **Guided**: Quick-start + comprehensive examples organized by category (default)
+- Students choose when running `new_mission.py`
+
+Students use direct `robot.drivebase` API - simple, clear, and precise!
 
 ## Available Resources in This Project
 

@@ -9,10 +9,10 @@ from pybricks.parameters import Color
 from pybricks.tools import wait
 
 # Import all mission modules (flat structure for PyBricks compatibility)
-import mission_01_square_drive
-import mission_02_circle_drive
-import mission_03_square_display
-import mission_04_triangle_combo
+import mission_01_drive_to_target
+import mission_02_attachment_demo
+import mission_03_display_feedback
+import mission_04_line_following
 from season_config import SeasonInfo, SeasonDefaults
 
 class SeasonMenu:
@@ -22,24 +22,24 @@ class SeasonMenu:
         self.hub = PrimeHub()
         self.missions = {
             "1": {
-                "name": "Square Drive",
-                "description": "Drive robot in square pattern",
-                "run_function": mission_01_square_drive
+                "name": "Drive to Target",
+                "description": "Navigate to precise position and return",
+                "run_function": mission_01_drive_to_target
             },
             "2": {
-                "name": "Circle Drive", 
-                "description": "Drive robot in circle pattern",
-                "run_function": mission_02_circle_drive
+                "name": "Attachment Demo",
+                "description": "Use attachment motors for mechanisms",
+                "run_function": mission_02_attachment_demo
             },
             "3": {
-                "name": "Square Display",
-                "description": "Display square pattern on screen",
-                "run_function": mission_03_square_display
+                "name": "Display Feedback",
+                "description": "Mission feedback using display/lights/sounds",
+                "run_function": mission_03_display_feedback
             },
             "4": {
-                "name": "Triangle Combo",
-                "description": "Drive triangle while displaying pattern",
-                "run_function": mission_04_triangle_combo
+                "name": "Line Following",
+                "description": "Use sensors for precision positioning",
+                "run_function": mission_04_line_following
             }
         }
     

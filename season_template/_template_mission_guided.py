@@ -27,14 +27,22 @@ def run(robot, display):
     """
     print("=== Mission {MISSION_NUM}: {MISSION_NAME} ===")
 
-        # ============================================================
-        # TODO: ADD YOUR MISSION LOGIC HERE
-        # ============================================================
+    # ========================================
+    # QUICK START - Copy one to begin:
+    # ========================================
+    #   robot.drivebase.straight(500)    # Drive forward 500mm
+    #   robot.drivebase.straight(-300)   # Drive backward 300mm
+    #   robot.drivebase.turn(90)         # Turn right 90 degrees
+    #   robot.drivebase.turn(-90)        # Turn left 90 degrees
 
-        # HELPFUL EXAMPLES - Delete these comments when you're ready!
+    # TODO: ADD YOUR MISSION LOGIC HERE
 
-        # --- BASIC DRIVING ---
-        # Most missions just need these simple movements:
+    # ========================================
+    # MORE EXAMPLES BELOW (scroll down):
+    # ========================================
+
+    # --- BASIC DRIVING ---
+    # Most missions just need these simple movements:
 
         # Drive straight forward 300mm:
         #   robot.drivebase.straight(300)
@@ -105,14 +113,6 @@ def run(robot, display):
         #   robot.drivebase.turn(90)                # Turn left 90 degrees
         #   robot.drivebase.straight(500)           # Return to start
         #   display.show_completion_checkmark()     # Show success!
-
-        # --- ADVANCED: PREDEFINED SHAPES (optional) ---
-        # If you want to drive in shapes, you can use ShapeMovements:
-        #   from shape_movements import ShapeMovements
-        #   movements = ShapeMovements(robot)
-        #   movements.drive_square(side_length=300)
-        #   movements.drive_circle(radius=200)
-        #   movements.drive_triangle(side_length=300)
 
         # --- ADVANCED: LINE FOLLOWING (if you have color sensors) ---
         # Drive forward until both sensors detect a black line:

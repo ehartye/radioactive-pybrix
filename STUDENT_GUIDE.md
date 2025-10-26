@@ -40,8 +40,25 @@ You'll be asked:
 - Mission name (e.g., "Drive to Target")
 - Short description
 - Speed settings
+- **Template style**: Simple (minimal) or Guided (full examples) - **choose Guided if you're new!**
 
 **Done!** The script creates a mission file and updates your menu automatically.
+
+#### Template Styles
+
+You'll choose one of two template styles:
+
+1. **Simple Template** (for experienced students)
+   - Minimal comments
+   - Quick-start examples at the top
+   - Best when you know what you're doing
+
+2. **Guided Template** (recommended for beginners)
+   - Quick-start examples PLUS detailed examples
+   - Organized by category (driving, attachments, sensors, etc.)
+   - Helpful when learning or exploring new features
+
+**Tip**: Start with Guided, then switch to Simple once you're comfortable!
 
 ### Step 3: Add Your Code (5-10 minutes)
 
@@ -111,7 +128,7 @@ your_season/
 ├── season_menu.py            # Mission selector (auto-updated!)
 ├── robot_controller.py       # Helper code (don't edit)
 ├── display_patterns.py       # Helper code (don't edit)
-├── shape_movements.py        # Helper code (don't edit)
+├── line_movements.py         # Line following helper (optional, don't edit)
 └── README.md                 # Info about your season
 ```
 
@@ -246,20 +263,34 @@ robot.drivebase.turn(90)
 robot.drivebase.turn(-90)
 ```
 
-### Shapes (Advanced - Optional)
-If you want to drive in predefined shapes, you can use the ShapeMovements helper:
+### Complete FLL Mission Pattern
+Most FLL missions follow this pattern:
 ```python
-from shape_movements import ShapeMovements
-movements = ShapeMovements(robot)
+# Navigate to target
+robot.drivebase.straight(450)    # Drive to position
+robot.drivebase.turn(-23)        # Align with target
 
-# Drive in a square (300mm sides)
-movements.drive_square(side_length=300)
+# Complete task (example: deploy attachment)
+if robot.left_attachment:
+    robot.left_attachment.run_angle(500, 180)  # Deploy mechanism
+    wait(500)
+    robot.left_attachment.run_angle(500, -180)  # Retract
 
-# Drive in a circle (200mm radius)
-movements.drive_circle(radius=200)
+# Return home
+robot.drivebase.turn(23)          # Turn back
+robot.drivebase.straight(-450)    # Return to start
+```
 
-# Drive in a triangle
-movements.drive_triangle(side_length=300)
+### Line Following (Precision Positioning)
+For precise alignment on the mat:
+```python
+from line_movements import LineMovements
+line_moves = LineMovements(robot)
+
+# Drive until squared on black line
+robot.drivebase.straight(200)     # Approach line
+line_moves.square_on_line()       # Square on line (both sensors detect black)
+robot.drivebase.straight(150)     # Continue with precise positioning
 ```
 
 ### Display
