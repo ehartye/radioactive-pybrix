@@ -409,6 +409,59 @@ hub.display.text(<span style="color: #ce9178;">"Hello!"</span>)
     }
 ];
 
+// Learning Content Flow - Interleaves slides with mini-quizzes
+const learningContent = [
+    {
+        type: "slide-section",
+        slides: [0, 1, 2, 3],  // Python Basics slides
+        title: "Python Basics"
+    },
+    {
+        type: "mini-quiz",
+        questions: [0, 1],  // 2 questions about Python basics
+        title: "Quick Check: Python Basics",
+        icon: "🐍"
+    },
+    {
+        type: "slide-section",
+        slides: [4, 5, 6, 7],  // PyBricks & Libraries slides
+        title: "PyBricks & Libraries"
+    },
+    {
+        type: "mini-quiz",
+        questions: [3, 4, 5],  // 3 questions about PyBricks
+        title: "Quick Check: PyBricks",
+        icon: "🤖"
+    },
+    {
+        type: "slide-section",
+        slides: [8, 9, 10, 11],  // Project Setup slides
+        title: "Project Setup"
+    },
+    {
+        type: "mini-quiz",
+        questions: [10, 11],  // 2 questions about setup
+        title: "Quick Check: Project Setup",
+        icon: "⚙️"
+    },
+    {
+        type: "slide-section",
+        slides: [12, 13, 14],  // Mission Creation slides
+        title: "Creating Missions"
+    },
+    {
+        type: "mini-quiz",
+        questions: [14, 15],  // 2 questions about missions
+        title: "Quick Check: Missions",
+        icon: "🎯"
+    },
+    {
+        type: "final-quiz",
+        title: "Final Review",
+        description: "Let's review the remaining concepts to make sure you've got everything!"
+    }
+];
+
 // Quiz Questions Database
 const quizQuestions = [
     // Section 1: What is Python?
@@ -681,11 +734,16 @@ const quizQuestions = [
 
 // Presentation State
 let currentSlideIndex = 0;
+let currentContentIndex = 0;  // Index in learningContent array
+let currentSectionSlideIndex = 0;  // Index within current slide section
+let isInMiniQuiz = false;  // Are we in a mini-quiz?
+let miniQuizQuestionIndex = 0;  // Current question in mini-quiz
 
 // Quiz State
 let currentQuestionIndex = 0;
 let score = 0;
 let userAnswers = [];
+let answeredQuestionIndices = new Set();  // Track which questions were answered in mini-quizzes
 
 // DOM Elements
 const welcomeScreen = document.getElementById('welcome-screen');
@@ -729,12 +787,23 @@ finishButton.addEventListener('click', showResults);
 // Presentation Functions
 function startPresentation() {
     currentSlideIndex = 0;
+    currentContentIndex = 0;
+    currentSectionSlideIndex = 0;
+    isInMiniQuiz = false;
+    answeredQuestionIndices.clear();
+
+    // Reset score and answers for fresh start
+    score = 0;
+    userAnswers = [];
+    currentScoreElement.textContent = '0';
+
     welcomeScreen.classList.remove('active');
     presentationScreen.classList.add('active');
+    quizScreen.classList.remove('active');
 
     totalSlidesElement.textContent = presentationSlides.length;
     renderSlides();
-    showSlide(0);
+    showContentSection();
 }
 
 function renderSlides() {
@@ -781,13 +850,327 @@ function previousSlide() {
 }
 
 function nextSlide() {
-    if (currentSlideIndex < presentationSlides.length - 1) {
-        showSlide(currentSlideIndex + 1);
+    const currentContent = learningContent[currentContentIndex];
+
+    if (currentContent.type === "slide-section") {
+        // Check if we're at the last slide of this section
+        if (currentSectionSlideIndex < currentContent.slides.length - 1) {
+            // Move to next slide in section
+            currentSectionSlideIndex++;
+            currentSlideIndex = currentContent.slides[currentSectionSlideIndex];
+            showSlide(currentSlideIndex);
+        } else {
+            // End of slide section - move to next content (likely a mini-quiz)
+            currentContentIndex++;
+            showContentSection();
+        }
     }
 }
 
-// Quiz Functions
+// Content Section Handler - manages flow between slides and mini-quizzes
+function showContentSection() {
+    if (currentContentIndex >= learningContent.length) {
+        // All content done - shouldn't happen
+        return;
+    }
+
+    const currentContent = learningContent[currentContentIndex];
+
+    if (currentContent.type === "slide-section") {
+        // Show slides
+        isInMiniQuiz = false;
+        currentSectionSlideIndex = 0;
+        currentSlideIndex = currentContent.slides[0];
+
+        presentationScreen.classList.add('active');
+        quizScreen.classList.remove('active');
+
+        showSlide(currentSlideIndex);
+    } else if (currentContent.type === "mini-quiz") {
+        // Show mini-quiz
+        isInMiniQuiz = true;
+        miniQuizQuestionIndex = 0;
+
+        presentationScreen.classList.remove('active');
+        quizScreen.classList.add('active');
+
+        showMiniQuiz(currentContent);
+    } else if (currentContent.type === "final-quiz") {
+        // Start final quiz with remaining questions
+        startFinalQuiz();
+    }
+}
+
+// Mini-Quiz Functions
+function showMiniQuiz(quizContent) {
+    // Update header to show this is a quick check
+    const questionText = document.getElementById('question-text');
+    questionText.innerHTML = `
+        <div style="text-align: center; margin-bottom: 30px;">
+            <div style="font-size: 3em; margin-bottom: 15px;">${quizContent.icon}</div>
+            <h2 style="color: #0066cc; margin-bottom: 10px;">${quizContent.title}</h2>
+            <p style="font-size: 1.1em; color: #666;">Answer these questions to check your understanding!</p>
+        </div>
+    `;
+
+    // Set up progress
+    const totalQuestions = quizContent.questions.length;
+    totalQuestionsElement.textContent = totalQuestions;
+
+    // Show first question
+    showMiniQuizQuestion(quizContent);
+}
+
+function showMiniQuizQuestion(quizContent) {
+    if (miniQuizQuestionIndex >= quizContent.questions.length) {
+        // Mini-quiz complete - move to next content section
+        currentContentIndex++;
+        showContentSection();
+        return;
+    }
+
+    const questionIndex = quizContent.questions[miniQuizQuestionIndex];
+    const question = quizQuestions[questionIndex];
+
+    // Mark this question as answered
+    answeredQuestionIndices.add(questionIndex);
+
+    // Update progress
+    const progress = ((miniQuizQuestionIndex + 1) / quizContent.questions.length) * 100;
+    progressFill.style.width = progress + '%';
+    progressText.textContent = `Question ${miniQuizQuestionIndex + 1} of ${quizContent.questions.length}`;
+
+    // Display question (reuse existing question display logic)
+    const questionText = document.getElementById('question-text');
+    questionText.textContent = question.question;
+
+    // Clear previous answers
+    answersContainer.innerHTML = '';
+    feedback.classList.add('hidden');
+
+    // Create shuffled answer mapping
+    currentAnswerMapping = question.answers.map((answer, index) => ({
+        originalIndex: index,
+        answer: answer
+    }));
+    currentAnswerMapping = shuffleArray(currentAnswerMapping);
+
+    // Create answer buttons
+    currentAnswerMapping.forEach((item, shuffledIndex) => {
+        const button = document.createElement('button');
+        button.className = 'answer-button';
+        button.textContent = item.answer;
+        button.addEventListener('click', () => selectMiniQuizAnswer(shuffledIndex, questionIndex, question));
+        answersContainer.appendChild(button);
+    });
+}
+
+function selectMiniQuizAnswer(selectedIndex, questionIndex, question) {
+    const answerButtons = answersContainer.querySelectorAll('.answer-button');
+
+    // Disable all buttons
+    answerButtons.forEach(button => {
+        button.classList.add('disabled');
+        button.style.pointerEvents = 'none';
+    });
+
+    // Get the original index of the selected answer
+    const selectedOriginalIndex = currentAnswerMapping[selectedIndex].originalIndex;
+    const isCorrect = selectedOriginalIndex === question.correctIndex;
+
+    // Mark selected answer
+    answerButtons[selectedIndex].classList.add(isCorrect ? 'correct' : 'incorrect');
+
+    // If incorrect, highlight the correct answer
+    if (!isCorrect) {
+        const correctShuffledIndex = currentAnswerMapping.findIndex(
+            item => item.originalIndex === question.correctIndex
+        );
+        answerButtons[correctShuffledIndex].classList.add('correct');
+    }
+
+    // Update score
+    if (isCorrect) {
+        score++;
+        currentScoreElement.textContent = score;
+    }
+
+    // Store user's answer
+    userAnswers.push({
+        questionIndex: questionIndex,
+        selectedIndex: selectedOriginalIndex,
+        correct: isCorrect
+    });
+
+    // Show feedback with continue button
+    showMiniQuizFeedback(isCorrect, question.explanation);
+}
+
+function showMiniQuizFeedback(isCorrect, explanation) {
+    feedback.classList.remove('hidden', 'correct', 'incorrect');
+    feedback.classList.add(isCorrect ? 'correct' : 'incorrect');
+
+    const icon = isCorrect ? '✓' : '✗';
+    const message = isCorrect ? 'Correct!' : 'Not quite...';
+
+    feedbackText.innerHTML = `
+        <strong>${icon} ${message}</strong><br><br>
+        ${explanation}<br><br>
+        <button class="answer-button" onclick="nextMiniQuizQuestion()" style="margin-top: 15px;">
+            Continue →
+        </button>
+    `;
+}
+
+function nextMiniQuizQuestion() {
+    const currentContent = learningContent[currentContentIndex];
+    miniQuizQuestionIndex++;
+    showMiniQuizQuestion(currentContent);
+}
+
+// Final Quiz Functions - only shows questions not in mini-quizzes
+function startFinalQuiz() {
+    // Get questions that weren't in mini-quizzes
+    const remainingQuestions = [];
+    quizQuestions.forEach((q, index) => {
+        if (!answeredQuestionIndices.has(index)) {
+            remainingQuestions.push(index);
+        }
+    });
+
+    // Store for iteration
+    window.remainingQuestions = remainingQuestions;
+    currentQuestionIndex = 0;
+
+    welcomeScreen.classList.remove('active');
+    presentationScreen.classList.remove('active');
+    quizScreen.classList.add('active');
+
+    // Update display
+    const questionText = document.getElementById('question-text');
+    questionText.innerHTML = `
+        <div style="text-align: center; margin-bottom: 20px;">
+            <h2 style="color: #0066cc;">📝 Final Review</h2>
+            <p style="font-size: 1.1em; color: #666;">Let's review the remaining concepts!</p>
+        </div>
+    `;
+
+    totalQuestionsElement.textContent = remainingQuestions.length;
+
+    if (remainingQuestions.length > 0) {
+        showFinalQuestion();
+    } else {
+        // No remaining questions - go straight to results
+        showResults();
+    }
+}
+
+function showFinalQuestion() {
+    if (currentQuestionIndex >= window.remainingQuestions.length) {
+        showResults();
+        return;
+    }
+
+    const questionIndex = window.remainingQuestions[currentQuestionIndex];
+    const question = quizQuestions[questionIndex];
+
+    // Update progress
+    const progress = ((currentQuestionIndex + 1) / window.remainingQuestions.length) * 100;
+    progressFill.style.width = progress + '%';
+    progressText.textContent = `Question ${currentQuestionIndex + 1} of ${window.remainingQuestions.length}`;
+
+    // Display question
+    const questionText = document.getElementById('question-text');
+    questionText.textContent = question.question;
+
+    // Clear previous answers
+    answersContainer.innerHTML = '';
+    feedback.classList.add('hidden');
+
+    // Create shuffled answer mapping
+    currentAnswerMapping = question.answers.map((answer, index) => ({
+        originalIndex: index,
+        answer: answer
+    }));
+    currentAnswerMapping = shuffleArray(currentAnswerMapping);
+
+    // Create answer buttons
+    currentAnswerMapping.forEach((item, shuffledIndex) => {
+        const button = document.createElement('button');
+        button.className = 'answer-button';
+        button.textContent = item.answer;
+        button.addEventListener('click', () => selectFinalAnswer(shuffledIndex, questionIndex, question));
+        answersContainer.appendChild(button);
+    });
+}
+
+function selectFinalAnswer(selectedIndex, questionIndex, question) {
+    const answerButtons = answersContainer.querySelectorAll('.answer-button');
+
+    // Disable all buttons
+    answerButtons.forEach(button => {
+        button.classList.add('disabled');
+        button.style.pointerEvents = 'none';
+    });
+
+    // Get the original index of the selected answer
+    const selectedOriginalIndex = currentAnswerMapping[selectedIndex].originalIndex;
+    const isCorrect = selectedOriginalIndex === question.correctIndex;
+
+    // Mark selected answer
+    answerButtons[selectedIndex].classList.add(isCorrect ? 'correct' : 'incorrect');
+
+    // If incorrect, highlight the correct answer
+    if (!isCorrect) {
+        const correctShuffledIndex = currentAnswerMapping.findIndex(
+            item => item.originalIndex === question.correctIndex
+        );
+        answerButtons[correctShuffledIndex].classList.add('correct');
+    }
+
+    // Update score
+    if (isCorrect) {
+        score++;
+        currentScoreElement.textContent = score;
+    }
+
+    // Store user's answer
+    userAnswers.push({
+        questionIndex: questionIndex,
+        selectedIndex: selectedOriginalIndex,
+        correct: isCorrect
+    });
+
+    // Show feedback
+    showFinalFeedback(isCorrect, question.explanation);
+}
+
+function showFinalFeedback(isCorrect, explanation) {
+    feedback.classList.remove('hidden', 'correct', 'incorrect');
+    feedback.classList.add(isCorrect ? 'correct' : 'incorrect');
+
+    const icon = isCorrect ? '✓' : '✗';
+    const message = isCorrect ? 'Correct!' : 'Not quite...';
+
+    feedbackText.innerHTML = `
+        <strong>${icon} ${message}</strong><br><br>
+        ${explanation}<br><br>
+        <button class="answer-button" onclick="nextFinalQuestion()" style="margin-top: 15px;">
+            ${currentQuestionIndex < window.remainingQuestions.length - 1 ? 'Next Question →' : 'See Results →'}
+        </button>
+    `;
+}
+
+function nextFinalQuestion() {
+    currentQuestionIndex++;
+    showFinalQuestion();
+}
+
+// Old Quiz Functions (kept for compatibility if someone clicks "Start Quiz" button directly)
 function startQuiz() {
+    // This is now only used if user somehow bypasses the presentation
+    // Just show all questions
+    window.remainingQuestions = quizQuestions.map((_, index) => index);
     currentQuestionIndex = 0;
     score = 0;
     userAnswers = [];
@@ -798,7 +1181,7 @@ function startQuiz() {
 
     totalQuestionsElement.textContent = quizQuestions.length;
 
-    showQuestion();
+    showFinalQuestion();
 }
 
 // Shuffle array using Fisher-Yates algorithm
@@ -917,10 +1300,12 @@ function showResults() {
     reviewScreen.classList.remove('active');
     resultsScreen.classList.add('active');
 
-    const percentage = Math.round((score / quizQuestions.length) * 100);
+    // Total questions answered (from mini-quizzes + final quiz)
+    const totalAnswered = userAnswers.length;
+    const percentage = Math.round((score / totalAnswered) * 100);
 
     document.getElementById('final-score').textContent = score;
-    document.getElementById('final-total').textContent = quizQuestions.length;
+    document.getElementById('final-total').textContent = totalAnswered;
     document.getElementById('percentage').textContent = percentage + '%';
 
     // Performance message
