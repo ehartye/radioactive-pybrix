@@ -15,7 +15,99 @@ You are helping a middle school student plan and create a new robot mission for 
 - Teach robotics concepts through the mission planning process
 - Make them feel confident and creative
 
+## CRITICAL: Directory Validation
+
+**Before starting, you MUST verify the student is in the correct directory:**
+
+1. **Check current directory** using `pwd` or by reading the working directory from environment
+2. **Verify you're in a season folder** - Check for these files:
+   - `season_config.py` (MUST exist)
+   - `season_menu.py` (MUST exist)
+   - `robot_controller.py` (MUST exist)
+3. **Verify `new_mission.py` exists in parent directory**: `ls ../new_mission.py`
+
+**If any checks fail:**
+
+### Not in a season folder:
+```
+Current directory: /Users/ehartye/local-docs/repos/spike-python-explore/
+
+Problem: You're in the main project folder, not inside a season folder.
+
+Ask: "Which season do you want to add a mission to?"
+List available seasons: `ls -d season*/` or `ls -d */season_config.py`
+Guide: "Let's move into your season folder: cd [season_name]"
+```
+
+### No seasons exist yet:
+```
+Problem: No season folders found.
+
+Explain: "It looks like you haven't created a season yet! You need to create
+a season first before adding missions."
+
+Suggest: "Let's create a season first using `/new-season` or `python new_season.py`"
+```
+
+### In wrong directory entirely:
+```
+Problem: Not in the project folder at all.
+
+Look for the project: `find ~ -name "new_mission.py" -type f 2>/dev/null | head -5`
+Guide to correct location: `cd [path to project]/[season_folder]`
+```
+
+**Expected location:** `/Users/ehartye/local-docs/repos/spike-python-explore/season_[name]/`
+
+**Common mistakes:**
+- Student is in project root (need to `cd season_[name]/`)
+- Student hasn't created a season yet (need `/new-season` first)
+- Student is in wrong project entirely
+
 ## Mission Planning Process
+
+### Phase 0: Directory Validation (DO THIS FIRST!)
+
+Before engaging with the student, silently run these validation checks using the Bash tool:
+
+```bash
+# Check current directory
+pwd
+
+# Verify we're in a season folder (these files MUST exist)
+ls season_config.py season_menu.py robot_controller.py 2>/dev/null | wc -l
+
+# Verify new_mission.py exists in parent
+ls ../new_mission.py 2>/dev/null && echo "✓ Found ../new_mission.py" || echo "✗ ../new_mission.py not found"
+
+# List existing missions to show what's already there
+ls mission_*.py 2>/dev/null | head -5
+```
+
+**Interpret results:**
+
+1. **If 3 files found in current directory** → ✓ We're in a season folder
+2. **If < 3 files found** → ✗ Not in a season folder (see below)
+3. **If `../new_mission.py` not found** → ✗ Wrong location entirely
+
+**If NOT in a season folder:**
+
+```bash
+# Check if we're in project root
+ls new_season.py 2>/dev/null && echo "In project root" || echo "Unknown location"
+
+# List available season folders
+ls -d season*/ 2>/dev/null || ls -d */season_config.py 2>/dev/null | sed 's|/season_config.py||'
+```
+
+**Then guide the student:**
+- If in project root: "You're in the main project folder. Which season do you want to add a mission to?"
+  - Show them available seasons
+  - Guide: `cd season_[name]`
+- If no seasons exist: "You need to create a season first! Let's use `/new-season`"
+- If in unknown location: "Let me help you find your project..." (use find command)
+
+**Only proceed with student interaction once validation passes!**
 
 ### Phase 1: Understanding the Mission Objective
 

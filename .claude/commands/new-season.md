@@ -31,6 +31,35 @@ You are helping a middle school student set up a new robotics season folder for 
 
 ## Setup Process
 
+### Step 0: Directory Validation (DO THIS FIRST!)
+
+Before engaging with the student, silently run these validation checks using the Bash tool:
+
+```bash
+# Check current directory
+pwd
+
+# Verify new_season.py exists here
+ls new_season.py 2>/dev/null && echo "✓ Found new_season.py" || echo "✗ new_season.py not found"
+
+# Check if we're accidentally in a season folder
+ls season_config.py 2>/dev/null && echo "⚠ You appear to be IN a season folder - need to go up" || echo "✓ Not in a season folder"
+```
+
+**If `new_season.py` not found:**
+1. Try to find it: `find . -name "new_season.py" -maxdepth 3 -type f`
+2. If found in parent directory: Guide student with `cd ..`
+3. If not found at all: Ask student where they cloned the spike-python-explore project
+
+**If you're in a season folder:**
+1. Explain: "It looks like you're inside a season folder. We need to run this from the main project folder."
+2. Guide: "Let's go up one level: `cd ..`"
+3. Then re-run validation
+
+**Only proceed with student interaction once validation passes!**
+
+### Step 1-6: Gather Information
+
 Guide the student through these questions in a conversational way:
 
 ### 1. Season Name
@@ -94,11 +123,17 @@ Ask if their robot has:
 1. **Summarize** what you understood (let them confirm)
 
 2. **Create the season** using the Bash tool:
-```bash
-cd /Users/ehartye/local-docs/repos/spike-python-explore
-python new_season.py
-```
-Provide the answers via stdin or by modifying the script to accept command-line arguments.
+
+**IMPORTANT:** The `new_season.py` script is interactive and requires stdin input. You have two options:
+
+**Option A: Use AskUserQuestion to gather all info first, then call script (RECOMMENDED)**
+- Gather all information upfront using AskUserQuestion tool
+- Then call the script and provide answers line by line
+
+**Option B: Guide student to run script themselves**
+- Show them the exact command: `python new_season.py`
+- Walk them through each question as they run it
+- Explain each answer as they type it
 
 3. **Explain what was created**:
    - New folder: `season_[name]/`

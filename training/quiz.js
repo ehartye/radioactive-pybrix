@@ -10,8 +10,8 @@ const presentationSlides = [
                 </div>
                 <p>Instead of complicated codes, Python uses words you already know:</p>
                 <div class="code-example">
-print("Hello, Robot!")
-if temperature > 100:
+<span style="color: #dcdcaa;">print</span>(<span style="color: #ce9178;">"Hello, Robot!"</span>)
+<span style="color: #c586c0;">if</span> temperature > <span style="color: #b5cea8;">100</span>:
     turn_on_fan()
                 </div>
                 <p><strong>It's designed to be easy to read and write</strong></p>
@@ -27,20 +27,20 @@ if temperature > 100:
                     <div class="comparison-card good">
                         <h3>✓ Python</h3>
                         <div class="code-example" style="font-size: 0.9em;">
-print("Hello!")
+<span style="color: #dcdcaa;">print</span>(<span style="color: #ce9178;">"Hello!"</span>)
 
-for i in range(5):
-    motor.run(100)
+<span style="color: #c586c0;">for</span> i <span style="color: #c586c0;">in</span> <span style="color: #dcdcaa;">range</span>(<span style="color: #b5cea8;">5</span>):
+    motor.run(<span style="color: #b5cea8;">100</span>)
                         </div>
                         <p>Easy to read!</p>
                     </div>
                     <div class="comparison-card bad">
                         <h3>✗ Other Languages</h3>
                         <div class="code-example" style="font-size: 0.9em;">
-printf("Hello!");
+printf(<span style="color: #ce9178;">"Hello!"</span>);
 
-for(int i=0;i<5;i++){
-  motor.run(100);
+<span style="color: #c586c0;">for</span>(<span style="color: #c586c0;">int</span> i=<span style="color: #b5cea8;">0</span>;i<<span style="color: #b5cea8;">5</span>;i++){
+  motor.run(<span style="color: #b5cea8;">100</span>);
 }
                         </div>
                         <p>More confusing!</p>
@@ -111,10 +111,16 @@ for(int i=0;i<5;i++){
                 </div>
                 <p style="font-size: 1.3em; margin: 30px 0;">It's a <strong>library</strong> (toolkit) that makes controlling LEGO robots super easy!</p>
                 <div class="code-example">
-# Control your SPIKE Prime robot with simple commands:
-robot.drivebase.straight(500)  # Drive forward
-robot.drivebase.turn(90)       # Turn right
-robot.hub.display.text("Hi!")  # Show message
+<span style="color: #6a9955;"># Control your SPIKE Prime robot with simple commands:</span>
+
+<span style="color: #6a9955;"># Drive forward</span>
+robot.drivebase.straight(<span style="color: #b5cea8;">500</span>)
+
+<span style="color: #6a9955;"># Turn right</span>
+robot.drivebase.turn(<span style="color: #b5cea8;">90</span>)
+
+<span style="color: #6a9955;"># Show message</span>
+robot.hub.display.text(<span style="color: #ce9178;">"Hi!"</span>)
                 </div>
             </div>
         `
@@ -152,17 +158,18 @@ robot.hub.display.text("Hi!")  # Show message
             <div class="slide-content">
                 <h3>Without PyBricks: 😰</h3>
                 <div class="code-example" style="font-size: 0.85em;">
-# Hundreds of lines of complicated code to control a motor:
+<span style="color: #6a9955;"># Hundreds of lines of complicated code to control a motor:</span>
 calculate_voltage_signals()
 manage_motor_timing()
 sync_multiple_motors()
 handle_acceleration_curves()
 monitor_position_feedback()
-# ... and much more!
+<span style="color: #6a9955;"># ... and much more!</span>
                 </div>
                 <h3 style="margin-top: 30px;">With PyBricks: 😎</h3>
                 <div class="code-example" style="font-size: 1em;">
-motor.run(500)  # That's it!
+<span style="color: #6a9955;"># That's it!</span>
+motor.run(500)
                 </div>
             </div>
         `
@@ -177,7 +184,7 @@ motor.run(500)  # That's it!
                     <div class="highlight-box">
                         <h4>1️⃣ Import what you need</h4>
                         <div class="code-example" style="margin-top: 10px;">
-from pybricks.hubs import PrimeHub
+<span style="color: #c586c0;">from</span> pybricks.hubs <span style="color: #c586c0;">import</span> PrimeHub
                         </div>
                     </div>
                     <div class="highlight-box">
@@ -189,7 +196,7 @@ hub = PrimeHub()
                     <div class="highlight-box">
                         <h4>3️⃣ Use them!</h4>
                         <div class="code-example" style="margin-top: 10px;">
-hub.display.text("Hello!")
+hub.display.text(<span style="color: #ce9178;">"Hello!"</span>)
                         </div>
                     </div>
                 </div>
@@ -206,11 +213,17 @@ hub.display.text("Hello!")
                 </div>
                 <p style="margin: 20px 0;">The <strong>RobotController</strong> does all the setup for you:</p>
                 <div class="code-example">
-def run(robot: RobotController, display):
-    # Everything is ready to use!
-    robot.drivebase.straight(500)  # Drive forward
-    robot.drivebase.turn(90)       # Turn right
-    display.show_countdown(3)      # Count down
+<span style="color: #c586c0;">def</span> <span style="color: #dcdcaa;">run</span>(robot: RobotController, display):
+    <span style="color: #6a9955;"># Everything is ready to use!</span>
+
+    <span style="color: #6a9955;"># Drive forward</span>
+    robot.drivebase.straight(<span style="color: #b5cea8;">500</span>)
+
+    <span style="color: #6a9955;"># Turn right</span>
+    robot.drivebase.turn(<span style="color: #b5cea8;">90</span>)
+
+    <span style="color: #6a9955;"># Count down</span>
+    display.show_countdown(<span style="color: #b5cea8;">3</span>)
                 </div>
                 <div class="highlight-box" style="margin-top: 20px;">
                     <p>✅ Robot already initialized<br>
@@ -252,7 +265,7 @@ def run(robot: RobotController, display):
         content: `
             <div class="slide-content">
                 <div class="code-example">
-python new_season.py
+<span style="color: #4ec9b0;">python</span> new_season.py
                 </div>
                 <h3 style="margin: 30px 0 20px 0;">The script asks you simple questions:</h3>
                 <div style="text-align: left; max-width: 550px; margin: 0 auto;">
@@ -308,8 +321,8 @@ python new_season.py
                     <h3>Run from INSIDE your season folder:</h3>
                 </div>
                 <div class="code-example">
-cd my_season
-python ../new_mission.py
+<span style="color: #4ec9b0;">cd</span> my_season
+<span style="color: #4ec9b0;">python</span> ../new_mission.py
                 </div>
                 <h3 style="margin: 30px 0 20px 0;">What it does:</h3>
                 <div style="text-align: left; max-width: 550px; margin: 0 auto;">
@@ -343,18 +356,23 @@ python ../new_mission.py
                     <strong>Guided template:</strong> Quick-start + detailed examples by category</p>
                 </div>
                 <div class="code-example" style="text-align: left;">
-def run(robot: RobotController, display):
-    """Your mission code goes here!"""
+<span style="color: #c586c0;">def</span> <span style="color: #dcdcaa;">run</span>(robot: RobotController, display):
+    <span style="color: #ce9178;">"""Your mission code goes here!"""</span>
 
-    # Uncomment examples from the template:
-    # robot.drivebase.straight(500)    # Drive forward
-    # robot.drivebase.turn(90)         # Turn right
-    # display.show_countdown(3)        # Count down
+    <span style="color: #6a9955;"># Uncomment examples from the template:</span>
+    <span style="color: #6a9955;"># Drive forward</span>
+    <span style="color: #6a9955;"># robot.drivebase.straight(500)</span>
 
-    # Write your own mission logic!
-    robot.drivebase.straight(300)
-    robot.drivebase.turn(90)
-    robot.drivebase.straight(300)
+    <span style="color: #6a9955;"># Turn right</span>
+    <span style="color: #6a9955;"># robot.drivebase.turn(90)</span>
+
+    <span style="color: #6a9955;"># Count down</span>
+    <span style="color: #6a9955;"># display.show_countdown(3)</span>
+
+    <span style="color: #6a9955;"># Write your own mission logic!</span>
+    robot.drivebase.straight(<span style="color: #b5cea8;">300</span>)
+    robot.drivebase.turn(<span style="color: #b5cea8;">90</span>)
+    robot.drivebase.straight(<span style="color: #b5cea8;">300</span>)
                 </div>
                 <div class="highlight-box" style="margin-top: 20px;">
                     <p>The template has tons of examples in comments - just uncomment and modify!</p>
