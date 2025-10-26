@@ -70,40 +70,62 @@ class SeasonMenu:
     def run_mission(self, mission_key):
         """
         Run a specific mission
-        
+
         Args:
             mission_key: Key of the mission to run
         """
         if mission_key in self.missions:
             mission = self.missions[mission_key]
-            
+
             print(f"\n=== Starting Mission {mission_key}: {mission['name']} ===")
             print(f"Description: {mission['description']}")
-            
+
             # Show mission number on display
             self.hub.display.number(int(mission_key))
             wait(1000)
-            
+
+            # Import required classes for mission execution
+            from robot_controller import RobotController
+            from display_patterns import DisplayPatterns
+
+            # Get mission config (if the mission defines one)
+            mission_module = mission["run_function"]
+            mission_config = getattr(mission_module, 'MISSION_CONFIG', {})
+
+            # Initialize robot with mission-specific config
+            robot = RobotController(SeasonDefaults, mission_config)
+
             try:
-                # Execute the mission
-                mission["run_function"].run()
+                # Initialize robot hardware
+                robot.initialize()
+
+                # Create display helper
+                display = DisplayPatterns(robot.hub)
+
+                # Signal mission start
+                robot.mission_start_signal()
+
+                # Execute the mission (pass initialized robot and display)
+                mission["run_function"].run(robot, display)
 
                 # Success feedback
+                robot.mission_success_signal()
                 print(f"Mission {mission_key} completed successfully!")
-                self.hub.light.on(SeasonDefaults.MISSION_SUCCESS_COLOR)
-                self.hub.speaker.beep(800, 200)
-                
+
             except Exception as e:
                 # Error feedback
                 print(f"Mission {mission_key} failed: {e}")
-                self.hub.light.on(SeasonDefaults.MISSION_ERROR_COLOR)
-                self.hub.speaker.beep(200, 500)
-                
-                # Ask if user wants to retry
-                print("Press center button to retry, or continue to menu...")
-                # Note: In a real implementation, you might want to add button handling here
-                
+                robot.mission_error_signal()
+
+                # Show error on display
+                from display_patterns import DisplayPatterns
+                display = DisplayPatterns(robot.hub)
+                display.show_error_x()
+
             finally:
+                # Always clean up robot state
+                robot.cleanup()
+
                 # Brief pause before returning to menu
                 wait(2000)
                 self.hub.light.off()

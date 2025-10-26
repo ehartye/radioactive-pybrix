@@ -3,12 +3,9 @@ Mission {MISSION_NUM}: {MISSION_NAME}
 {MISSION_DESCRIPTION}
 """
 
-from robot_controller import RobotController
-from display_patterns import DisplayPatterns
-from season_config import SeasonDefaults
-
 # Mission-specific configuration
 # You can override any settings from SeasonDefaults here
+# The menu system will use these settings when initializing the robot
 MISSION_CONFIG = {{
     "drive_speed": {DRIVE_SPEED},      # Speed in mm/s
     "turn_rate": {TURN_RATE},          # Turn speed in degrees/s
@@ -17,21 +14,18 @@ MISSION_CONFIG = {{
     # "pause_time": 1000,
 }}
 
-def run():
-    """Main mission execution function"""
+def run(robot, display):
+    """
+    Main mission execution function
+
+    Args:
+        robot: RobotController object (already initialized and ready to use!)
+        display: DisplayPatterns object for showing patterns on hub display
+
+    The robot is already initialized with your MISSION_CONFIG settings above.
+    Just write your robot movements and logic below!
+    """
     print("=== Mission {MISSION_NUM}: {MISSION_NAME} ===")
-
-    robot = RobotController(SeasonDefaults, MISSION_CONFIG)
-
-    try:
-        # Step 1: Initialize the robot
-        robot.initialize()
-
-        # Step 2: Set up display (optional)
-        display = DisplayPatterns(robot.hub)
-
-        # Step 3: Signal mission start (beep + light)
-        robot.mission_start_signal()
 
         # ============================================================
         # TODO: ADD YOUR MISSION LOGIC HERE
@@ -136,28 +130,38 @@ def run():
         #   # With custom threshold (more sensitive to black)
         #   line_moves.square_on_line(black_threshold=25)
 
-        # DELETE THIS when you add your code:
-        print("Mission logic not implemented yet!")
-        print("Edit this file and add your robot movements above.")
+    # DELETE THIS when you add your code:
+    print("Mission logic not implemented yet!")
+    print("Edit this file and add your robot movements above.")
 
-        # ============================================================
-        # END OF MISSION LOGIC
-        # ============================================================
+    # ============================================================
+    # END OF MISSION LOGIC
+    # ============================================================
 
-        # Step 4: Signal success (beep + green light)
+# This lets you test the mission by running this file directly
+if __name__ == "__main__":
+    # For standalone testing, we need to set up the robot ourselves
+    from robot_controller import RobotController
+    from display_patterns import DisplayPatterns
+    from season_config import SeasonDefaults
+
+    robot = RobotController(SeasonDefaults, MISSION_CONFIG)
+
+    try:
+        robot.initialize()
+        display = DisplayPatterns(robot.hub)
+        robot.mission_start_signal()
+
+        # Run the mission
+        run(robot, display)
+
         robot.mission_success_signal()
         print("Mission {MISSION_NUM} completed successfully!")
 
     except Exception as e:
-        # If something goes wrong, show error
         print("Mission {MISSION_NUM} failed:", e)
         robot.mission_error_signal()
         raise e
 
     finally:
-        # Always clean up (stop motors, turn off lights)
         robot.cleanup()
-
-# This lets you test the mission by running this file directly
-if __name__ == "__main__":
-    run()

@@ -64,98 +64,306 @@ Working code examples demonstrating key concepts:
 - **xbox_controller_project/**: Advanced remote control example
 - **cryptid_example/**: Complex multi-file project structure
 
-## Key PyBricks Concepts to Teach
+## Key Concepts to Teach - What Students Actually Write
 
-### 1. Hub Initialization
+**IMPORTANT:** Students in this project **never initialize the robot themselves**. The RobotController handles all setup automatically. Students receive a pre-configured `robot` object and just write movement logic!
+
+### 1. The Mission Function - Your Starting Point
+
 ```python
-from pybricks.hubs import PrimeHub
-hub = PrimeHub()
-```
-Always the first step - creates connection to the robot brain.
-
-### 2. Motors
-```python
-from pybricks.pupdevices import Motor
-from pybricks.parameters import Port, Direction
-
-motor = Motor(Port.A)  # Connect to port A
-motor.run(500)  # Run at 500 degrees per second
-motor.run_angle(500, 360)  # Turn 360 degrees at 500 deg/s
-motor.stop()  # Stop and coast freely
-```
-
-**Key Teaching Points:**
-- Ports: Where motors plug in (A, B, C, D, E, F)
-- Speed: Measured in degrees per second
-- Angles: 360 degrees = one full rotation
-- Direction: Can be reversed when initializing
-
-### 3. Drive Bases (Two-Wheeled Robots)
-```python
-from pybricks.robotics import DriveBase
-
-left_motor = Motor(Port.C, Direction.COUNTERCLOCKWISE)
-right_motor = Motor(Port.D)
-robot = DriveBase(left_motor, right_motor, wheel_diameter=56, axle_track=80)
-
-robot.straight(200)  # Drive forward 200mm
-robot.turn(90)  # Turn right 90 degrees
-robot.drive(100, 0)  # Drive forward at 100 mm/s, no turning
+def run(robot: RobotController, display):
+    """Every mission follows this pattern"""
+    # The robot is already initialized for you!
+    # You have access to:
+    #   robot.drivebase          - Drive the robot
+    #   robot.hub                - Hub features (display, buttons, sensors, speaker, light)
+    #   robot.left_attachment    - Left attachment motor (if configured)
+    #   robot.right_attachment   - Right attachment motor (if configured)
+    #   robot.left_color_sensor  - Left color sensor (if configured)
+    #   robot.right_color_sensor - Right color sensor (if configured)
+    #   display                  - Display helper (countdown, checkmarks)
 ```
 
 **Key Teaching Points:**
-- Wheel diameter and axle track need measuring
-- Positive values = forward/right, negative = backward/left
-- `drive()` keeps going until stopped, `straight()` goes a set distance
+- Every mission has a `run()` function that receives `robot` and `display` parameters
+- **No initialization needed** - just start driving!
+- Robot configuration (ports, wheel size, speeds) lives in `season_config.py`
+- Students focus on **what the robot should do**, not **how to set it up**
 
-### 4. Hub Display
+### 2. Basic Driving - 90% of Missions
 ```python
-hub.display.number(42)  # Show number
-hub.display.text("Hi")  # Show scrolling text
-hub.display.icon(Icon.HEART)  # Show built-in icon
-hub.display.pixel(2, 2)  # Turn on pixel at row 2, column 2
-hub.display.off()  # Clear display
+# Drive straight forward 300mm
+robot.drivebase.straight(300)
+
+# Drive backward 200mm (negative number)
+robot.drivebase.straight(-200)
+
+# Turn right 90 degrees
+robot.drivebase.turn(90)
+
+# Turn left 90 degrees (negative number)
+robot.drivebase.turn(-90)
+
+# Complete mission example:
+robot.drivebase.straight(500)    # Drive forward
+robot.drivebase.turn(90)         # Turn right
+robot.drivebase.straight(300)    # Drive forward again
+robot.drivebase.turn(-90)        # Turn left
+robot.drivebase.straight(500)    # Return
 ```
 
-### 5. Hub Buttons
+**Key Teaching Points:**
+- **DriveBase is pre-configured** with correct wheel size and motor directions
+- **Gyro is automatically enabled** for accurate turns (no drift!)
+- **Distances** in millimeters (mm) - 1000mm = 1 meter
+- **Angles** in degrees (°) - 360° = full circle
+- **Positive** = forward/right, **Negative** = backward/left
+- Speed and acceleration already set in config (can override per mission)
+
+**Advanced Driving (optional):**
+```python
+# Drive forward continuously at 100 mm/s (until you call stop)
+robot.drivebase.drive(100, 0)
+
+# Drive and turn at same time (100 mm/s forward, 30 deg/s turn)
+robot.drivebase.drive(100, 30)
+
+# Stop the robot
+robot.drivebase.stop()
+```
+
+### 3. Hub Display
+```python
+# Show a number
+robot.hub.display.number(42)
+
+# Show scrolling text
+robot.hub.display.text("GO!")
+
+# Show built-in icon
+from pybricks.parameters import Icon
+robot.hub.display.icon(Icon.HEART)
+
+# Turn on single pixel (row, col) - both 0-4
+robot.hub.display.pixel(2, 2)
+
+# Clear display
+robot.hub.display.off()
+
+# Display helper shortcuts
+display.show_countdown(3)               # Count down 3-2-1
+display.show_completion_checkmark()     # Show success checkmark
+```
+
+**Key Teaching Points:**
+
+- Display is 5×5 grid of LEDs
+- Can show numbers, text (scrolls if long), icons, or custom patterns
+- `display` parameter has helpful shortcuts for common patterns
+- Access display directly via `robot.hub.display` or use `display` helper
+
+### 4. Hub Buttons
 ```python
 from pybricks.parameters import Button
 
-pressed = hub.buttons.pressed()
+# Check which buttons are pressed
+pressed = robot.hub.buttons.pressed()
+
 if Button.LEFT in pressed:
     # Left button was pressed
+    robot.hub.display.text("<")
+
+if Button.RIGHT in pressed:
+    # Right button was pressed
+    robot.hub.display.text(">")
+
 if Button.CENTER in pressed:
     # Center button was pressed
+    robot.hub.display.text("GO!")
 ```
 
-### 6. Tilt/IMU Sensor
+**Key Teaching Points:**
+
+- Three buttons: LEFT, RIGHT, CENTER (located on hub below display)
+- `pressed()` returns a list of currently pressed buttons
+- Use `in` to check if specific button is in the list
+- Useful for manual triggers or mode selection within missions
+
+### 5. Tilt/Gyro/IMU Sensor
 ```python
-pitch, roll = hub.imu.tilt()  # Get tilt angles
-up_side = hub.imu.up()  # Which side faces up
-heading = hub.imu.heading()  # Compass heading
+# Get tilt angles (-180 to 180 degrees)
+pitch, roll = robot.hub.imu.tilt()
+print(f"Pitch: {pitch}, Roll: {roll}")
+
+# Check which side is facing up
+from pybricks.parameters import Side
+up_side = robot.hub.imu.up()
+if up_side == Side.TOP:
+    print("Hub is right-side up!")
+
+# Get compass heading (0-360 degrees)
+heading = robot.hub.imu.heading()
+print(f"Heading: {heading} degrees")
+
+# Check if robot is stationary
+if robot.hub.imu.stationary():
+    print("Robot is not moving")
+
+# Get acceleration (in mm/s²)
+ax, ay, az = robot.hub.imu.acceleration()
 ```
 
-### 7. Hub Light
+**Key Teaching Points:**
+
+- IMU = "Inertial Measurement Unit" (gyro + accelerometer)
+- **Gyro is automatically used for accurate turns** - students don't need to enable it
+- Tilt angles useful for detecting if robot is on a ramp
+- `up()` useful for orientation detection
+- `heading()` gives compass direction (resets when robot initializes)
+
+### 6. Hub Light (Status LED)
 ```python
 from pybricks.parameters import Color
 
-hub.light.on(Color.RED)  # Turn on red
-hub.light.off()  # Turn off
-hub.light.blink(Color.GREEN, [500, 500])  # Blink pattern
+# Turn light on
+robot.hub.light.on(Color.RED)
+robot.hub.light.on(Color.GREEN)
+robot.hub.light.on(Color.BLUE)
+
+# Turn light off
+robot.hub.light.off()
+
+# Blink pattern (500ms on, 500ms off, repeat)
+robot.hub.light.blink(Color.GREEN, [500, 500])
 ```
 
-### 8. Speaker/Sounds
+**Key Teaching Points:**
+
+- This is the **status light around the center button**, not the display
+- Useful for showing mission status or debugging
+- RobotController automatically manages light color during missions (start/success/error)
+- Custom colors: `Color(h=180, s=100, v=100)` (hue, saturation, value)
+
+### 7. Speaker/Sounds
 ```python
-hub.speaker.beep()  # Simple beep
-hub.speaker.beep(frequency=800, duration=200)  # Custom beep
+# Simple beep
+robot.hub.speaker.beep()
+
+# Custom beep (frequency in Hz, duration in ms)
+robot.hub.speaker.beep(frequency=800, duration=200)
+
+# Play note (musical note, duration in ms)
+from pybricks.parameters import Note
+robot.hub.speaker.play_notes([
+    (Note.C4, 500),
+    (Note.E4, 500),
+    (Note.G4, 500)
+])
+
+# Set volume (0-100%)
+robot.hub.speaker.volume(50)
 ```
 
-### 9. Waiting
+**Key Teaching Points:**
+
+- RobotController automatically beeps at mission start/success/error
+- Students can add custom beeps for feedback or debugging
+- Musical notes useful for creative projects (play tunes!)
+
+### 8. Waiting/Delays
 ```python
 from pybricks.tools import wait
 
-wait(1000)  # Wait 1000 milliseconds (1 second)
+# Wait 1 second (1000 milliseconds)
+wait(1000)
+
+# Wait 2.5 seconds
+wait(2500)
+
+# Common pattern: run motor, wait, stop motor
+if robot.left_attachment:
+    robot.left_attachment.run(500)
+    wait(1000)  # Run for 1 second
+    robot.left_attachment.stop()
 ```
+
+**Key Teaching Points:**
+
+- **Time is in milliseconds (ms)** - 1000ms = 1 second
+- `wait()` pauses program execution
+- Useful for precise timing between movements
+- Don't confuse with `sleep()` (that's regular Python, not available here)
+
+### 9. Attachment Motors (If Configured)
+```python
+# Check if attachment exists before using
+if robot.left_attachment:
+    # Run continuously at 500 deg/s
+    robot.left_attachment.run(500)
+
+    # Run for specific time (using wait)
+    robot.left_attachment.run(500)
+    wait(1000)  # Run for 1 second
+    robot.left_attachment.stop()
+
+    # Run to specific angle
+    robot.left_attachment.run_angle(500, 90)  # Turn 90 degrees at 500 deg/s
+
+    # Run until stalled (hits resistance)
+    robot.left_attachment.run_until_stalled(200)
+
+    # Get current angle
+    angle = robot.left_attachment.angle()
+    print(f"Attachment angle: {angle}")
+
+# Same methods work for right attachment
+if robot.right_attachment:
+    robot.right_attachment.run_angle(300, 180)
+```
+
+**Key Teaching Points:**
+
+- Attachments are **optional** (not all robots have them)
+- **Always check with `if`** before using to avoid errors
+- Configured in `season_config.py` with ports and directions
+- Useful for claws, lifts, spinning mechanisms, etc.
+- Angles measured in degrees, speeds in degrees per second
+
+### 10. Color Sensors (If Configured)
+```python
+# Check if sensor exists before using
+if robot.left_color_sensor:
+    # Get reflected light intensity (0-100%)
+    reflection = robot.left_color_sensor.reflection()
+    print(f"Reflection: {reflection}%")
+
+    # Detect color
+    from pybricks.parameters import Color
+    color = robot.left_color_sensor.color()
+    if color == Color.BLACK:
+        print("Detected black line!")
+
+    # Get ambient light
+    ambient = robot.left_color_sensor.ambient()
+
+    # Get RGB values
+    hue, saturation, value = robot.left_color_sensor.hsv()
+
+# Common pattern: drive until seeing black line
+if robot.left_color_sensor:
+    robot.drivebase.drive(100, 0)  # Start driving
+    while robot.left_color_sensor.reflection() > 20:
+        wait(10)  # Check every 10ms
+    robot.drivebase.stop()  # Stop when black detected
+```
+
+**Key Teaching Points:**
+
+- Color sensors are **optional** (not all robots have them)
+- **Always check with `if`** before using
+- Useful for line following, color sorting, detecting edges
+- `reflection()` most common - lower values = darker surfaces
+- Black lines typically have reflection < 25%
 
 ## Understanding the RobotController Pattern
 
@@ -238,37 +446,114 @@ Common questions where you MUST check the implementation:
 ## Common Student Challenges
 
 ### Challenge 1: "My robot drives backwards!"
-**Solution**: Change motor direction when initializing
+
+**Solution**: Update motor direction in `season_config.py`
+
 ```python
-left_motor = Motor(Port.C, Direction.COUNTERCLOCKWISE)
+# In season_config.py, change the direction:
+from pybricks.parameters import Direction
+
+class Directions:
+    LEFT_WHEEL = Direction.COUNTERCLOCKWISE  # ← Change this
+    RIGHT_WHEEL = Direction.CLOCKWISE
 ```
 
-### Challenge 2: "The display is upside down!"
-**Solution**: Set display orientation
+**Key Point**: Students don't initialize motors in their missions - they configure them in `season_config.py`
+
+### Challenge 2: "The robot doesn't turn the right amount!"
+
+**Solution**: Calibrate measurements in `season_config.py`
+
 ```python
-hub.display.orientation(up=Side.RIGHT)
-# Or use auto-orientation
-hub.display.orientation(hub.imu.up())
+# In season_config.py, adjust these values:
+class Specifications:
+    WHEEL_DIAMETER = 56  # Measure actual wheel diameter (mm)
+    AXLE_TRACK = 115     # Measure distance between wheel centers (mm)
 ```
 
-### Challenge 3: "My motors are too slow/fast!"
-**Solution**: Adjust control limits
-```python
-motor.control.limits(speed=1000, acceleration=2000, torque=500)
-```
+**Debugging tips**:
 
-### Challenge 4: "The robot doesn't turn the right amount!"
-**Solution**: Calibrate wheel diameter and axle track measurements
 - Measure wheel diameter with ruler
 - Measure axle track (distance between wheel contact points)
-- Test and adjust values
+- Test with `robot.drivebase.turn(360)` - should turn exactly once
+- If it turns too much, increase AXLE_TRACK; too little, decrease it
+
+### Challenge 3: "My motors are too slow/fast!"
+
+**Solution**: Adjust speed settings in `season_config.py` or mission config
+
+```python
+# Option 1: Change defaults in season_config.py
+class SeasonDefaults:
+    DRIVE_SPEED = 300         # Increase for faster (mm/s)
+    TURN_RATE = 100           # Increase for faster turns (deg/s)
+
+# Option 2: Override in specific mission
+MISSION_CONFIG = {
+    "drive_speed": 500,       # Faster for this mission
+    "turn_rate": 150,
+}
+```
+
+**Key Point**: Speed configuration is separate from mission logic!
+
+### Challenge 4: "I get an error about attachments/sensors not existing!"
+
+**Solution**: Always check if optional components exist before using
+
+```python
+# WRONG - crashes if no attachment
+robot.left_attachment.run(500)
+
+# RIGHT - safe check first
+if robot.left_attachment:
+    robot.left_attachment.run(500)
+else:
+    print("No left attachment configured!")
+```
+
+**Key Point**: Only wheel motors are required. Attachments and sensors are optional and must be checked.
 
 ### Challenge 5: "I don't know what went wrong!"
+
 **Solution**: Use print statements for debugging
+
 ```python
-print("Motor angle:", motor.angle())
-print("Speed:", motor.speed())
+# Print robot state
+print("Distance traveled:", robot.drivebase.distance())
+print("Angle turned:", robot.drivebase.angle())
+
+# Print hub state
+pitch, roll = robot.hub.imu.tilt()
+print(f"Tilt: pitch={pitch}, roll={roll}")
+
+# Print attachment state
+if robot.left_attachment:
+    print("Attachment angle:", robot.left_attachment.angle())
 ```
+
+**Advanced debugging**:
+
+```python
+# Get system info
+robot.get_system_info()      # Shows battery, temperature, connections
+robot.debug_motor_status()   # Shows all motor angles and speeds
+```
+
+### Challenge 6: "I can't find my ports/configuration!"
+
+**Solution**: Everything is in `season_config.py` - never in mission files
+
+```python
+# Look in season_config.py to see your robot setup:
+class Ports:
+    LEFT_WHEEL = Port.C
+    RIGHT_WHEEL = Port.D
+    LEFT_ATTACHMENT = Port.A    # ← Your ports are here
+    RIGHT_ATTACHMENT = Port.B
+```
+
+**Key Point**: Use `new_season.py` script to set this up correctly from the start!
 
 ## Example Project Ideas for Students
 

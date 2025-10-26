@@ -18,77 +18,72 @@ MISSION_CONFIG = {
     # "pause_time": 1000,
 }
 
-def run():
-    """Main mission execution function"""
+def run(robot, display):
+    """
+    Main mission execution function
+
+    Args:
+        robot: RobotController object (already initialized)
+        display: DisplayPatterns object for hub display
+    """
     print("=== Mission 2: mission2Test ===")
 
-    robot = RobotController(SeasonDefaults, MISSION_CONFIG)
+    # ============================================================
+    # MISSION LOGIC: Square on Line Test
+    # ============================================================
 
-    try:
-        # Step 1: Initialize the robot
-        robot.initialize()
+    # This mission demonstrates the square_on_line function
+    # It drives forward until both color sensors detect a black line, then stops
 
-        # Step 2: Set up display (optional)
-        display = DisplayPatterns(robot.hub)
+    print("Starting square on line test...")
 
-        # Step 3: Signal mission start (beep + light)
-        robot.mission_start_signal()
+    # Show countdown so you have time to get ready
+    display.show_countdown(3)
 
-        # ============================================================
-        # MISSION LOGIC: Square on Line Test
-        # ============================================================
+    # Create line movements helper
+    line_moves = LineMovements(robot)
 
-        # This mission demonstrates the square_on_line function
-        # It drives forward until both color sensors detect a black line, then stops
+    # Drive forward until both sensors see the black line
+    # This uses the robot's built-in color sensors automatically!
+    print("Driving to line...")
+    line_moves.square_on_line(drive_speed=100, black_threshold=9)
 
-        print("Starting square on line test...")
+    # Success! Show checkmark
+    display.show_completion_checkmark()
 
-        # Show countdown so you have time to get ready
-        display.show_countdown(3)
+    print("✓ Successfully stopped on line!")
 
-        # Create line movements helper
-        line_moves = LineMovements(robot)
+    # Optional: You can also customize the behavior
+    # Examples you can try:
 
-        # Drive forward until both sensors see the black line
-        # This uses the robot's built-in color sensors automatically!
-        print("Driving to line...")
-        line_moves.square_on_line(drive_speed=100, black_threshold=9)
+    # Slower approach for more precision:
+    # line_moves.square_on_line(drive_speed=80)
 
-        # Success! Show checkmark
-        display.show_completion_checkmark()
+    # More sensitive to black (useful if line is faded):
+    # line_moves.square_on_line(black_threshold=25)
 
-        print("✓ Successfully stopped on line!")
+    # Both custom settings:
+    # line_moves.square_on_line(drive_speed=100, black_threshold=30)
 
-        # Optional: You can also customize the behavior
-        # Examples you can try:
+    # ============================================================
+    # END OF MISSION LOGIC
+    # ============================================================
 
-        # Slower approach for more precision:
-        # line_moves.square_on_line(drive_speed=80)
-
-        # More sensitive to black (useful if line is faded):
-        # line_moves.square_on_line(black_threshold=25)
-
-        # Both custom settings:
-        # line_moves.square_on_line(drive_speed=100, black_threshold=30)
-
-        # ============================================================
-        # END OF MISSION LOGIC
-        # ============================================================
-
-        # Step 4: Signal success (beep + green light)
-        robot.mission_success_signal()
-        print("Mission 2 completed successfully!")
-
-    except Exception as e:
-        # If something goes wrong, show error
-        print("Mission 2 failed:", e)
-        robot.mission_error_signal()
-        raise e
-
-    finally:
-        # Always clean up (stop motors, turn off lights)
-        robot.cleanup()
+    print("Mission 2 completed successfully!")
 
 # This lets you test the mission by running this file directly
 if __name__ == "__main__":
-    run()
+    # Standalone testing mode - initialize robot here
+    robot = RobotController(SeasonDefaults, MISSION_CONFIG)
+    try:
+        robot.initialize()
+        display = DisplayPatterns(robot.hub)
+        robot.mission_start_signal()
+        run(robot, display)
+        robot.mission_success_signal()
+    except Exception as e:
+        print(f"Mission failed: {e}")
+        robot.mission_error_signal()
+        raise e
+    finally:
+        robot.cleanup()
