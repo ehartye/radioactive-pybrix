@@ -58,6 +58,7 @@ Complete working example with 4 FLL-realistic missions students can learn from:
 - **`mission_04_line_following.py`**: Using color sensors for precision positioning
 - **`season_menu.py`**: Mission selector menu
 - **`season_config.py`**: Robot-specific configuration
+- **`archive/`**: Alternative mission examples (square drive, circle drive, display patterns, triangle combo) - not in menu but available as reference
 
 ### Reference Documentation (`reference_docs/`)
 Contains excerpts from official PyBricks documentation covering:

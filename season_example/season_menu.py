@@ -86,7 +86,6 @@ class SeasonMenu:
 
             # Import required classes for mission execution
             from robot_controller import RobotController
-            from display_patterns import DisplayPatterns
 
             # Get mission config (if the mission defines one)
             mission_module = mission["run_function"]
@@ -99,14 +98,12 @@ class SeasonMenu:
                 # Initialize robot hardware
                 robot.initialize()
 
-                # Create display helper
-                display = DisplayPatterns(robot.hub)
-
                 # Signal mission start
                 robot.mission_start_signal()
 
-                # Execute the mission (pass initialized robot and display)
-                mission["run_function"].run(robot, display)
+                # Execute the mission (pass initialized robot)
+                # Note: Display is accessible via robot.display
+                mission["run_function"].run(robot)
 
                 # Success feedback
                 robot.mission_success_signal()

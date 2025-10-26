@@ -9,7 +9,7 @@ from pybricks.parameters import Color
 from pybricks.tools import wait
 
 # Import all mission modules (flat structure for PyBricks compatibility)
-{MISSION_IMPORTS}
+import mission_01_drive_and_lift
 from season_config import SeasonInfo, SeasonDefaults
 
 class SeasonMenu:
@@ -17,16 +17,20 @@ class SeasonMenu:
 
     def __init__(self):
         self.hub = PrimeHub()
-        self.missions = {{
-{MISSION_DICT}
-        }}
+        self.missions = {
+            "1": {
+                "name": "drive and lift",
+                "description": "drive and lift",
+                "run_function": mission_01_drive_and_lift
+            }
+        }
 
     def show_welcome(self):
         """Display welcome message and season info"""
         print("=" * 50)
-        print(f"Welcome to {{SeasonInfo.NAME}}")
-        print(f"Team: {{SeasonInfo.TEAM}}")
-        print(f"Description: {{SeasonInfo.DESCRIPTION}}")
+        print(f"Welcome to {SeasonInfo.NAME}")
+        print(f"Team: {SeasonInfo.TEAM}")
+        print(f"Description: {SeasonInfo.DESCRIPTION}")
         print("=" * 50)
 
         # Show welcome on display
@@ -40,8 +44,8 @@ class SeasonMenu:
         print("\nAvailable Missions:")
         print("-" * 30)
         for key, mission in sorted(self.missions.items()):
-            print(f"{{key}}. {{mission['name']}}")
-            print(f"   {{mission['description']}}")
+            print(f"{key}. {mission['name']}")
+            print(f"   {mission['description']}")
         print("Q. Quit")
         print("-" * 30)
 
@@ -55,8 +59,8 @@ class SeasonMenu:
         if mission_key in self.missions:
             mission = self.missions[mission_key]
 
-            print(f"\n=== Starting Mission {{mission_key}}: {{mission['name']}} ===")
-            print(f"Description: {{mission['description']}}")
+            print(f"\n=== Starting Mission {mission_key}: {mission['name']} ===")
+            print(f"Description: {mission['description']}")
 
             # Show mission number on display
             self.hub.display.number(int(mission_key))
@@ -67,7 +71,7 @@ class SeasonMenu:
 
             # Get mission config (if the mission defines one)
             mission_module = mission["run_function"]
-            mission_config = getattr(mission_module, 'MISSION_CONFIG', {{}})
+            mission_config = getattr(mission_module, 'MISSION_CONFIG', {})
 
             # Initialize robot with mission-specific config
             robot = RobotController(SeasonDefaults, mission_config)
@@ -85,11 +89,11 @@ class SeasonMenu:
 
                 # Success feedback
                 robot.mission_success_signal()
-                print(f"Mission {{mission_key}} completed successfully!")
+                print(f"Mission {mission_key} completed successfully!")
 
             except Exception as e:
                 # Error feedback
-                print(f"Mission {{mission_key}} failed: {{e}}")
+                print(f"Mission {mission_key} failed: {e}")
                 robot.mission_error_signal()
 
                 # Show error on display
@@ -106,7 +110,7 @@ class SeasonMenu:
                 self.hub.light.off()
                 self.hub.display.off()
         else:
-            print(f"Invalid mission: {{mission_key}}")
+            print(f"Invalid mission: {mission_key}")
             self.hub.speaker.beep(300, 100)
 
     def main_loop(self):
@@ -117,8 +121,8 @@ class SeasonMenu:
             self.show_mission_list()
 
             # Get user selection
-            print(f"\nSelect mission ({MISSION_RANGE}) or Q to quit:")
-            selected = hub_menu({MISSION_OPTIONS})
+            print(f"\nSelect mission (1-1) or Q to quit:")
+            selected = hub_menu("1", "Q")
 
             if selected == "Q":
                 print("\nExiting season menu...")
@@ -136,7 +140,7 @@ def main():
         menu = SeasonMenu()
         menu.main_loop()
     except Exception as e:
-        print(f"Season menu error: {{e}}")
+        print(f"Season menu error: {e}")
         # Emergency cleanup
         hub = PrimeHub()
         hub.light.on(Color.RED)

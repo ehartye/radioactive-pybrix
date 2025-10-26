@@ -1,38 +1,44 @@
-# Season Template Example
+# Season Example - FLL-Realistic Missions
 
-A comprehensive template for organizing robot missions in a season-based structure with shared utilities and modular design.
+A complete working example season with 4 FLL-realistic missions that demonstrate common robotics competition patterns.
 
 ## Overview
 
-This template demonstrates a well-organized approach to creating robot seasons with multiple missions. It features:
+This example season demonstrates a well-organized approach to creating robot seasons with multiple missions. It features:
 
 - **Hierarchical Configuration**: Base season config with per-mission overrides
-- **Shared Utilities**: Common robot control, display patterns, and movement functions
-- **Modular Missions**: Self-contained missions with `run()` functions for repeatability
+- **Shared Utilities**: Common robot control, display patterns, and line-following functions
+- **Modular Missions**: Self-contained missions with `run(robot)` functions
 - **Menu System**: Interactive mission selection with continuous operation support
-- **Example Missions**: Demonstrations of robot driving in shapes and displaying patterns
+- **FLL-Realistic Missions**: Practical examples of navigation, attachments, feedback, and sensors
 
 ## Project Structure
 
 **Important:** PyBricks MicroPython does not support subdirectories for imports. All files must be in a flat structure in the same directory.
 
 ```
-season_template_example/
+season_example/
 ├── season_menu.py                    # ⭐ Main menu - START HERE!
 ├── season_config.py                  # Base configuration (ports, speeds, etc.)
 ├── robot_controller.py               # Common robot control functions
 ├── display_patterns.py               # Shared display pattern utilities
-├── shape_movements.py                # Common shape driving logic
-├── mission_01_square_drive.py        # Mission 1: Drive in square pattern
-├── mission_02_circle_drive.py        # Mission 2: Drive in circle pattern
-├── mission_03_square_display.py      # Mission 3: Display square on screen
-├── mission_04_triangle_combo.py      # Mission 4: Drive triangle + display
+├── line_movements.py                 # Line detection and following functions
+├── mission_01_drive_to_target.py     # Mission 1: Navigate to target and return
+├── mission_02_attachment_demo.py     # Mission 2: Use attachment motors
+├── mission_03_display_feedback.py    # Mission 3: Display/lights/sounds feedback
+├── mission_04_line_following.py      # Mission 4: Line detection and squaring
+├── archive/                          # Alternative mission examples (not in menu)
+│   ├── README.md                     # Documentation for archived missions
+│   ├── mission_01_square_drive.py    # Alternative: Drive in square pattern
+│   ├── mission_02_circle_drive.py    # Alternative: Drive in circles
+│   ├── mission_03_square_display.py  # Alternative: Display patterns
+│   └── mission_04_triangle_combo.py  # Alternative: Triangle driving + display
 ├── QUICKSTART.md                     # 5-minute getting started guide
 ├── INSTRUCTIONS.md                   # How to add new missions
 └── README.md                         # This documentation
 ```
 
-**⚠️ All files must be uploaded together to your SPIKE Prime hub.**
+**⚠️ All main files (not archive/) must be uploaded together to your SPIKE Prime hub.**
 
 ## Quick Start
 
@@ -51,23 +57,13 @@ You can also test missions individually during development:
 
 ```python
 # In season_menu.py or directly on hub
-import mission_01_square_drive
+import mission_01_drive_to_target
 
 # Run a specific mission
-mission_01_square_drive.run()
+mission_01_drive_to_target.run()
 ```
 
-### Running Demo Sequences
-
-```python
-from season_template_example.season_menu import run_quick_demo, run_custom_sequence
-
-# Run all missions in sequence
-run_quick_demo()
-
-# Run custom mission sequence
-run_custom_sequence()
-```
+**Note:** Individual mission execution requires you to initialize the robot yourself. The season menu handles this automatically.
 
 ## Configuration System
 
@@ -148,86 +144,68 @@ movements.drive_square(side_length=300)
 movements.drive_circle(radius=200)
 ```
 
-## Mission Examples
+## Main Missions (In Menu)
 
-### Mission 01: Square Drive
+These are the 4 FLL-realistic missions registered in `season_menu.py`:
 
-Drives the robot in a square pattern with configurable size and speed.
+### Mission 01: Drive to Target
 
-**Features:**
-- Precise 90-degree turns
-- Configurable side length
-- Optional corner pauses
-- Progress display
-- Custom size function
+Navigate to a precise position and return home - demonstrates the basic FLL pattern.
 
-**Usage:**
-```python
-import mission_01_square_drive
+**What it teaches:**
+- Precise straight-line driving with specific distances
+- Accurate angle turns for navigation
+- Multi-step mission structure (drive → align → approach → return)
+- Using display for visual feedback
 
-mission_01_square_drive.run()  # Default 300mm square
-mission_01_square_drive.run_with_custom_size(500)  # Custom 500mm square
-```
+**FLL Application:** Driving to mission models, approaching targets, returning to base
 
-### Mission 02: Circle Drive
+### Mission 02: Attachment Demo
 
-Drives the robot in a circle pattern with configurable radius and direction.
+Use attachment motors for mechanisms like claws, lifts, and spinners.
 
-**Features:**
-- Smooth circular motion
-- Configurable radius and direction
-- Optional return to start
-- Figure-eight pattern support
-- Display animation sync
+**What it teaches:**
+- Running attachment motors at specific speeds
+- Moving to specific angles
+- Running until stalled (detecting resistance)
+- Combining attachment actions with driving
 
-**Usage:**
-```python
-import mission_02_circle_drive
+**FLL Application:** Lifting mission models, operating mechanisms, releasing objects
 
-mission_02_circle_drive.run()  # Default 200mm radius clockwise
-mission_02_circle_drive.run_with_custom_radius(150, clockwise=False)  # Custom counter-clockwise
-mission_02_circle_drive.run_figure_eight()  # Figure-eight pattern
-```
+### Mission 03: Display Feedback
 
-### Mission 03: Square Display
+Mission feedback using display, lights, and sounds - no robot movement (great for testing!).
 
-Displays animated square patterns on the robot's screen without driving.
+**What it teaches:**
+- Showing countdowns and checkmarks
+- Using hub lights for status indication
+- Playing beeps and tones
+- Creating custom display patterns
+- Progress bars and animations
 
-**Features:**
-- Multi-cycle animations
-- Pattern variants
-- Custom timing control
-- Interactive progress display
-- Static pattern showcase
+**FLL Application:** Visual confirmation of mission steps, debugging without moving robot
 
-**Usage:**
-```python
-import mission_03_square_display
+### Mission 04: Line Following
 
-mission_03_square_display.run()  # Default animation
-mission_03_square_display.run_with_custom_timing(200, 10)  # 200ms delay, 10 cycles
-mission_03_square_display.run_interactive_display()  # Interactive mode
-```
+Use color sensors for precision positioning with line detection.
 
-### Mission 04: Triangle Combo
+**What it teaches:**
+- Reading color sensor reflection values
+- Detecting black lines
+- "Squaring" on a line for precise positioning
+- Combining sensors with navigation
 
-Combines triangle driving with triangle display patterns for synchronized operation.
+**FLL Application:** Precise positioning on competition mat, line following, edge detection
 
-**Features:**
-- Synchronized display with movement
-- Multiple execution modes
-- Custom triangle sizes
-- Multi-triangle sequences
-- Return-to-start option
+## Alternative Mission Examples (Archived)
 
-**Usage:**
-```python
-import mission_04_triangle_combo
+The `archive/` folder contains 4 alternative mission examples that demonstrate different patterns:
+- **Square Drive** - Geometric patterns with loops
+- **Circle Drive** - Using curve() for circular motion
+- **Square Display** - Custom LED patterns and animations
+- **Triangle Combo** - Synchronized movement and display
 
-mission_04_triangle_combo.run()  # Default synchronized combo
-mission_04_triangle_combo.run_with_custom_size(400)  # Custom 400mm triangle
-mission_04_triangle_combo.run_multi_triangle_combo()  # Multiple triangles
-```
+See `archive/README.md` for details on these teaching examples.
 
 ## Menu System
 
