@@ -801,6 +801,19 @@ function startQuiz() {
     showQuestion();
 }
 
+// Shuffle array using Fisher-Yates algorithm
+function shuffleArray(array) {
+    const shuffled = [...array]; // Create a copy
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+}
+
+// Store shuffled answer mapping for current question
+let currentAnswerMapping = [];
+
 function showQuestion() {
     const question = quizQuestions[currentQuestionIndex];
 
@@ -816,12 +829,22 @@ function showQuestion() {
     answersContainer.innerHTML = '';
     feedback.classList.add('hidden');
 
-    // Create answer buttons
-    question.answers.forEach((answer, index) => {
+    // Create shuffled answer mapping
+    // Each entry: { originalIndex, answer }
+    currentAnswerMapping = question.answers.map((answer, index) => ({
+        originalIndex: index,
+        answer: answer
+    }));
+
+    // Shuffle the mapping
+    currentAnswerMapping = shuffleArray(currentAnswerMapping);
+
+    // Create answer buttons with shuffled order
+    currentAnswerMapping.forEach((item, shuffledIndex) => {
         const button = document.createElement('button');
         button.className = 'answer-button';
-        button.textContent = answer;
-        button.addEventListener('click', () => selectAnswer(index));
+        button.textContent = item.answer;
+        button.addEventListener('click', () => selectAnswer(shuffledIndex));
         answersContainer.appendChild(button);
     });
 }
@@ -836,13 +859,20 @@ function selectAnswer(selectedIndex) {
         button.style.pointerEvents = 'none';
     });
 
+    // Get the original index of the selected answer
+    const selectedOriginalIndex = currentAnswerMapping[selectedIndex].originalIndex;
+    const isCorrect = selectedOriginalIndex === question.correctIndex;
+
     // Mark selected answer
-    const isCorrect = selectedIndex === question.correctIndex;
     answerButtons[selectedIndex].classList.add(isCorrect ? 'correct' : 'incorrect');
 
     // If incorrect, also highlight the correct answer
     if (!isCorrect) {
-        answerButtons[question.correctIndex].classList.add('correct');
+        // Find which shuffled position has the correct answer
+        const correctShuffledIndex = currentAnswerMapping.findIndex(
+            item => item.originalIndex === question.correctIndex
+        );
+        answerButtons[correctShuffledIndex].classList.add('correct');
     }
 
     // Update score
@@ -854,7 +884,7 @@ function selectAnswer(selectedIndex) {
     // Store user's answer
     userAnswers.push({
         questionIndex: currentQuestionIndex,
-        selectedIndex: selectedIndex,
+        selectedIndex: selectedOriginalIndex, // Store original index for review
         correct: isCorrect
     });
 
