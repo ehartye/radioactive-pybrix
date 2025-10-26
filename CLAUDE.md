@@ -28,6 +28,14 @@ When helping students:
 
 This repository provides a complete season management system for students:
 
+### Interactive Training (`training/`)
+Before students start building, they should take the interactive training quiz:
+- **`launch_training.py`**: Launcher script to open training in browser
+- **`quiz.html/js/css`**: Interactive presentation and quiz system
+- **`README.md`**: Training documentation for educators
+- **Topics covered**: Python basics, PyBricks overview, libraries, project workflow
+- **Format**: 14 presentation slides + 12 quiz questions with immediate feedback
+
 ### Season Management Tools (Root Level)
 - **`new_season.py`**: Interactive script to create a new season folder with robot-specific configuration
 - **`new_mission.py`**: Interactive script to add missions to a season (auto-updates menu)

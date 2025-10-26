@@ -4,6 +4,22 @@ A comprehensive learning environment for middle school students working with **L
 
 ## 🚀 Quick Start for Students
 
+### New to Python and PyBricks? Start here! 🎓
+
+**Take the interactive training quiz first:**
+
+```bash
+python training/launch_training.py
+```
+
+This fun, interactive quiz teaches you:
+- What Python is and why we use it
+- What PyBricks is and how it helps
+- How to use our project tools
+- Key concepts before you start coding
+
+### Ready to build? Create your robot season!
+
 **Want to create your own robot season? It's super easy!**
 
 ```bash
@@ -31,8 +47,16 @@ spike-python-explore/
 ├── new_mission.py          ⭐ Run this (from season folder) to add missions
 ├── STUDENT_GUIDE.md        📖 Complete guide for students
 │
+├── training/               🎓 Interactive learning quiz
+│   ├── launch_training.py  ⭐ Run this to start training
+│   ├── quiz.html
+│   ├── quiz.js
+│   ├── quiz.css
+│   └── README.md
+│
 ├── season_template/        📦 Template files (used by scripts)
-│   ├── _template_mission.py
+│   ├── _template_mission_simple.py
+│   ├── _template_mission_guided.py
 │   ├── season_config.py.template
 │   ├── season_menu.py.template
 │   └── ... (shared utilities)
@@ -40,10 +64,10 @@ spike-python-explore/
 ├── season_example/         📚 Working example with 4 complete missions
 │   ├── season_menu.py
 │   ├── season_config.py
-│   ├── mission_01_square_drive.py
-│   ├── mission_02_circle_drive.py
-│   ├── mission_03_square_display.py
-│   └── mission_04_triangle_combo.py
+│   ├── mission_01_drive_to_target.py
+│   ├── mission_02_attachment_demo.py
+│   ├── mission_03_display_feedback.py
+│   └── mission_04_line_following.py
 │
 └── reference_docs/         📄 PyBricks documentation excerpts
     └── reference_code/     💻 Additional code examples
@@ -66,11 +90,11 @@ The `new_mission.py` script:
 - Assigns the next mission number automatically
 
 ### 3. Learn by Example
-The `season_example/` folder has 4 complete missions:
-- **Mission 1:** Drive in a square
-- **Mission 2:** Drive in a circle
-- **Mission 3:** Display patterns (no motors needed!)
-- **Mission 4:** Drive triangle + display together
+The `season_example/` folder has 4 FLL-realistic missions:
+- **Mission 1:** Drive to Target - Navigation and return pattern
+- **Mission 2:** Attachment Demo - Using attachment motors safely
+- **Mission 3:** Display Feedback - Display, lights, sounds (no motors needed!)
+- **Mission 4:** Line Following - Precision positioning with line sensors
 
 ## 🛠️ For Educators & Mentors
 
@@ -156,23 +180,27 @@ All files must be uploaded together to the SPIKE Prime hub.
 
 ## 🎓 Learning Progression
 
+### Before You Start
+- **Take the training quiz:** `python training/launch_training.py`
+- Learn Python, PyBricks, and project concepts interactively
+
 ### Beginner (Week 1)
 - Run `new_season.py` and `new_mission.py`
-- Try `mission_03_square_display` from examples (no motors)
+- Try `mission_03_display_feedback` from examples (no motors needed!)
 - Make robot drive straight
 - Make robot turn
 
 ### Intermediate (Weeks 2-3)
-- Drive in shapes (square, circle)
-- Use display patterns
-- Combine movements
+- Navigate to targets and return
+- Use display patterns for feedback
+- Combine movements in sequences
 - Add waiting/timing
 
 ### Advanced (Weeks 4+)
-- Use attachment motors
-- Read sensors
+- Use attachment motors for tasks
+- Read sensors for line following
 - Make decisions based on sensor data
-- Create complex multi-step missions
+- Create complex multi-step FLL missions
 - Optimize for speed and accuracy
 
 ## ❓ Common Issues

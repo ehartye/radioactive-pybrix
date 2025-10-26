@@ -2,6 +2,22 @@
 
 Welcome! This guide will help you create and organize your SPIKE Prime robot programs for the season.
 
+## 🎓 New to Python and PyBricks? Start Here!
+
+**Before following this guide, take our interactive training quiz:**
+
+```bash
+python training/launch_training.py
+```
+
+This fun quiz teaches you everything you need to know before you start:
+- What Python is and why we use it
+- What PyBricks is and how it controls robots
+- How our project tools work
+- Key programming concepts
+
+**After the quiz, come back here to create your first season!**
+
 ## Overview
 
 This repository provides tools to help you:

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radioactive Pybrix - Robotics Training</title>
+    <link rel="stylesheet" href="quiz.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Radioactive Pybrix</h1>
+            <p class="subtitle">Master Python robotics and bring your LEGO creations to life!</p>
+        </header>
+
+        <div id="welcome-screen" class="screen active">
+            <div class="welcome-content">
+                <h2>Welcome to Radioactive Pybrix!</h2>
+                <p class="big-text">Let's learn how to program LEGO robots with Python!</p>
+                <div class="welcome-icons">
+                    <div class="icon-card">
+                        <div class="icon">🐍</div>
+                        <p>Learn Python</p>
+                    </div>
+                    <div class="icon-card">
+                        <div class="icon">🤖</div>
+                        <p>Control Robots</p>
+                    </div>
+                    <div class="icon-card">
+                        <div class="icon">📚</div>
+                        <p>Use Libraries</p>
+                    </div>
+                </div>
+                <button id="start-presentation-button" class="big-button">Let's Go!</button>
+            </div>
+        </div>
+
+        <div id="presentation-screen" class="screen">
+            <div class="slide-container">
+                <div class="slide-number">
+                    <span id="current-slide">1</span> / <span id="total-slides">14</span>
+                </div>
+
+                <div id="slides-content" class="slides-content"></div>
+
+                <div class="slide-navigation">
+                    <button id="prev-slide" class="nav-button" disabled>← Previous</button>
+                    <button id="next-slide" class="nav-button">Next →</button>
+                    <button id="start-quiz-button" class="big-button" style="display: none;">Take the Quiz!</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="quiz-screen" class="screen">
+            <div class="progress-bar">
+                <div id="progress-fill" class="progress-fill"></div>
+                <span id="progress-text" class="progress-text">Question 1 of 10</span>
+            </div>
+
+            <div id="question-container" class="question-container">
+                <h2 id="question-text" class="question-text"></h2>
+                <div id="answers-container" class="answers-container"></div>
+            </div>
+
+            <div id="feedback" class="feedback hidden">
+                <p id="feedback-text"></p>
+                <button id="next-button" class="big-button">Next Question</button>
+            </div>
+
+            <div class="score-display">
+                <span>Score: <span id="current-score">0</span>/<span id="total-questions">0</span></span>
+            </div>
+        </div>
+
+        <div id="results-screen" class="screen">
+            <div class="results-content">
+                <h2>Quiz Complete!</h2>
+                <div class="final-score">
+                    <p>Your Score:</p>
+                    <p class="score-big"><span id="final-score">0</span>/<span id="final-total">0</span></p>
+                    <p class="percentage" id="percentage">0%</p>
+                </div>
+                <div id="performance-message" class="performance-message"></div>
+                <div class="results-actions">
+                    <button id="review-button" class="big-button">Review Answers</button>
+                    <button id="restart-button" class="big-button secondary">Retake Quiz</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="review-screen" class="screen">
+            <h2>Answer Review</h2>
+            <div id="review-container" class="review-container"></div>
+            <button id="finish-button" class="big-button">Back to Results</button>
+        </div>
+    </div>
+
+    <script src="quiz.js"></script>
+</body>
+</html>
