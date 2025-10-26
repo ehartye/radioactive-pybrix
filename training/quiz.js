@@ -388,16 +388,17 @@ hub.display.text(<span style="color: #ce9178;">"Hello!"</span>)
                 <h3>Almost there!</h3>
                 <div style="text-align: left; max-width: 500px; margin: 30px auto;">
                     <div class="highlight-box">
-                        <h4>1️⃣ Upload ALL .py files to hub</h4>
-                        <p style="margin-top: 10px;">⚠️ All files must be in the same folder on the hub (flat structure)</p>
+                        <h4>1️⃣ Upload season_menu.py to hub</h4>
+                        <p style="margin-top: 10px;">✨ PyBricks automatically uploads all the other files it needs through imports!</p>
+                        <p style="margin-top: 5px; font-size: 0.9em; opacity: 0.8;">All files must be in the same folder (flat structure)</p>
                     </div>
                     <div class="highlight-box">
-                        <h4>2️⃣ Run season_menu.py</h4>
-                        <p style="margin-top: 10px;">This shows your mission selector on the hub display</p>
+                        <h4>2️⃣ Run the program on the hub</h4>
+                        <p style="margin-top: 10px;">When you run season_menu.py, it shows your mission selector</p>
                     </div>
                     <div class="highlight-box">
                         <h4>3️⃣ Use hub buttons to pick your mission</h4>
-                        <p style="margin-top: 10px;">← → to navigate, Center button to select</p>
+                        <p style="margin-top: 10px;">← → to navigate, Center button to select and run</p>
                     </div>
                 </div>
                 <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 15px; margin-top: 25px;">

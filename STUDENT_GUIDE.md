@@ -98,10 +98,12 @@ robot.drivebase.straight(300)
 ### Step 4: Test on Your Robot (2 minutes)
 
 1. Connect your SPIKE Prime hub
-2. Upload **ALL** `.py` files from your season folder to the hub
+2. Upload `season_menu.py` to the hub (PyBricks automatically uploads the other files through imports!)
 3. Run `season_menu.py` on your hub
 4. Use LEFT/RIGHT buttons to select your mission
 5. Press CENTER button to run it!
+
+**Note:** All your `.py` files must be in the same folder on your computer. PyBricks detects and uploads imported files automatically when you upload `season_menu.py`.
 
 ## Alternative: AI-Assisted Setup (with Claude Code)
 
@@ -259,8 +261,8 @@ Creating your season...
   1. cd fall_competition
   2. python ../new_mission.py
   3. Edit your mission file to add robot movements
-  4. Upload all .py files to your SPIKE Prime hub
-  5. Run season_menu.py
+  4. Upload season_menu.py to your SPIKE Prime hub
+  5. Run season_menu.py (it automatically loads the other files!)
 ```
 
 ## Example: Adding a Mission
@@ -299,7 +301,7 @@ Creating mission...
 📍 Next steps:
   1. Edit mission_01_navigate_obstacle.py
   2. Add your robot logic in the run() function
-  3. Upload all .py files to your hub
+  3. Upload season_menu.py to your hub
   4. Run season_menu.py and select mission 1
 
 💡 Tip: Look at the helpful code examples in the file!
@@ -396,7 +398,7 @@ class Specifications:
 ```
 
 ### "Import errors when I run on the hub"
-Make sure you uploaded **ALL** `.py` files, not just your mission file.
+Make sure all your `.py` files are in the same folder on your computer. When you upload `season_menu.py`, PyBricks automatically detects and uploads the other files through imports. If you get import errors, check that all files are together in your season folder.
 
 ### "I want to see a working example"
 Check the `season_example/` folder - it has 4 complete example missions you can learn from!
@@ -444,7 +446,7 @@ python ../new_mission.py
 
 **To test:**
 1. Edit mission file
-2. Upload all .py files to hub
-3. Run season_menu.py
+2. Upload season_menu.py to hub (automatically uploads other files!)
+3. Run season_menu.py on hub
 
 That's it! Happy coding! 🤖

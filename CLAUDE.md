@@ -692,8 +692,9 @@ from .shared import RobotController
    - Students uncomment and modify examples they need
 
 4. **Upload and Test**:
-   - Upload ALL `.py` files to SPIKE Prime hub (must be together!)
-   - Run `season_menu.py`
+   - Upload `season_menu.py` to SPIKE Prime hub (PyBricks automatically uploads imported files!)
+   - All `.py` files must be in the same folder on the computer (flat structure)
+   - Run `season_menu.py` on the hub
    - Use hub buttons to select and run missions
 
 ### For AI Assistants Helping Students
@@ -710,7 +711,7 @@ from .shared import RobotController
 3. **Guided template** = full examples with detailed comments (recommended for beginners)
 4. Guide them to use `robot.drivebase` directly - this is the primary FLL pattern
 5. Remind them about flat imports (no subdirectories)
-6. All files must be uploaded together to hub
+6. All files must be in same folder - PyBricks auto-uploads imported files when uploading season_menu.py
 
 **Important: Use Direct DriveBase Commands**
 - Real FLL missions use `robot.drivebase.straight()` and `robot.drivebase.turn()`
@@ -719,10 +720,11 @@ from .shared import RobotController
 - Students should write straightforward navigation code, not use abstraction layers
 
 **If helping debug:**
-1. Check they uploaded ALL `.py` files (common mistake)
-2. Check imports are flat (no `from missions.` or `from shared.`)
-3. Check ports in `season_config.py` match physical robot
-4. Check wheel measurements in `season_config.py` are accurate
+1. Check all `.py` files are in same folder on computer (PyBricks auto-uploads via imports)
+2. Check they uploaded `season_menu.py` to hub and ran it
+3. Check imports are flat (no `from missions.` or `from shared.`)
+4. Check ports in `season_config.py` match physical robot
+5. Check wheel measurements in `season_config.py` are accurate
 
 ### Example Mission Template Structure
 

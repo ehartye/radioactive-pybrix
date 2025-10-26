@@ -276,9 +276,9 @@ If student describes something very complex:
 
 ## Important Notes
 
-- Always check which season folder they're working in (use `pwd` or ask)
-- The script `new_mission.py` must be run from inside a season folder
-- It automatically updates `season_menu.py` - they don't edit that manually!
+- **Directory-independent**: The script finds seasons automatically - no need to cd anywhere!
+- Use the `--season` flag with the path discovered in Phase 0
+- The script automatically updates `season_menu.py` - students don't edit that manually!
 - Celebrate their creativity and planning skills!
 - If they're stuck, suggest looking at `season_example/` for ideas
 - Encourage iteration: "Your first version doesn't have to be perfect - you can always improve it!"
