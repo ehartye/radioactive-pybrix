@@ -46,7 +46,7 @@ def run(robot: RobotController):
 
     # Start lifting attachment at the SAME TIME (wait=False means don't wait!)
     if robot.left_attachment:
-        robot.left_attachment.run_angle(300, 145, wait=False)  # 300 deg/s, 45 degrees, don't wait
+        robot.left_attachment.run_angle(300, 145, wait=False)  # 300 deg/s, 145 degrees, don't wait
 
     # Now both are running together!
     # Wait for the drive to complete (500mm at 200mm/s = 2.5 seconds)
