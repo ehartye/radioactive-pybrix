@@ -115,7 +115,11 @@ class RobotController:
             print("Initializing left attachment motor (optional)...")
             try:
                 self.left_attachment = Motor(Ports.LEFT_ATTACHMENT, Directions.LEFT_ATTACHMENT)
+                # Set control settings for faster acceleration
+                # Note: Values must be realistic for SPIKE motors
+                self.left_attachment.control.limits(acceleration=2000)
                 print("✓ Left attachment motor initialized successfully")
+                print(f"  Acceleration: 2000 deg/s²")
             except Exception as e:
                 self.left_attachment = None
                 print("⚠ Left attachment not connected (this is okay!)")
@@ -125,7 +129,11 @@ class RobotController:
             print("Initializing right attachment motor (optional)...")
             try:
                 self.right_attachment = Motor(Ports.RIGHT_ATTACHMENT, Directions.RIGHT_ATTACHMENT)
+                # Set control settings for faster acceleration
+                # Note: Values must be realistic for SPIKE motors
+                self.right_attachment.control.limits(acceleration=2000)
                 print("✓ Right attachment motor initialized successfully")
+                print(f"  Acceleration: 2000 deg/s²")
             except Exception as e:
                 self.right_attachment = None
                 print("⚠ Right attachment not connected (this is okay!)")

@@ -9,8 +9,8 @@ from pybricks.parameters import Color
 from pybricks.tools import wait
 
 # Import all mission modules (flat structure for PyBricks compatibility)
-import mission_01_test_mission
-import mission_02_mission2test
+import unearthed.Surface_brushing as Surface_brushing
+import ship_wreck
 from season_config import SeasonInfo, SeasonDefaults
 
 class SeasonMenu:
@@ -22,12 +22,12 @@ class SeasonMenu:
             "1": {
                 "name": "test_mission",
                 "description": "a mission to test stuff",
-                "run_function": mission_01_test_mission
+                "run_function": Surface_brushing
             },
             "2": {
                 "name": "mission2Test",
                 "description": "mission2Test",
-                "run_function": mission_02_mission2test
+                "run_function": ship_wreck
             }
         }
 

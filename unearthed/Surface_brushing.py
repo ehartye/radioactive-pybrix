@@ -27,42 +27,33 @@ def run(robot, display):
         display: DisplayPatterns object for hub display
     """
     print("=== Mission 1: test_mission ===")
+    robot.left_attachment.run_angle(200, -105)
+    robot.drivebase.straight(500)
+     # Left attachment: turn 180 degrees right, then 180 degrees left          
+    robot.left_attachment.run_angle(200, 105)  # speed 180 deg/s, turn 180 degrees  
+    robot.drivebase.turn(-2)
+    robot.drivebase.straight(210)
+    robot.right_attachment.run_angle(200,  -160)  # speed 180 deg/s, turn 180 degrees
+    wait(250)
+    robot.drivebase.straight(20)
+    wait(250)
+    robot.drivebase.turn(-40)
+    wait(250)
+    robot.drivebase.straight(150)
+    wait(250)
+    robot.drivebase.straight(-200)
+    robot.drivebase.turn(155)
+    robot.drivebase.straight(90)
+    robot.right_attachment.run_angle(400,160)
+    robot.drivebase.straight(-110)
+    robot.drivebase.turn(70)
+    robot.drivebase.straight(500)
 
-    # Drive straight forward 600mm:
-    robot.drivebase.straight(600)
-    # Turn left 60 degrees:
-    robot.drivebase.turn(-60)
-     # Left attachment: turn 180 degrees right, then 180 degrees left
-    if robot.left_attachment:
-        robot.left_attachment.run_angle(200, 180)  # speed 180 deg/s, turn 180 degrees
-        wait(500)  # Small pause to ensure completion
-        robot.left_attachment.run_angle(200, -190)  # speed 180 deg/s, turn -180 degrees
-        wait(500)  # Small pause to ensure completion
-    else:
-        print("Warning: Left attachment not connected!")
-    # Drive straight backward 100mm:
-    robot.drivebase.straight(-50)
-    if robot.right_attachment:
-        robot.right_attachment.run_angle(180, -45)  # speed 180 deg/s, turn -45 degrees
-    robot.drivebase.turn(50)
-    robot.drivebase.straight(200)
-    if robot.right_attachment:
-        robot.right_attachment.run_angle(180, -45)  # speed 180 deg/s, turn -45 degrees
-    robot.drivebase.straight(-100)
-    # Turn right 35 degrees:
-    robot.drivebase.turn(35)
-    # Right attachment movements
-    if robot.right_attachment:
-        robot.right_attachment.run_angle(100, 100)  # speed 100 deg/s, turn 100 degrees
-    else:
-        print("Warning: Right attachment not connected!")  
-    # Drive straight forward 200mm:
-    robot.drivebase.straight(200)
-    # Right attachment: turn -45 degrees
-    if robot.right_attachment:
-        robot.right_attachment.run_angle(180, -45)  # speed 180 deg/s, turn -45 degrees
-    else:
-        print("Warning: Right attachment not connected!")
+
+    
+    # Code messed up beyond this point:
+
+   
     # Turn right 90 degrees:
     #   robot.drivebase.turn(90)
     #
