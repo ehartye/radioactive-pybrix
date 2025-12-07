@@ -20,6 +20,26 @@ def run(robot, display):
     """
     print("=== MISSION 07 ===")
 
-    robot.drivebase.straight(300) 
-    robot.drivebase.turn(-65)
-    robot.right_attachment
+    robot.drivebase.straight(355) 
+    robot.drivebase.turn(-40)
+    robot.right_attachment.run_angle(1000,-175)
+    robot.drivebase.straight(350)
+    robot.drivebase.turn(-55)
+    robot.right_attachment.run_angle(500,200)
+    robot.drivebase.turn(70)
+
+if __name__ == "__main__":
+    # Standalone testing mode - initialize robot here
+    robot = RobotController(SeasonDefaults, MISSION_CONFIG)
+    try:
+        robot.initialize()
+        display = DisplayPatterns(robot.hub)
+        robot.mission_start_signal()
+        run(robot, display)
+        robot.mission_success_signal()
+    except Exception as e:
+        print(f"Mission failed: {e}")
+        robot.mission_error_signal()
+        raise e
+    finally:
+        robot.cleanup()

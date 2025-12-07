@@ -21,24 +21,32 @@ def run(robot, display):
     print("=== MISSION 08, 05, 06 ===")
 
     robot.drivebase.straight(400)
-    robot.right_attachment.run_angle(3000, -230)#Not strong enough to push down the lever (maybe use a wedge/slope???)
-    wait(250)
-    robot.right_attachment.run_angle(300, 230)
-    wait(250)
-    robot.right_attachment.run_angle(2000, -230)#still not strong enough
-    wait(250)
-    robot.right_attachment.run_angle(300, 230)
+    robot.right_attachment.run_angle(3000, -240)
+    wait(200)
+    robot.right_attachment.run_angle(300, 240)
+    wait(200)
+    robot.right_attachment.run_angle(3000, -240)
+    wait(200)
+    robot.right_attachment.run_angle(300, 235)
+    wait(200)
+    robot.right_attachment.run_angle(3000, -240)
+    wait(200)
+    robot.right_attachment.run_angle(300, 235)
     robot.drivebase.straight(-50)
     robot.drivebase.turn(-25)
     wait(250)
     robot.drivebase.straight(345)
     robot.drivebase.turn(70)
-    robot.drivebase.straight(160)
-    # Forward until robot squares on a line
-    line_moves = LineMovements(robot) 
-    line_moves.square_on_line(drive_speed=100) #should drive forward until is senses a black line
-    wait(250)
-    robot.left_attachment.run_angle(200, 120)
+    robot.drivebase.straight(145)
+    robot.left_attachment.run_angle(200, 200)
+    robot.drivebase.straight(-50)
+    robot.left_attachment.run_angle(200, -65)
+    robot.drivebase.turn(-30)
+    wait(500)
+    robot.drivebase.straight(40)
+    robot.drivebase.turn(-45)
+    wait(500)
+    robot.drivebase.straight(-1000)
 
 if __name__ == "__main__":
     # Standalone testing mode - initialize robot here
@@ -55,3 +63,9 @@ if __name__ == "__main__":
         raise e
     finally:
         robot.cleanup()
+
+
+
+
+
+
