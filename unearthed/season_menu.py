@@ -9,8 +9,11 @@ from pybricks.parameters import Color
 from pybricks.tools import wait
 
 # Import all mission modules (flat structure for PyBricks compatibility)
-import unearthed.Surface_brushing as Surface_brushing
-import ship_wreck
+import launch_01_surface_brushing
+import launch_02_ship_wreck
+import launch_03_whats_on_scale
+import launch_04_silo
+import launch_05_heavy_lifting
 from season_config import SeasonInfo, SeasonDefaults
 
 class SeasonMenu:
@@ -20,14 +23,29 @@ class SeasonMenu:
         self.hub = PrimeHub()
         self.missions = {
             "1": {
-                "name": "test_mission",
-                "description": "a mission to test stuff",
-                "run_function": Surface_brushing
+                "name": "Surface Brushing",
+                "description": "Surface brushing mission",
+                "run_function": launch_01_surface_brushing
             },
             "2": {
-                "name": "mission2Test",
-                "description": "mission2Test",
-                "run_function": ship_wreck
+                "name": "Ship Wreck",
+                "description": "Ship wreck mission",
+                "run_function": launch_02_ship_wreck
+            },
+            "3": {
+                "name": "What's On Scale",
+                "description": "Scale inspection mission",
+                "run_function": launch_03_whats_on_scale
+            },
+            "4": {
+                "name": "Silo",
+                "description": "Missions 08, 05, 06",
+                "run_function": launch_04_silo
+            },
+            "5": {
+                "name": "Heavy Lifting",
+                "description": "Mission 07",
+                "run_function": launch_05_heavy_lifting
             }
         }
 
@@ -130,8 +148,8 @@ class SeasonMenu:
             self.show_mission_list()
 
             # Get user selection
-            print(f"\nSelect mission (1-2) or Q to quit:")
-            selected = hub_menu("1", "2", "Q")
+            print(f"\nSelect mission (1-5) or Q to quit:")
+            selected = hub_menu("1", "2", "3", "4", "5", "Q")
 
             if selected == "Q":
                 print("\nExiting season menu...")
