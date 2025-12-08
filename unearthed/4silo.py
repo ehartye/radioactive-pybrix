@@ -43,7 +43,7 @@ def run(robot, display):
     robot.left_attachment.run_angle(200, -65)
     robot.drivebase.turn(-30)
     wait(500)
-    robot.drivebase.straight(40)
+    robot.drivebase.straight(50)
     robot.drivebase.turn(-45)
     wait(500)
     robot.drivebase.straight(-1000)
