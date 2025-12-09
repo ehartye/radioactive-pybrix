@@ -24,17 +24,17 @@ class SeasonMenu:
         self.missions = {
             "1": {
                 "name": "Surface Brushing",
-                "description": "Surface brushing mission",
+                "description": "Missions 01, 02, and 14",
                 "run_function": launch_01_surface_brushing
             },
             "2": {
                 "name": "Ship Wreck",
-                "description": "Ship wreck mission",
+                "description": "Misions 12 and 15",
                 "run_function": launch_02_ship_wreck
             },
             "3": {
                 "name": "What's On Scale",
-                "description": "Scale inspection mission",
+                "description": "Missions 09, 10, and 03",
                 "run_function": launch_03_whats_on_scale
             },
             "4": {
@@ -57,11 +57,7 @@ class SeasonMenu:
         print(f"Description: {SeasonInfo.DESCRIPTION}")
         print("=" * 50)
 
-        # Show welcome on display
-        self.hub.light.on(Color.BLUE)
-        self.hub.display.text("Hi!")
-        wait(2000)
-        self.hub.display.off()
+        # Ava deleted a welcoming thingy here because it was taking too much
 
     def show_mission_list(self):
         """Display available missions"""

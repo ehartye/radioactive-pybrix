@@ -23,22 +23,23 @@ def run(robot, display):
         display: DisplayPatterns object for hub display
     """
     robot.drivebase.turn(-39)
-    robot.drivebase.straight(820)
-    robot.drivebase.turn(10)
-    robot.drivebase.straight(-220)
+    robot.drivebase.straight(800)
+    robot.drivebase.turn(-25)
+    robot.drivebase.straight(70)
+    robot.drivebase.turn(25)
+    robot.drivebase.straight(-330)
     robot.drivebase.straight(120)
-    robot.drivebase.turn(-92)
+    robot.drivebase.turn(-72)
     robot.left_attachment.run_angle(1000,200)
     wait(250)
     robot.left_attachment.run_angle(1000,-100)
-    robot.drivebase.turn(20)
-    robot.drivebase.straight(410)
-    robot.drivebase.turn(-90)
-    robot.drivebase.straight(160)
-    robot.drivebase.turn(100)
-    robot.left_attachment.run_angle(1000,100)
-    robot.drivebase.straight(100)
-    robot.left_attachment.run_angle(1000,-200)
+    wait(500)
+    robot.drivebase.turn(25)
+    robot.right_attachment.run_angle(1000,-210)
+    robot.drivebase.straight(500)
+    robot.drivebase.turn(25)
+    robot.right_attachment.run_angle(1000,150)
+
 
 
 

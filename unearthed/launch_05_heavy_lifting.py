@@ -21,11 +21,11 @@ def run(robot, display):
     print("=== MISSION 07 ===")
 
     robot.drivebase.straight(355) 
-    robot.drivebase.turn(-40)
+    robot.drivebase.turn(-36)
     robot.right_attachment.run_angle(1000,-175)
     robot.drivebase.straight(350)
-    robot.drivebase.turn(-55)
-    robot.right_attachment.run_angle(500,200)
+    robot.drivebase.turn(-58)
+    robot.right_attachment.run_angle(200,175)
     robot.drivebase.turn(70)
 
 if __name__ == "__main__":

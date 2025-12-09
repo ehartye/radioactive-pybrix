@@ -44,7 +44,7 @@ def run(robot, display):
     robot.drivebase.turn(-30)
     wait(500)
     robot.drivebase.straight(50)
-    robot.drivebase.turn(-45)
+    robot.drivebase.turn(-40)
     wait(500)
     robot.drivebase.straight(-1000)
 
