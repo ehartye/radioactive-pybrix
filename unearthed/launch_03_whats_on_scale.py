@@ -38,8 +38,8 @@ def run(robot, display):
     robot.right_attachment.run_angle(1000,-210)
     robot.drivebase.straight(500)
     robot.drivebase.turn(20)
-    robot.right_attachment.run_angle(1000,150)
-
+    robot.right_attachment.run_angle(750,150)
+    robot.drivebase.straight(-200)
 
 
 

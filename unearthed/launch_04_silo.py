@@ -45,7 +45,8 @@ def run(robot, display):
     wait(500)
     robot.drivebase.straight(50)
     robot.drivebase.turn(-40)
-    wait(500)
+    wait(250)
+    robot.drivebase.turn(20)
     robot.drivebase.straight(-1000)
 
 if __name__ == "__main__":
