@@ -1,4 +1,5 @@
 """
+import mission_03_drive_test
 Season Menu System
 Main menu for selecting and running season missions
 """
@@ -145,7 +146,7 @@ class SeasonMenu:
 
             # Get user selection
             print(f"\nSelect mission (1-5) or Q to quit:")
-            selected = hub_menu("1", "2", "3", "4", "5", "Q")
+            selected = hub_menu("1", "2", "3", "3", "4", "5", "Q")
 
             if selected == "Q":
                 print("\nExiting season menu...")

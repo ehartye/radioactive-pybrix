@@ -37,7 +37,7 @@ if __name__ == "__main__":
         robot.mission_start_signal()
 
         # Run the mission (display is accessible via robot.display)
-
+        forward_backward(robot)
 
         robot.mission_success_signal()
         print("Mission 1 completed successfully!")

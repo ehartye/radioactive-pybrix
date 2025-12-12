@@ -79,7 +79,7 @@ if __name__ == "__main__":
 
         # Run the mission (display is accessible via robot.display)
         run(robot)
-
+        
         robot.mission_success_signal()
         print("Mission 1 completed successfully!")
 

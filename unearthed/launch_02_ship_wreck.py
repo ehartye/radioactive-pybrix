@@ -24,7 +24,7 @@ def run(robot, display):
     #
     robot.drivebase.straight(-125)
     #
-    robot.right_attachment.run_angle(200, 230)
+    robot.right_attachment.run_angle(200, 220)
     #
     robot.drivebase.turn(-60)
     #
@@ -36,15 +36,15 @@ def run(robot, display):
     #
     robot.drivebase.straight(-175)
     #
-    robot.drivebase.turn(45)
+    robot.drivebase.turn(40)
     #
     robot.left_attachment.run_angle(200,-170)
     #
     robot.drivebase.straight(-100)
     #
-    robot.drivebase.turn(-100)
+    robot.drivebase.turn(-35)
     #
-    robot.drivebase.straight(-600)
+    robot.drivebase.straight(1500)
 
 
 if __name__ == "__main__":

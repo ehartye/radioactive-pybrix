@@ -17,9 +17,8 @@ MISSION_CONFIG = {
 def use_attachments(robot):
     """Use the attachment motors - now we can grab things!"""
     robot.display.animate_triangle(cycles=2)
-    if robot.left_attachment:
-        robot.left_attachment.run_angle(500, 90)
-        robot.left_attachment.run_angle(500, -90)
+    robot.left_attachment.run_angle(500, 90)
+    robot.left_attachment.run_angle(500, -90)
 
 
 def run(robot):
