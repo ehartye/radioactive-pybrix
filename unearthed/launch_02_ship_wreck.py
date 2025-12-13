@@ -28,7 +28,7 @@ def run(robot, display):
     #
     robot.drivebase.turn(-60)
     #
-    robot.drivebase.straight(175)
+    robot.drivebase.straight(145)
     #
     robot.drivebase.turn(60)
     #
@@ -36,14 +36,14 @@ def run(robot, display):
     #
     robot.drivebase.straight(-175)
     #
-    robot.drivebase.turn(40)
+    robot.drivebase.turn(50)
     #
     robot.left_attachment.run_angle(200,-170)
     #
     robot.drivebase.straight(-100)
     #
-    robot.drivebase.turn(-35)
-    #
+    robot.drivebase.turn(-45)
+    robot.drivebase.settings(straight_speed=500)
     robot.drivebase.straight(1500)
 
 

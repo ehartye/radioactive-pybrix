@@ -48,6 +48,7 @@ def run(robot, display):
     robot.right_attachment.run_angle(400,165)
     robot.drivebase.straight(-110)
     robot.drivebase.turn(70)
+    robot.drivebase.settings(straight_speed=500)
     robot.drivebase.straight(550)
 
     print("Mission 1 completed successfully!")
