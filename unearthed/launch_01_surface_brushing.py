@@ -28,8 +28,9 @@ def run(robot, display):
     """
     print("=== Mission 1: test_mission ===")
     robot.left_attachment.run_angle(200, -105)
+    wait(500)
     robot.drivebase.straight(500)
-     # Left attachment: turn 180 degrees right, then 180 degrees left          
+    #Left attachment: turn 180 degrees right, then 180 degrees left          
     robot.left_attachment.run_angle(200, 105)  # speed 180 deg/s, turn 180 degrees  
     robot.drivebase.turn(-2)
     robot.drivebase.straight(210)

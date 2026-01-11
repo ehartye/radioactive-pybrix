@@ -1,5 +1,6 @@
 """
 import mission_03_drive_test
+import mission_04_warm_up
 Season Menu System
 Main menu for selecting and running season missions
 """
@@ -15,6 +16,7 @@ import launch_02_ship_wreck
 import launch_03_whats_on_scale
 import launch_04_silo
 import launch_05_heavy_lifting
+import mission_04_warm_up
 from season_config import SeasonInfo, SeasonDefaults
 
 class SeasonMenu:
@@ -47,6 +49,11 @@ class SeasonMenu:
                 "name": "Heavy Lifting",
                 "description": "Mission 07",
                 "run_function": launch_05_heavy_lifting
+            },
+            "6": {
+                "name": "warm_up",
+                "description": "Prepares robot for first run by warming up motors",
+                "run_function": mission_04_warm_up
             }
         }
 
@@ -146,7 +153,7 @@ class SeasonMenu:
 
             # Get user selection
             print(f"\nSelect mission (1-5) or Q to quit:")
-            selected = hub_menu("1", "2", "3", "4", "5", "Q")
+            selected = hub_menu("1", "2", "3", "4", "4", "5", "Q")
 
             if selected == "Q":
                 print("\nExiting season menu...")
