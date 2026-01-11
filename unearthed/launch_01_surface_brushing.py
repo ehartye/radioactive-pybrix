@@ -44,12 +44,17 @@ def run(robot, display):
     robot.drivebase.straight(-250)
     wait(250)
     robot.drivebase.turn(155)
+    wait(250)
     robot.drivebase.straight(90)
     robot.right_attachment.run_angle(400,165)
+    wait(250)
     robot.drivebase.straight(-110)
+    wait(250)
     robot.drivebase.turn(70)
+    wait(250)
     robot.drivebase.settings(straight_speed=500)
-    robot.drivebase.straight(550)
+    wait(250)
+    robot.drivebase.straight(525)
 
     print("Mission 1 completed successfully!")
 

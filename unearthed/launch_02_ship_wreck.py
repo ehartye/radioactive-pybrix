@@ -19,7 +19,7 @@ def run(robot, display):
 
     #robot run forward 15 cm
     robot.drivebase.straight(280)
-    #
+    
     robot.right_attachment.run_angle(200, -220)
     #
     robot.drivebase.straight(-125)
@@ -45,7 +45,6 @@ def run(robot, display):
     robot.drivebase.turn(-45)
     robot.drivebase.settings(straight_speed=500)
     robot.drivebase.straight(1500)
-
 
 if __name__ == "__main__":
     # Standalone testing mode - initialize robot here
