@@ -33,18 +33,20 @@ def run(robot, display):
     #Left attachment: turn 180 degrees right, then 180 degrees left          
     robot.left_attachment.run_angle(200, 105)  # speed 180 deg/s, turn 180 degrees  
     robot.drivebase.turn(-2)
-    robot.drivebase.straight(210)
-    robot.right_attachment.run_angle(200,  -160)  # speed 180 deg/s, turn 180 degrees
     wait(250)
-    robot.drivebase.straight(20)
+    robot.drivebase.straight(210)
+    wait(250)
+    robot.right_attachment.run_angle(220,-160)  # speed 180 deg/s, turn 180 degrees
+    wait(250)
+    robot.drivebase.straight(25)
     wait(250)
     robot.drivebase.turn(-40)
     wait(250)
-    robot.drivebase.straight(150)
+    robot.drivebase.straight(145)
     wait(250)
-    robot.drivebase.straight(-250)
+    robot.drivebase.straight(-240)
     wait(250)
-    robot.drivebase.turn(155)
+    robot.drivebase.turn(145)
     wait(250)
     robot.drivebase.straight(90)
     robot.right_attachment.run_angle(400,165)
@@ -52,10 +54,10 @@ def run(robot, display):
     robot.drivebase.straight(-110)
     wait(250)
     robot.drivebase.turn(70)
-    wait(250)
+    wait(150)
     robot.drivebase.settings(straight_speed=500)
     wait(250)
-    robot.drivebase.straight(525)
+    robot.drivebase.straight(500)
 
     print("Mission 1 completed successfully!")
 

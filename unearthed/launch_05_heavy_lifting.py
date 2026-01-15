@@ -6,7 +6,7 @@ from line_movements import LineMovements
 
 
 MISSION_CONFIG = {
-    "drive_speed": 300,      # Speed in mm/s
+    "drive_speed": 400,      # Speed in mm/s
     "turn_rate": 60,
     "black threshold": 10,  } #this is the reflection percentage for black [TRIAL AND ERROR] higher=triggers on lighter surfaces
 
@@ -20,13 +20,23 @@ def run(robot, display):
     """
     print("=== MISSION 07 ===")
 
-    robot.drivebase.straight(355) 
-    robot.drivebase.turn(-36)
-    robot.right_attachment.run_angle(1000,-175)
-    robot.drivebase.straight(350)
-    robot.drivebase.turn(-58)
-    robot.right_attachment.run_angle(200,175)
-    robot.drivebase.turn(70)
+    robot.drivebase.turn(-40)
+    robot.drivebase.straight(245)
+    robot.drivebase.turn(-30)
+    robot.drivebase.straight(310)
+    robot.right_attachment.run_angle(1000, -175)
+    robot.drivebase.turn(-65)
+    robot.right_attachment.run_angle(200, 175)
+    robot.drivebase.turn(40)
+
+    # OG code for this (it was buns tho)
+    # robot.drivebase.straight(355) 
+    # robot.drivebase.turn(-36)
+    # robot.right_attachment.run_angle(1000,-175)
+    # robot.drivebase.straight(350)
+    # robot.drivebase.turn(-58)
+    # robot.right_attachment.run_angle(200,175)
+    # robot.drivebase.turn(70)
 
 if __name__ == "__main__":
     # Standalone testing mode - initialize robot here

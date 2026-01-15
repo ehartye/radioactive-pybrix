@@ -1,6 +1,4 @@
 """
-import mission_03_drive_test
-import mission_04_warm_up
 Season Menu System
 Main menu for selecting and running season missions
 """
@@ -12,7 +10,7 @@ from pybricks.tools import wait
 
 # Import all mission modules (flat structure for PyBricks compatibility)
 import launch_01_surface_brushing
-import launch_02_ship_wreck
+import launch_02_ship_wreck_Left1st
 import launch_03_whats_on_scale
 import launch_04_silo
 import launch_05_heavy_lifting
@@ -33,21 +31,21 @@ class SeasonMenu:
             "2": {
                 "name": "Ship Wreck",
                 "description": "Misions 12 and 15",
-                "run_function": launch_02_ship_wreck
+                "run_function": launch_02_ship_wreck_Left1st
             },
             "3": {
-                "name": "What's On Scale",
-                "description": "Missions 09, 10, and 03",
-                "run_function": launch_03_whats_on_scale
-            },
-            "4": {
                 "name": "Silo",
                 "description": "Missions 08, 05, 06",
                 "run_function": launch_04_silo
             },
+            "4": {
+                "name": "What's On Scale",
+                "description": "Missions 09, 10, and 03",
+                "run_function": launch_03_whats_on_scale
+            },
             "5": {
                 "name": "Heavy Lifting",
-                "description": "Mission 07",
+                "description": "Mission 07", 
                 "run_function": launch_05_heavy_lifting
             },
             "6": {
