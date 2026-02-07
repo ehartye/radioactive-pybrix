@@ -11,9 +11,9 @@ from pybricks.tools import wait
 # Import all mission modules (flat structure for PyBricks compatibility)
 import launch_01_surface_brushing
 import launch_02_ship_wreck_Left1st
-import launch_03_whats_on_scale
-import launch_04_silo
-import launch_05_heavy_lifting
+import launch_03_silo
+import launch_04_angler_artifacts
+import launch_05_whats_on_scale
 import mission_04_warm_up
 from season_config import SeasonInfo, SeasonDefaults
 
@@ -36,17 +36,17 @@ class SeasonMenu:
             "3": {
                 "name": "Silo",
                 "description": "Missions 08, 05, 06",
-                "run_function": launch_04_silo
+                "run_function": launch_03_silo
             },
             "4": {
-                "name": "What's On Scale",
-                "description": "Missions 09, 10, and 03",
-                "run_function": launch_03_whats_on_scale
+                "name": "Angler Artifacts",
+                "description": "Mission 11",
+                "run_function": launch_04_angler_artifacts
             },
             "5": {
-                "name": "Heavy Lifting",
-                "description": "Mission 07", 
-                "run_function": launch_05_heavy_lifting
+                "name": "What's On Scale",
+                "description": "Missions 09, 10, and 03",
+                "run_function": launch_05_whats_on_scale
             },
             "6": {
                 "name": "warm_up",
@@ -150,8 +150,8 @@ class SeasonMenu:
             self.show_mission_list()
 
             # Get user selection
-            print(f"\nSelect mission (1-5) or Q to quit:")
-            selected = hub_menu("1", "2", "3", "4", "4", "5", "Q")
+            print(f"\nSelect mission (1-6) or Q to quit:")
+            selected = hub_menu("1", "2", "3", "4", "5", "6", "Q")
 
             if selected == "Q":
                 print("\nExiting season menu...")

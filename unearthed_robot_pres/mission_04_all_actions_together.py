@@ -44,7 +44,7 @@ if __name__ == "__main__":
         robot.mission_start_signal()
 
         # Run the mission (display is accessible via robot.display)
-        all_actions_together(robot)
+        
 
         robot.mission_success_signal()
         print("Mission 4 completed successfully!")

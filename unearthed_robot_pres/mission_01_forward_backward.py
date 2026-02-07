@@ -15,8 +15,8 @@ MISSION_CONFIG = {
 def forward_backward(robot):
     """Drive forward then backward - the simplest robot movement!"""
     robot.display.animate_square(cycles=2)
-    robot.drivebase.straight(500)
-    robot.drivebase.straight(-500)
+    robot.drivebase.straight(300)
+    robot.drivebase.straight(-300)
 
 
 def run(robot):
